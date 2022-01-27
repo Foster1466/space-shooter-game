@@ -1,8 +1,8 @@
 # TeamJavaSupremacy
 
-# Milestone 1
+## Milestone 1
 
-## Work Split 
+### Work Split 
 - player 
   - lego
 - enemy
