@@ -3,13 +3,19 @@
 ## Milestone 1
 
 ### Work Split 
-- player 
-  - lego
-- enemy
-  - foster
-- system
-  - gary
-- background/aesthetics
-  - garhgaj
-- slow mode
-  - kolxy
+- lego 
+  - player control
+  - keyboard input
+  - slow mode
+- foster
+  - enemy
+  - boss
+  - firing patterns
+- Gary
+  - Scoring system
+  - Life count
+- Garhgaj
+  - background
+  - aesthetics
+- kolxy
+  - tba
