@@ -57,7 +57,7 @@ public class GameScreen implements Screen {
         viewport= new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
 
         //Setup for the background
-        background= new Texture("backk.jpg");
+        background= new Texture("mainScreen.jpg");
 
 
         //background scrolling starts here at below initialization
