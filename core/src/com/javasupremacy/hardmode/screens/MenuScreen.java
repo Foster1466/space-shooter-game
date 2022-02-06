@@ -5,18 +5,14 @@ import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.javasupremacy.hardmode.MainGame;
-import com.badlogic.gdx.ApplicationListener;
 
 import static java.awt.Color.*;
 
@@ -38,26 +34,39 @@ public class MenuScreen implements Screen {
 
     private void loadButtons() {
         int sizeUnit = 60;
-
+        final Screen self = this;
         // start button
         final TextButton button1 = new TextButton("Start", skin, "small");
         button1.setSize(sizeUnit * 4, sizeUnit);
         button1.setPosition((Gdx.graphics.getWidth() - button1.getWidth()) / 2,350);
+        button1.getLabel().setFontScale(1.2f, 1.2f);
         button1.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                self.dispose();
+                game.setScreen(new GameScreen(game));
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button1.getLabel().setFontScale(1.5f, 1.5f);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button1.getLabel().setFontScale(1.2f, 1.2f);
+            }
         });
-        button1.getLabel().setFontScale(1.5f, 1.5f);
 
         // options button
         final TextButton button2 = new TextButton("Options", skin, "small");
         button2.setSize(sizeUnit * 4, sizeUnit);
         button2.setPosition((Gdx.graphics.getWidth() - button2.getWidth()) / 2,250);
+        button2.getLabel().setFontScale(1.2f, 1.2f);
         button2.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -68,13 +77,22 @@ public class MenuScreen implements Screen {
                 button2.setText("In Progress");
                 return true;
             }
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button2.getLabel().setFontScale(1.5f, 1.5f);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button2.getLabel().setFontScale(1.2f, 1.2f);
+            }
         });
-        button2.getLabel().setFontScale(1.5f, 1.5f);
 
         // exit button
         final TextButton button3 = new TextButton("Exit", skin, "small");
         button3.setSize(sizeUnit * 4, sizeUnit);
         button3.setPosition((Gdx.graphics.getWidth() - button3.getWidth()) / 2,150);
+        button3.getLabel().setFontScale(1.2f, 1.2f);
         button3.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -84,8 +102,16 @@ public class MenuScreen implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button3.getLabel().setFontScale(1.5f, 1.5f);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                button3.getLabel().setFontScale(1.2f, 1.2f);
+            }
         });
-        button3.getLabel().setFontScale(1.5f, 1.5f);
 
         stage.addActor(button1);
         stage.addActor(button2);
