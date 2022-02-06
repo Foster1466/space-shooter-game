@@ -22,14 +22,17 @@ import static java.awt.Color.*;
 
 public class MenuScreen implements Screen {
     private MainGame game;
+    Texture background;
     private Stage stage;
     private Skin skin;
 
     public MenuScreen(MainGame game) {
         this.game = game;
+        background = new Texture("background.jpg");
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         Gdx.input.setInputProcessor(stage);
+
         loadButtons();
     }
 
@@ -39,8 +42,7 @@ public class MenuScreen implements Screen {
         // start button
         final TextButton button1 = new TextButton("Start", skin, "small");
         button1.setSize(sizeUnit * 4, sizeUnit);
-        button1.setPosition((Gdx.graphics.getWidth() - button1.getWidth()) / 2,
-                300);
+        button1.setPosition((Gdx.graphics.getWidth() - button1.getWidth()) / 2,350);
         button1.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -55,8 +57,7 @@ public class MenuScreen implements Screen {
         // options button
         final TextButton button2 = new TextButton("Options", skin, "small");
         button2.setSize(sizeUnit * 4, sizeUnit);
-        button2.setPosition((Gdx.graphics.getWidth() - button2.getWidth()) / 2,
-                200);
+        button2.setPosition((Gdx.graphics.getWidth() - button2.getWidth()) / 2,250);
         button2.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -73,8 +74,7 @@ public class MenuScreen implements Screen {
         // exit button
         final TextButton button3 = new TextButton("Exit", skin, "small");
         button3.setSize(sizeUnit * 4, sizeUnit);
-        button3.setPosition((Gdx.graphics.getWidth() - button3.getWidth()) / 2,
-                100);
+        button3.setPosition((Gdx.graphics.getWidth() - button3.getWidth()) / 2,150);
         button3.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -100,7 +100,9 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        game.batch.begin();
+        game.batch.draw(background, 0, 0);
+        game.batch.end();
         stage.act();
         stage.draw();
     }
