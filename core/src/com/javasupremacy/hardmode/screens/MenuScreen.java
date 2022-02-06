@@ -25,8 +25,6 @@ public class MenuScreen implements Screen {
     private Stage stage;
     private Skin skin;
 
-    private Label outputLabel;
-
     public MenuScreen(MainGame game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
@@ -37,11 +35,16 @@ public class MenuScreen implements Screen {
 
     private void loadButtons() {
         int sizeUnit = 60;
+
+        // start button
         final TextButton button1 = new TextButton("Start", skin, "small");
         button1.setSize(sizeUnit * 4, sizeUnit);
         button1.setPosition((Gdx.graphics.getWidth() - button1.getWidth()) / 2,
                 300);
         button1.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -49,26 +52,36 @@ public class MenuScreen implements Screen {
         });
         button1.getLabel().setFontScale(1.5f, 1.5f);
 
+        // options button
         final TextButton button2 = new TextButton("Options", skin, "small");
         button2.setSize(sizeUnit * 4, sizeUnit);
         button2.setPosition((Gdx.graphics.getWidth() - button2.getWidth()) / 2,
                 200);
         button2.addListener(new InputListener(){
             @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                button2.setText("Options");
+            }
+            @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                button2.setText("In Progress");
                 return true;
             }
         });
         button2.getLabel().setFontScale(1.5f, 1.5f);
 
+        // exit button
         final TextButton button3 = new TextButton("Exit", skin, "small");
         button3.setSize(sizeUnit * 4, sizeUnit);
         button3.setPosition((Gdx.graphics.getWidth() - button3.getWidth()) / 2,
                 100);
         button3.addListener(new InputListener(){
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.exit();
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
         });
@@ -83,9 +96,6 @@ public class MenuScreen implements Screen {
     public void show() {
 
     }
-
-
-
 
     @Override
     public void render(float delta) {
