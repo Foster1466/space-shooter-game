@@ -10,6 +10,7 @@ import com.javasupremacy.hardmode.utils.Constant;
 public class MainGameScreen implements Screen {
 
     Texture img;
+    Texture background;
     float x;
     float y;
     float speed = 5;
@@ -23,6 +24,7 @@ public class MainGameScreen implements Screen {
     @Override
     public void show() {
         img = new Texture("badlogic.jpg");
+        background = new Texture("background.jpg");
     }
 
     @Override
@@ -43,6 +45,7 @@ public class MainGameScreen implements Screen {
         }
 
         game.batch.begin();
+        game.batch.draw(background, 0, 0);
         game.batch.draw(img, x, y);
         game.batch.end();
     }
