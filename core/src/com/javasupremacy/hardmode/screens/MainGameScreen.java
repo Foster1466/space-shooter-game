@@ -19,7 +19,7 @@ public class MainGameScreen implements Screen {
 
     public MainGameScreen(MainGame game) {
         this.game = game;
-    }
+    } // get main game instance from outside
 
     @Override
     public void show() {
@@ -43,7 +43,7 @@ public class MainGameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Constant.LEFT)) {
             x -= speed;
         }
-
+        // use MainGame's batch to draw things in screen rather than in MainGame itself
         game.batch.begin();
         game.batch.draw(background, 0, 0);
         game.batch.draw(img, x, y);
