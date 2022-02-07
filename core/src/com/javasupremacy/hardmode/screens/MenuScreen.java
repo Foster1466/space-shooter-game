@@ -18,17 +18,21 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.javasupremacy.hardmode.MainGame;
 import com.badlogic.gdx.ApplicationListener;
 
+import static com.javasupremacy.hardmode.utils.Constant.WINDOW_HEIGHT;
+import static com.javasupremacy.hardmode.utils.Constant.WINDOW_WIDTH;
 import static java.awt.Color.*;
 
 public class MenuScreen implements Screen {
     private MainGame game;
     Texture background;
+    private int backgroundOffset;
     private Stage stage;
     private Skin skin;
-
+    // Have to dig deeper sigh good night man
     public MenuScreen(MainGame game) {
         this.game = game;
-        background = new Texture("background.jpg");
+        background = new Texture("backk.jpg");
+
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         Gdx.input.setInputProcessor(stage);
@@ -101,8 +105,17 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-        game.batch.draw(background, 0, 0);
-        game.batch.end();
+
+
+        backgroundOffset++;
+
+        if(backgroundOffset % WINDOW_HEIGHT == 0)
+        {
+
+            backgroundOffset=0;
+        }
+        game.batch.draw(background,  0, -backgroundOffset, WINDOW_WIDTH, WINDOW_HEIGHT);
+        game.batch.draw(background,  0,  (-backgroundOffset+WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT);        game.batch.end();
         stage.act();
         stage.draw();
     }

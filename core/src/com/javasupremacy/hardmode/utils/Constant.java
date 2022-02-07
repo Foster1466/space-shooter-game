@@ -10,4 +10,5 @@ public class Constant {
     public static int DOWN = Input.Keys.DOWN;
     public static int LEFT = Input.Keys.LEFT;
     public static int RIGHT = Input.Keys.RIGHT;
+    public static int SPACE = Input.Keys.SPACE;
 }

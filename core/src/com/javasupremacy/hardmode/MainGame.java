@@ -7,6 +7,8 @@ import com.javasupremacy.hardmode.screens.GameScreen;
 import com.javasupremacy.hardmode.screens.MainGameScreen;
 import com.javasupremacy.hardmode.screens.MenuScreen;
 
+import java.util.ArrayList;
+
 public class MainGame extends Game {
 
 	public SpriteBatch batch;

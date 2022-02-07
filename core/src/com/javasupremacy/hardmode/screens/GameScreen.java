@@ -21,8 +21,15 @@ import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
 import com.javasupremacy.hardmode.utils.Constant;
 
+import java.util.ArrayList;
+
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+
 public class GameScreen implements Screen {
     private MainGame game;
+    ArrayList<Bullet> bullets;
 
     //screen
     private Camera camera;
@@ -30,71 +37,92 @@ public class GameScreen implements Screen {
 
     //graphics
     private TextureAtlas textureAtlas;
+    //private SpriteBatch batch;
 
 
     private Texture background;
-    private Texture spaceship;
+    private Texture playerSpaceship;
     private float backgroundHeight;
 
     private Texture playerShipTexture;
-
-
-    //timing
-    private int backgroundOffset;
-    float speed = (float) 0.4;
-    float x;
-    float y;
-
-
-
     // World Parameters
     private final int WORLD_WIDTH= 72;
     private final int WORLD_HEIGHT= 128;
 
+    //timing
+    private int backgroundOffset;
+
+    //game objects
+    Ship playerShip;
+
+
     public GameScreen(MainGame game)
     {
+        //batch = new SpriteBatch();
+
         camera = new OrthographicCamera();
         viewport= new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
 
         //Setup for the background
         background= new Texture("backk.jpg");
+        playerSpaceship= new Texture("man.png");
+
+        bullets = new ArrayList<Bullet>();
 
 
         //background scrolling starts here at below initialization
-        backgroundOffset=0;
+        backgroundOffset = 0;
+        //set up game objects
+        playerShip = new Ship(0.5F,5,5,WORLD_WIDTH/3,
+                WORLD_HEIGHT/85,playerSpaceship);
 
-        //Have to work on understanding what is this
+        //Creating a screen constructor
         this.game = game;
+
+
 
 
     }
 
     @Override
     public void show() {
-
-        spaceship= new Texture("man.png");
-
-
     }
+
+
 
     @Override
     public void render(float deltaTime) {
 
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 
+        //shooting code
+        if(Gdx.input.isKeyPressed(Constant.SPACE))
+        {
+            bullets.add(new Bullet(playerShip.xPosition+1));
+        }
+        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+        for(Bullet bullet : bullets){
+            bullet.update(deltaTime);
+            if(bullet.remove)
+            {
+                bulletsToRemove.add(bullet);
+            }
+            bullets.removeAll(bulletsToRemove);
+        }
+
         if (!Gdx.input.isKeyPressed(Constant.UP)) {
         } else {
-            y += speed;
+            playerShip.yPosition += playerShip.movementSpeed;
         }
         if (!Gdx.input.isKeyPressed(Constant.DOWN)) {
         } else {
-            y -= speed;
+            playerShip.yPosition -= playerShip.movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
-            x += speed;
+            playerShip.xPosition += playerShip.movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Constant.LEFT)) {
-            x -= speed;
+            playerShip.xPosition -= playerShip.movementSpeed;
         }
 
 
@@ -113,9 +141,16 @@ public class GameScreen implements Screen {
 
         //above statements only dictate when the picture is drawn to the canvas this below is the
         //commands that help us draw what we want to be present
-        game.batch.draw(background, 0, -backgroundOffset, WORLD_WIDTH, WORLD_HEIGHT);
-        game.batch.draw(background, 0, -backgroundOffset+WORLD_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT);
-        game.batch.draw(spaceship, x, y);
+
+
+        game.batch.draw(background, (float) 0, (float) -backgroundOffset, WORLD_WIDTH, WORLD_HEIGHT);
+        game.batch.draw(background, (float) 0, (float) (-backgroundOffset+WORLD_HEIGHT), WORLD_WIDTH, WORLD_HEIGHT);
+
+        for(Bullet bullet: bullets){
+            bullet.render(game.batch);
+        }
+
+        playerShip.drawl(game.batch);
 
 
         game.batch.end();
