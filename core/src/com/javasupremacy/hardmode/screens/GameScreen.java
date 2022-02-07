@@ -11,20 +11,23 @@ import com.javasupremacy.hardmode.MainGame;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
-import com.javasupremacy.hardmode.objects.EnemyShip;
-import com.javasupremacy.hardmode.objects.EnemyShipA;
-import com.javasupremacy.hardmode.objects.EnemyShipB;
-import com.javasupremacy.hardmode.objects.Laser;
+import com.javasupremacy.hardmode.objects.*;
 import com.javasupremacy.hardmode.utils.Constant;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 
 public class GameScreen implements Screen {
 
     private MainGame game;
 
-    private final Texture background;
+    private Texture background;
     private int backgroundOffset;
+
+    PlayerShip playerShip;
 
     private Texture spaceship;
     private float speed = (float) 2;
@@ -34,6 +37,7 @@ public class GameScreen implements Screen {
     // game objects
     private List<EnemyShip> enemyShipList;
     private List<Laser> enemyLaserList;
+    private List<PlayerBullet> bullets;
     private float timeBetweenEnemySpawns = 3f;
     private float enemySpawnTimer = 0;
 
@@ -44,9 +48,12 @@ public class GameScreen implements Screen {
         backgroundOffset=0;
 
         spaceship= new Texture("man.png");
+        playerShip = new PlayerShip(0.5F,5,5,Constant.WINDOW_WIDTH/3,
+                Constant.WINDOW_HEIGHT/85, spaceship);
 
         enemyShipList = new ArrayList<>();
         enemyLaserList = new ArrayList<>();
+        bullets = new ArrayList<>();
 
         this.game = game;
     }
@@ -60,7 +67,7 @@ public class GameScreen implements Screen {
     public void render(float deltaTime) {
         game.batch.begin();
         renderBackground();
-        renderShip();
+        renderShip(deltaTime);
         renderEnemy(deltaTime);
         renderLasers(deltaTime);
         game.batch.end();
@@ -77,20 +84,44 @@ public class GameScreen implements Screen {
         game.batch.draw(background, 0, -backgroundOffset + Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
     }
 
-    private void renderShip() {
+    private void renderShip(float deltaTime) {
+        if (Gdx.input.isKeyPressed(Constant.SPACE)) {
+            bullets.add(new PlayerBullet(playerShip.xPosition + 1));
+        }
+        ArrayList<PlayerBullet> bulletsToRemove = new ArrayList<PlayerBullet>();
+        for (PlayerBullet bullet : bullets) {
+            bullet.update(deltaTime);
+            if (bullet.remove) {
+                bulletsToRemove.add(bullet);
+            }
+            bullets.removeAll(bulletsToRemove);
+        }
         if (Gdx.input.isKeyPressed(Constant.UP)) {
-            y += speed;
+            playerShip.yPosition += playerShip.movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Constant.DOWN)) {
-            y -= speed;
+            playerShip.yPosition -= playerShip.movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
-            x += speed;
+            playerShip.xPosition += playerShip.movementSpeed;
         }
         if (Gdx.input.isKeyPressed(Constant.LEFT)) {
-            x -= speed;
+            playerShip.xPosition -= playerShip.movementSpeed;
         }
-        game.batch.draw(spaceship, x, y);
+
+        backgroundOffset++;
+        if (backgroundOffset % Constant.WINDOW_HEIGHT == 0) {
+            backgroundOffset = 0;
+        }
+
+        game.batch.draw(background, 0, -backgroundOffset, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        game.batch.draw(background, 0, -backgroundOffset + Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+
+        for (PlayerBullet bullet : bullets) {
+            bullet.render(game.batch);
+        }
+
+        playerShip.draw(game.batch);
     }
 
     private void renderEnemy(float deltaTime) {
