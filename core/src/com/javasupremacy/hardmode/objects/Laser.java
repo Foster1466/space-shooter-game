@@ -1,18 +1,16 @@
-package com.javasupremacy.hardmode.screens;
+package com.javasupremacy.hardmode.objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.awt.*;
-
 public class Laser {
     // position and dimensions
     //float xPosition, yPosition, width, height;
-    Rectangle boundingBox;
+    public Rectangle boundingBox;
 
     // laser physical characteristics
-    float movementSpeed;
+    public float movementSpeed;
 
     // graphics
     Texture textureReg;

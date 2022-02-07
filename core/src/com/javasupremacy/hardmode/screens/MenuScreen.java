@@ -3,9 +3,7 @@ package com.javasupremacy.hardmode.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,32 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.javasupremacy.hardmode.MainGame;
+import com.javasupremacy.hardmode.utils.Constant;
 
 public class MenuScreen implements Screen {
-    private MainGame game;
-    private Texture background;
-    private Stage stage;
-    private Skin skin;
-    private Camera camera;
-    private Viewport viewport;
-
-    private final int Galaxy_Width= 70;
-    private final int Galaxy_Height= 125;
-    private int backgroundIntial;
+    private final MainGame game;
+    private final Texture background;
+    private final Stage stage;
+    private final Skin skin;
 
     public MenuScreen(MainGame game) {
-        camera = new OrthographicCamera();
-        viewport= new StretchViewport(Galaxy_Width,Galaxy_Height,camera);
         this.game = game;
         background = new Texture("menuScreen.jpg");
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         Gdx.input.setInputProcessor(stage);
-        //initialization
-        backgroundIntial=0;
 
         loadButtons();
     }
@@ -55,8 +42,7 @@ public class MenuScreen implements Screen {
         button1.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                self.dispose();
-                game.setScreen(new GameScreen(game));
+                startGame();
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -130,6 +116,12 @@ public class MenuScreen implements Screen {
         stage.addActor(button3);
     }
 
+    private void startGame() {
+        this.dispose();
+        stage.dispose();
+        game.setScreen(new GameScreen(game));
+    }
+
     @Override
     public void show() {
 
@@ -139,9 +131,7 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-        game.batch.draw(background, 0, 0);
-        game.batch.draw(background, 0, -backgroundIntial, Galaxy_Width, Galaxy_Height);
-        game.batch.draw(background, 0, -backgroundIntial+Galaxy_Height, Galaxy_Width, Galaxy_Height);
+        game.batch.draw(background, 0, 0, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         game.batch.end();
         stage.act();
         stage.draw();
@@ -149,8 +139,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width,height,true);
-        game.batch.setProjectionMatrix(camera.combined);
 
     }
 
