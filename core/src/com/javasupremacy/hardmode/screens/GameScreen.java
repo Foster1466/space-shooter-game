@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.javasupremacy.hardmode.MainGame;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
@@ -34,7 +35,8 @@ public class GameScreen implements Screen {
     private TextureAtlas textureAtlas;
 
 
-    private Texture background;
+    private Texture background, foreground;
+    BitmapFont font = new BitmapFont();
     private Texture spaceship;
     private float backgroundHeight;
 
@@ -42,10 +44,11 @@ public class GameScreen implements Screen {
 
 
     //timing
-    private int backgroundOffset;
+    private int foregroundOffset;
     float speed = (float) 0.4;
     float x;
     float y;
+    int HiScore, score;
     private float timeBetweenEnemySpawns = 3f;
     private float enemySpawnTimer = 0;
 
@@ -62,14 +65,21 @@ public class GameScreen implements Screen {
     public GameScreen(MainGame game)
     {
         camera = new OrthographicCamera();
-        viewport= new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
+        viewport= new StretchViewport(WORLD_WIDTH+50,WORLD_HEIGHT,camera);
 
         //Setup for the background
-        background= new Texture("mainScreen.jpg");
+        background = new Texture("backk.jpg");
+        foreground= new Texture("mainScreen.jpg");
+        font.setColor(1,1,1,1);
+        font.getData().setScale(0.3f);
 
 
         //background scrolling starts here at below initialization
-        backgroundOffset=0;
+        foregroundOffset=0;
+        x=10;
+        y=10;
+        HiScore=0;
+        score=0;
 
         // set up game objects
         enemyShipList = new LinkedList<>();
@@ -96,16 +106,24 @@ public class GameScreen implements Screen {
         if (!Gdx.input.isKeyPressed(Constant.UP)) {
         } else {
             y += speed;
+            if(y>WORLD_HEIGHT-10)
+                y=WORLD_HEIGHT-10;
         }
         if (!Gdx.input.isKeyPressed(Constant.DOWN)) {
         } else {
             y -= speed;
+            if(y<0)
+                y=0;
         }
         if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
             x += speed;
+            if(x>WORLD_WIDTH-4)
+                x=WORLD_WIDTH-4;
         }
         if (Gdx.input.isKeyPressed(Constant.LEFT)) {
             x -= speed;
+            if(x<5)
+                x=5;
         }
 
         game.batch.begin();
@@ -113,18 +131,21 @@ public class GameScreen implements Screen {
         //scrolling background
 
         //Below is a incrementor
-        backgroundOffset ++;
-        if(backgroundOffset % WORLD_HEIGHT == 0)
+        foregroundOffset ++;
+        if(foregroundOffset % WORLD_HEIGHT == 0)
         {
             //This if judges till where it should increment, increment is nothing but
             //offsetting down as you go through the screen
-            backgroundOffset=0;
+            foregroundOffset=0;
         }
 
         //above statements only dictate when the picture is drawn to the canvas this below is the
         //commands that help us draw what we want to be present
-        game.batch.draw(background, 0, -backgroundOffset, WORLD_WIDTH, WORLD_HEIGHT);
-        game.batch.draw(background, 0, -backgroundOffset+WORLD_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT);
+        game.batch.draw(background, 0, 0, WORLD_WIDTH+50, WORLD_HEIGHT);
+        game.batch.draw(foreground, 5, -foregroundOffset, WORLD_WIDTH+5, WORLD_HEIGHT);
+        game.batch.draw(foreground, 5, -foregroundOffset+WORLD_HEIGHT, WORLD_WIDTH+5, WORLD_HEIGHT);
+        font.draw(game.batch, "HiScore: "+Integer.toString(HiScore), WORLD_WIDTH+15, WORLD_HEIGHT-5);
+        font.draw(game.batch, "Score: "+Integer.toString(score), WORLD_WIDTH+15, WORLD_HEIGHT-10);
         game.batch.draw(spaceship, x, y);
 
         spawnEnemyShips(deltaTime);
