@@ -31,7 +31,7 @@ abstract class Enemy {
         timeSinceLastShot += deltaTime;
     }
 
-    public abstract Laser[] fireLasers();
+    public abstract EnemyLaser[] fireLasers();
 
     public void translate(float xChange, float yChange) {
         boundingBox.setPosition(boundingBox.x+xChange, boundingBox.y+yChange);

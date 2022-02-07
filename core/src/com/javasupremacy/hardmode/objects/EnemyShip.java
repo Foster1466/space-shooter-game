@@ -43,22 +43,26 @@ public class EnemyShip extends Enemy {
         return result;
     }
 
+    /**
+     * We will need different patterns for different enemy ship
+     * @return
+     */
     @Override
-    public Laser[] fireLasers(){
-        Laser[] laser = new Laser[2];
-        laser[0] = new Laser(boundingBox.x+ boundingBox.width*0.18f,
+    public EnemyLaser[] fireLasers(){
+        EnemyLaser[] enemyLaser = new EnemyLaser[2];
+        enemyLaser[0] = new EnemyLaser(boundingBox.x+ boundingBox.width*0.18f,
                 boundingBox.y-laserHeight,
                 laserWidth,
                 laserHeight,
                 laserMovementSpeed,
                 laserTexture);
-        laser[1] = new Laser(boundingBox.x+boundingBox.width*0.82f,
+        enemyLaser[1] = new EnemyLaser(boundingBox.x+boundingBox.width*0.82f,
                 boundingBox.y-laserHeight,
                 laserWidth,
                 laserHeight,
                 laserMovementSpeed, laserTexture);
         timeSinceLastShot = 0;
-        return laser;
+        return enemyLaser;
     }
 
     public void move(float deltaTime) {

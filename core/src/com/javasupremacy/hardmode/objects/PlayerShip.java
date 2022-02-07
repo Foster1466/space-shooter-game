@@ -1,130 +1,81 @@
 package com.javasupremacy.hardmode.objects;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.javasupremacy.hardmode.utils.Constant;
+import com.sun.org.apache.bcel.internal.Const;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlayerShip {
 
-    //ship characteristics
-    public float movementSpeed;  //world units per second
-    int shield;
+    public float movementSpeed;
 
-    //position & dimension
-    public float xPosition, yPosition; //lower-left corner
+    public float xPosition, yPosition;
     float width, height;
 
-    //graphics
     private Texture spaceship;
 
+    private float shootInterval = 0.05f;
+    private float shootTimestamp = 0;
 
-    public PlayerShip(float movementSpeed,
-                      float width, float height,
-                      float xCentre, float yCentre,
-                      Texture spaceship) {
-        this.movementSpeed = movementSpeed;
-        this.xPosition = xCentre - width / 2;
-        this.yPosition = yCentre - height / 2;
-        this.width = width;
-        this.height = height;
-        this.spaceship = spaceship;
 
+    public PlayerShip() {
+        this.movementSpeed = 2f;
+        this.width = 20;
+        this.height = 40;
+        this.xPosition = (Constant.WINDOW_WIDTH - width) / 2;
+        this.yPosition = 50;
+        this.spaceship = new Texture("man.png");
     }
 
-    public void draw(Batch batch) {
-        batch.draw(spaceship, xPosition, yPosition, width, height);
+    /**
+     *
+     * @return true if playership is firing
+     */
+    public boolean isFiring() {
+        boolean canFire = false;
+        if (shootTimestamp >= shootInterval) {
+            canFire = true;
+        }
+        return Gdx.input.isKeyPressed(Constant.SPACE) && canFire;
+    }
 
+    public void update(float deltaTime) {
+        shootTimestamp += deltaTime;
+    }
+
+    /**
+     * We will need more shooting patterns when power ups are introduced
+     * @return
+     */
+    public List<PlayerBullet> fireBullet() {
+        shootTimestamp = 0;
+        List<PlayerBullet> bullets = new ArrayList<>();
+        bullets.add(new PlayerBullet(xPosition + (width / 2), yPosition + height));
+        return bullets;
+    }
+
+    public void draw(Batch batch, float deltaTime) {
+        update(deltaTime);
+        if (Gdx.input.isKeyPressed(Constant.UP)) {
+            yPosition += movementSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Constant.DOWN)) {
+            yPosition -= movementSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
+            xPosition += movementSpeed;
+        }
+        if (Gdx.input.isKeyPressed(Constant.LEFT)) {
+            xPosition -= movementSpeed;
+        }
+        batch.draw(spaceship, xPosition, yPosition, width, height);
     }
 }
-//    private MainGame game;
-//    //screen
-//    private Camera camera;
-//    private Viewport viewport;
-//
-//
-//
-//    private Texture spaceship;
-//    private float backgroundHeight;
-//
-//    private Texture playerShipTexture;
-//    // World Parameters
-//    private final int WORLD_WIDTH= 72;
-//    private final int WORLD_HEIGHT= 128;
-//
-//    float speed = (float) 0.4;
-//    float x= (float) (WORLD_WIDTH/2.5);
-//    float y=WORLD_HEIGHT/85;
-//
-//
-//
-//
-//
-//    public void show() {
-//
-//        spaceship= new Texture("man.png");
-//
-//
-//    }
-//
-//
-//
-//
-//    public void render(float deltaTime) {
-//
-//        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-//
-//        if (!Gdx.input.isKeyPressed(Constant.UP)) {
-//        } else {
-//            y += speed;
-//        }
-//        if (!Gdx.input.isKeyPressed(Constant.DOWN)) {
-//        } else {
-//            y -= speed;
-//        }
-//        if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
-//            x += speed;
-//        }
-//        if (Gdx.input.isKeyPressed(Constant.LEFT)) {
-//            x -= speed;
-//        }
-//
-//
-//
-//        game.batch.begin();
-//
-//        //scrolling background
-//
-//        //Below is a incrementor
-//
-//        game.batch.draw(spaceship, x, y);
-//
-//
-//
-//        game.batch.end();
-//
-//    }
-//
-//    public void resize(int width, int height) {
-//        viewport.update(width,height,true);
-//        game.batch.setProjectionMatrix(camera.combined);
-//    }
-//
-//    public void pause() {
-//
-//    }
-//
-//    public void resume() {
-//
-//    }
-//
-//    public void hide() {
-//
-//    }
-//
-//    public void dispose() {
-//
-//    }
-//
 
 

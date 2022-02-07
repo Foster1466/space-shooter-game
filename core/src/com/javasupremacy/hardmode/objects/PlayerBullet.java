@@ -4,6 +4,7 @@ package com.javasupremacy.hardmode.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.javasupremacy.hardmode.utils.Constant;
 
 
 public class PlayerBullet {
@@ -11,18 +12,13 @@ public class PlayerBullet {
     public static final int SPEED = 100;
     public static final int DEFAULT_Y = 1;
 
-    //    public static final int WIDTH = 3;
-    //    public static final int HEIGHT = 12;
-
     private static Texture texture;
 
     float x, y;
-//    CollisionRect rect;
-    public boolean remove = false;
 
-    public PlayerBullet(float x) {
+    public PlayerBullet(float x, float y) {
         this.x = x;
-        this.y = DEFAULT_Y;
+        this.y = y;
 //        this.rect = new CollisionRect(x, y, WIDTH, HEIGHT);
 
         if (texture == null)
@@ -31,10 +27,10 @@ public class PlayerBullet {
 
     public void update (float deltaTime) {
         y += SPEED * deltaTime;
-        if (y > Gdx.graphics.getHeight())
-            remove = true;
+    }
 
-//        rect.move(x, y);
+    public boolean canRemove() {
+        return  x < 0 || x > Constant.WINDOW_WIDTH || y < 0 || y > Constant.WINDOW_HEIGHT;
     }
 
     public void render (SpriteBatch batch) {
