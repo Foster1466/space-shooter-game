@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.javasupremacy.hardmode.MainGame;
+
+import java.util.Random;
+
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static java.awt.Color.*;
 
@@ -31,6 +34,7 @@ public class MenuScreen implements Screen {
     private final int Galaxy_Width= 70;
     private final int Galaxy_Height= 125;
     private int backgroundIntial;
+    public static Random random = new Random();
 
     public MenuScreen(MainGame game) {
         camera = new OrthographicCamera();
