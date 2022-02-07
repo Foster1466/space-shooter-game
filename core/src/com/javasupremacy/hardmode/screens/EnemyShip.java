@@ -1,12 +1,9 @@
 package com.javasupremacy.hardmode.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.Vector;
-
-public class EnemyShip extends Ship{
+public class EnemyShip extends Enemy {
 
     Vector2 directionVector;
     float timeSinceLastDirectionChange = 0;

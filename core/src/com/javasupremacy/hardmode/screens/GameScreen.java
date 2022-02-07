@@ -7,12 +7,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.javasupremacy.hardmode.MainGame;
@@ -20,12 +17,10 @@ import com.javasupremacy.hardmode.MainGame;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
 import com.javasupremacy.hardmode.utils.Constant;
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Random;
 
 public class GameScreen implements Screen {
 
