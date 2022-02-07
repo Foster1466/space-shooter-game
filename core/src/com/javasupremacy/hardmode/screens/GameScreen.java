@@ -21,6 +21,7 @@ import com.javasupremacy.hardmode.utils.Constant;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Random;
 
 public class GameScreen implements Screen {
 
@@ -58,6 +59,8 @@ public class GameScreen implements Screen {
     // game objects
     private LinkedList<EnemyShip> enemyShipList;
     private LinkedList<Laser> enemyLaserList;
+
+    private Random random = new Random();
 
     public GameScreen(MainGame game)
     {
@@ -178,7 +181,7 @@ public class GameScreen implements Screen {
         enemySpawnTimer+=deltaTime;
 
         if(enemySpawnTimer>timeBetweenEnemySpawns) {
-            enemyShipList.add(new EnemyShip(MenuScreen.random.nextFloat() * (WORLD_WIDTH - 10) + 5, WORLD_HEIGHT - 5, 10, 10,
+            enemyShipList.add(new EnemyShip(this.random.nextFloat() * (WORLD_WIDTH - 10) + 5, WORLD_HEIGHT - 5, 10, 10,
                     48, 0.3f, 5, 50, 0.8f,
                     enemyShipTexture, enemyLaserTexture));
             enemySpawnTimer-=timeBetweenEnemySpawns;

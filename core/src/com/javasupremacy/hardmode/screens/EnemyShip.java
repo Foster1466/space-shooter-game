@@ -3,11 +3,15 @@ package com.javasupremacy.hardmode.screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.Random;
+
 public class EnemyShip extends Enemy {
 
     Vector2 directionVector;
     float timeSinceLastDirectionChange = 0;
     float directionChangeFrequency = 0.75f;
+
+    private Random random = new Random();
 
     public EnemyShip(float xCenter, float yCenter,
                      float width, float height,
@@ -25,7 +29,7 @@ public class EnemyShip extends Enemy {
     }
 
     private void randomizeDirectionVector(){
-        double bearing = MenuScreen.random.nextDouble()*2*Math.PI;
+        double bearing = this.random.nextDouble()*2*Math.PI;
         directionVector.x = (float) Math.sin(bearing);
         directionVector.x = (float) Math.cos(bearing);
     }
