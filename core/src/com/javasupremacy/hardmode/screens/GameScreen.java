@@ -36,7 +36,9 @@ public class GameScreen implements Screen {
 
 
     private Texture background, foreground;
-    BitmapFont font = new BitmapFont();
+    private Texture heart;
+    BitmapFont font0 = new BitmapFont();
+    BitmapFont font1 = new BitmapFont();
     private Texture spaceship;
     private float backgroundHeight;
 
@@ -48,7 +50,8 @@ public class GameScreen implements Screen {
     float speed = (float) 0.4;
     float x;
     float y;
-    int HiScore, score;
+    int HiScore, score, heartCount;
+    private String mode;
     private float timeBetweenEnemySpawns = 3f;
     private float enemySpawnTimer = 0;
 
@@ -68,10 +71,14 @@ public class GameScreen implements Screen {
         viewport= new StretchViewport(WORLD_WIDTH+50,WORLD_HEIGHT,camera);
 
         //Setup for the background
-        background = new Texture("backk.jpg");
-        foreground= new Texture("mainScreen.jpg");
-        font.setColor(1,1,1,1);
-        font.getData().setScale(0.3f);
+        background = new Texture("mainScreen.jpg");
+        foreground= new Texture("backk.jpg");
+        heart = new Texture("heart.png");
+
+        font0.setColor(0, 0, 0, 1);
+        font0.getData().setScale(0.4f);
+        font1.setColor(1,1,1,1);
+        font1.getData().setScale(0.3f);
 
 
         //background scrolling starts here at below initialization
@@ -80,6 +87,8 @@ public class GameScreen implements Screen {
         y=10;
         HiScore=0;
         score=0;
+        mode = "Normal speed";
+        heartCount = 5;
 
         // set up game objects
         enemyShipList = new LinkedList<>();
@@ -142,10 +151,15 @@ public class GameScreen implements Screen {
         //above statements only dictate when the picture is drawn to the canvas this below is the
         //commands that help us draw what we want to be present
         game.batch.draw(background, 0, 0, WORLD_WIDTH+50, WORLD_HEIGHT);
-        game.batch.draw(foreground, 5, -foregroundOffset, WORLD_WIDTH+5, WORLD_HEIGHT);
-        game.batch.draw(foreground, 5, -foregroundOffset+WORLD_HEIGHT, WORLD_WIDTH+5, WORLD_HEIGHT);
-        font.draw(game.batch, "HiScore: "+Integer.toString(HiScore), WORLD_WIDTH+15, WORLD_HEIGHT-5);
-        font.draw(game.batch, "Score: "+Integer.toString(score), WORLD_WIDTH+15, WORLD_HEIGHT-10);
+        game.batch.draw(foreground, 5, -foregroundOffset, WORLD_WIDTH, WORLD_HEIGHT);
+        game.batch.draw(foreground, 5, -foregroundOffset+WORLD_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT);
+
+        font0.draw(game.batch, mode, WORLD_WIDTH+10, WORLD_HEIGHT-5);
+        font1.draw(game.batch, "HiScore: "+String.format("%08d", HiScore), WORLD_WIDTH+10, WORLD_HEIGHT-15);
+        font1.draw(game.batch, "Score: "+String.format("%08d", score), WORLD_WIDTH+10, WORLD_HEIGHT-20);
+        font0.draw(game.batch, "HP: ", WORLD_WIDTH+10, WORLD_HEIGHT-30);
+        for(int i=0; i<heartCount; i++)
+            game.batch.draw(heart, WORLD_WIDTH+10+(i*8), WORLD_HEIGHT-40, 5,5);
         game.batch.draw(spaceship, x, y);
 
         spawnEnemyShips(deltaTime);
