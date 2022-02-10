@@ -9,7 +9,7 @@ import com.javasupremacy.hardmode.utils.Constant;
 
 public class PlayerBullet {
 
-    public static final int SPEED = 100;
+    public static final int SPEED = 300;
     public static final int DEFAULT_Y = 1;
 
     private static Texture texture;

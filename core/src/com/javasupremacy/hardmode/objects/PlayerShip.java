@@ -20,8 +20,10 @@ public class PlayerShip {
 
     private Texture spaceship;
 
-    private float shootInterval = 0.05f;
+    private float shootInterval = 0.2f;
     private float shootTimestamp = 0;
+
+    private float slowMultiplier=0.5f;
 
 
     public PlayerShip() {
@@ -59,29 +61,38 @@ public class PlayerShip {
         bullets.add(new PlayerBullet(xPosition + (width / 2), yPosition + height));
         return bullets;
     }
+    public void move(){
 
-    public void draw(Batch batch, float deltaTime) {
-        update(deltaTime);
+        float actualSpeed = movementSpeed;
+        if (Gdx.input.isKeyPressed(Constant.SLOW_MODE))
+        {
+            actualSpeed *= slowMultiplier;
+        }
+
         if (Gdx.input.isKeyPressed(Constant.UP)) {
-            yPosition += movementSpeed;
+            yPosition += actualSpeed;
             if(yPosition>Constant.WINDOW_HEIGHT-40)
                 yPosition=Constant.WINDOW_HEIGHT-40;
         }
         if (Gdx.input.isKeyPressed(Constant.DOWN)) {
-            yPosition -= movementSpeed;
+            yPosition -= actualSpeed;
             if(yPosition<0)
                 yPosition=0;
         }
         if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
-            xPosition += movementSpeed;
+            xPosition += actualSpeed;
             if(xPosition>Constant.WINDOW_WIDTH-15)
                 xPosition=Constant.WINDOW_WIDTH-15;
         }
         if (Gdx.input.isKeyPressed(Constant.LEFT)) {
-            xPosition -= movementSpeed;
+            xPosition -= actualSpeed;
             if(xPosition<5)
                 xPosition=5;
         }
+    }
+    public void draw(Batch batch, float deltaTime) {
+        update(deltaTime);
+        move();
         batch.draw(spaceship, xPosition, yPosition, width, height);
     }
 }

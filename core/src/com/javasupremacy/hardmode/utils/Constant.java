@@ -12,4 +12,6 @@ public class Constant {
     public static int LEFT = Input.Keys.LEFT;
     public static int RIGHT = Input.Keys.RIGHT;
     public static int SPACE = Input.Keys.SPACE;
+    public static int SLOW_MODE = Input.Keys.SHIFT_LEFT;
+
 }
