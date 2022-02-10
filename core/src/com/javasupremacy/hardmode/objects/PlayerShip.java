@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.javasupremacy.hardmode.utils.Constant;
-import com.sun.org.apache.bcel.internal.Const;
+//import com.sun.org.apache.bcel.internal.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,15 +64,23 @@ public class PlayerShip {
         update(deltaTime);
         if (Gdx.input.isKeyPressed(Constant.UP)) {
             yPosition += movementSpeed;
+            if(yPosition>Constant.WINDOW_HEIGHT-40)
+                yPosition=Constant.WINDOW_HEIGHT-40;
         }
         if (Gdx.input.isKeyPressed(Constant.DOWN)) {
             yPosition -= movementSpeed;
+            if(yPosition<0)
+                yPosition=0;
         }
         if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
             xPosition += movementSpeed;
+            if(xPosition>Constant.WINDOW_WIDTH-15)
+                xPosition=Constant.WINDOW_WIDTH-15;
         }
         if (Gdx.input.isKeyPressed(Constant.LEFT)) {
             xPosition -= movementSpeed;
+            if(xPosition<5)
+                xPosition=5;
         }
         batch.draw(spaceship, xPosition, yPosition, width, height);
     }

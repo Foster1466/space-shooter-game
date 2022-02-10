@@ -3,7 +3,8 @@ package com.javasupremacy.hardmode.utils;
 import com.badlogic.gdx.Input;
 
 public class Constant {
-    public static final int WINDOW_WIDTH = 836; //536
+    public static final int EXT_WINDOW_WIDTH = 836;
+    public static final int WINDOW_WIDTH = 536; //536
     public static final int WINDOW_HEIGHT = 800;
 
     public static int UP = Input.Keys.UP;

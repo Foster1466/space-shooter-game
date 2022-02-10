@@ -131,7 +131,7 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-        game.batch.draw(background, 0, 0, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        game.batch.draw(background, 0, 0, Constant.EXT_WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         game.batch.end();
         stage.act();
         stage.draw();

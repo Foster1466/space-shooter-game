@@ -26,7 +26,7 @@ import java.util.*;
 public class GameScreen implements Screen {
 
     private MainGame game;
-    private int backgroundOffset;
+    private int foregroundOffset;
 
     //screen
     private Camera camera;
@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
     private List<PlayerBullet> bullets;
 
     //timing
-    private int foregroundOffset;
+    //private int foregroundOffset;
     float speed = (float) 0.4;
     float x;
     float y;
@@ -61,13 +61,16 @@ public class GameScreen implements Screen {
     private float timeBetweenEnemySpawns = 3f;
     private float enemySpawnTimer = 0;
 
+    //private final int WORLD_WIDTH= 72;
+   // private final int WORLD_HEIGHT= 128;
+
     public GameScreen(MainGame game)
     {
-        background= new Texture("back.jpg");
+        //background= new Texture("back.jpg");
 
-        backgroundOffset=0;
+        foregroundOffset=0;
         camera = new OrthographicCamera();
-        viewport= new StretchViewport(Constant.WINDOW_WIDTH+50,Constant.WINDOW_HEIGHT,camera);
+        viewport= new StretchViewport(Constant.EXT_WINDOW_WIDTH, Constant.WINDOW_HEIGHT,camera);
 
         //Setup for the background
         background = new Texture("mainScreen.jpg");
@@ -75,13 +78,13 @@ public class GameScreen implements Screen {
         heart = new Texture("heart.png");
 
         font0.setColor(0, 0, 0, 1);
-        font0.getData().setScale(0.4f);
+        font0.getData().setScale(2f);
         font1.setColor(1,1,1,1);
-        font1.getData().setScale(0.3f);
+        font1.getData().setScale(2f);
 
 
         //background scrolling starts here at below initialization
-        foregroundOffset=0;
+        //foregroundOffset=0;
         x=10;
         y=10;
         HiScore=0;
@@ -122,8 +125,16 @@ public class GameScreen implements Screen {
             //offsetting down as you go through the screen
             foregroundOffset=0;
         }
-        game.batch.draw(background, 0, -backgroundOffset, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
-        game.batch.draw(background, 0, -backgroundOffset + Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        game.batch.draw(background, 0, 0, Constant.EXT_WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        game.batch.draw(foreground, 5, -foregroundOffset, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        game.batch.draw(foreground, 5, -foregroundOffset+Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+
+        font0.draw(game.batch, mode, Constant.WINDOW_WIDTH+50, Constant.WINDOW_HEIGHT-20);
+        font1.draw(game.batch, "HiScore: "+String.format("%08d", HiScore), Constant.WINDOW_WIDTH+10, Constant.WINDOW_HEIGHT-60);
+        font1.draw(game.batch, "Score: "+String.format("%08d", score), Constant.WINDOW_WIDTH+10, Constant.WINDOW_HEIGHT-100);
+        font0.draw(game.batch, "HP: ", Constant.WINDOW_WIDTH+10, Constant.WINDOW_HEIGHT-140);
+        for(int i=0; i<heartCount; i++)
+            game.batch.draw(heart, Constant.WINDOW_WIDTH+10+(i*50), Constant.WINDOW_HEIGHT-210, 40,40);
     }
 
     private void renderEnemy(float deltaTime) {
