@@ -1,3 +1,4 @@
+
 package com.javasupremacy.hardmode.objects;
 
 
@@ -96,5 +97,4 @@ public class PlayerShip {
         batch.draw(spaceship, xPosition, yPosition, width, height);
     }
 }
-
 

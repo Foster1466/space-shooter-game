@@ -37,3 +37,4 @@ abstract class Enemy {
         boundingBox.setPosition(boundingBox.x+xChange, boundingBox.y+yChange);
     }
 }
+
