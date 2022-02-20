@@ -17,6 +17,7 @@
 - Garhgaj
   - background
   - aesthetics
+  - -bosses
 - kolxy
   - tba
 

@@ -10,7 +10,7 @@ public class EnemyShip extends Enemy {
 
     Vector2 directionVector;
     float timeSinceLastDirectionChange = 0;
-    float directionChangeFrequency = 10f;
+    float directionChangeFrequency = 0.5f;
 
     Random random = new Random();
 
@@ -25,7 +25,7 @@ public class EnemyShip extends Enemy {
     private void randomizeDirectionVector(){
         double bearing = this.random.nextDouble()*2*Math.PI;
         directionVector.x = (float) Math.sin(bearing);
-        directionVector.x = (float) Math.cos(bearing);
+        directionVector.y = (float) Math.cos(bearing);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class EnemyShip extends Enemy {
         timeSinceLastDirectionChange+=deltaTime;
         if(timeSinceLastDirectionChange > directionChangeFrequency){
             randomizeDirectionVector();
-            timeSinceLastDirectionChange += directionChangeFrequency;
+            timeSinceLastDirectionChange -= directionChangeFrequency;
         }
     }
 
