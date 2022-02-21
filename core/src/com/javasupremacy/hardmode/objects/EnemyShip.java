@@ -66,24 +66,9 @@ public class EnemyShip extends Enemy {
     }
 
     public void move(float deltaTime) {
-        float leftLimit = -boundingBox.x;
-        float downLimit = (float)Constant.WINDOW_HEIGHT / 2 - boundingBox.y;
-        float rightLimit = Constant.WINDOW_WIDTH - boundingBox.x - boundingBox.width;
-        float upLimit = Constant.WINDOW_HEIGHT - boundingBox.y - boundingBox.height;
 
-        float xMove = getDirectionVector().x * movementSpeed * deltaTime;
-        float yMove = getDirectionVector().y * movementSpeed * deltaTime;
-        if (xMove > 0)
-            xMove=Math.min(xMove,rightLimit);
-        else
-            xMove = Math.max(xMove, leftLimit);
 
-        if (yMove > 0)
-            yMove = Math.min(yMove, upLimit);
-        else
-            yMove = Math.max(yMove, downLimit);
-
-        this.translate(xMove, yMove);
+        this.boundingBox = this.track.update(deltaTime, this.boundingBox);
     }
 
     @Override

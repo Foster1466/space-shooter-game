@@ -3,6 +3,8 @@ package com.javasupremacy.hardmode.objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.javasupremacy.hardmode.tracks.Track;
+import com.javasupremacy.hardmode.utils.Constant;
 
 abstract public class Enemy {
 
@@ -10,11 +12,8 @@ abstract public class Enemy {
     float movementSpeed;
 
     // Position and dimension
-    /*
-    float xPosition, yPosition;     //lower-left corner
-    float width, height;
-     */
     public Rectangle boundingBox;
+    public Track track;
 
     // laser information
     float laserWidth, laserHeight;
@@ -34,12 +33,15 @@ abstract public class Enemy {
 
     public abstract EnemyLaser[] fireLasers();
 
-    public void translate(float xChange, float yChange) {
-        boundingBox.setPosition(boundingBox.x+xChange, boundingBox.y+yChange);
+    public abstract void draw(Batch batch, float deltaTime);
+
+    public abstract boolean canFireLaser();
+
+    public boolean isOutOfBounds() {
+        if (this.boundingBox.x + boundingBox.width < 0 || this.boundingBox.x > Constant.WINDOW_WIDTH || this.boundingBox.y + boundingBox.height < 0 || this.boundingBox.y > Constant.WINDOW_HEIGHT) {
+            return true;
+        }
+        return false;
     }
-
-    abstract public void draw(Batch batch, float deltaTime);
-
-    abstract public boolean canFireLaser();
 }
 

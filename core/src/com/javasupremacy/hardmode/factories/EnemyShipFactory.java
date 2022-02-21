@@ -26,10 +26,10 @@ public class EnemyShipFactory extends EnemyFactory{
         toBeReleased = new LinkedList<>();
 
         float timestamp = 5;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             releaseTime.offer(timestamp);
             toBeReleased.offer(new EnemyShipA());
-            timestamp += 1;
+            timestamp += 2;
         }
 
         timestamp = 80;

@@ -6,13 +6,7 @@ package com.javasupremacy.hardmode.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.javasupremacy.hardmode.MainGame;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
@@ -109,7 +103,7 @@ public class GameScreen implements Screen {
         renderShipBullet(deltaTime);
         game.batch.end();
         clock += deltaTime;
-        if (clock > 120) {
+        if (clock > 150) {
             gameEnd();
         }
     }
@@ -136,13 +130,18 @@ public class GameScreen implements Screen {
 
     private void renderEnemy(float deltaTime) {
         spawnEnemy(deltaTime);
+        List<Enemy> removeList = new ArrayList<>();
         for (Enemy enemy : enemyShipList) {
             enemy.update(deltaTime);
             enemy.draw(game.batch, deltaTime);
             if (enemy.canFireLaser()) {
                 enemyLaserList.addAll(Arrays.asList(enemy.fireLasers()));
             }
+            if (enemy.isOutOfBounds()) {
+                removeList.add(enemy);
+            }
         }
+        enemyShipList.removeAll(removeList);
     }
 
     private void renderEnemyLasers(float deltaTime) {

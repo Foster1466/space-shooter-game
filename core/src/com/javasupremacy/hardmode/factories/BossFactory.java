@@ -26,7 +26,7 @@ public class BossFactory extends EnemyFactory {
         releaseTime.add(45f);
         toBeReleased.add(new MidBoss());
 
-        releaseTime.add(90f);
+        releaseTime.add(100f);
         toBeReleased.add(new Boss());
 
         if (!releaseTime.isEmpty()) {
