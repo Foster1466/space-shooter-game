@@ -86,6 +86,7 @@ public class EnemyShip extends Enemy {
         this.translate(xMove, yMove);
     }
 
+    @Override
     public void draw(Batch batch, float deltaTime){
         move(deltaTime);
         batch.draw(shipTexture, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);

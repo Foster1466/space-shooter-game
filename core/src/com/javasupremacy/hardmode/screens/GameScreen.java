@@ -18,6 +18,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
+import com.javasupremacy.hardmode.factories.BossFactory;
+import com.javasupremacy.hardmode.factories.EnemyFactory;
+import com.javasupremacy.hardmode.factories.EnemyShipFactory;
 import com.javasupremacy.hardmode.objects.*;
 import com.javasupremacy.hardmode.utils.Constant;
 
@@ -29,34 +32,20 @@ public class GameScreen implements Screen {
     private MainGame game;
     private int foregroundOffset;
 
-    //screen
-    private Camera camera;
-    private Viewport viewport;
-
-    //graphics
-    private TextureAtlas textureAtlas;
-
 
     private Texture background, foreground;
     private Texture heart;
     BitmapFont font0 = new BitmapFont();
     BitmapFont font1 = new BitmapFont();
-    private Texture spaceship;
-    private float backgroundHeight;
-
-    private Texture playerShipTexture;
 
     // game objects
     PlayerShip playerShip;
-    private List<EnemyShip> enemyShipList;
+    private List<Enemy> enemyShipList;
     private List<EnemyLaser> enemyLaserList;
-    private List<EnemyLaser> bossLaserList;
     private List<PlayerBullet> bullets;
 
-    // boss object
-    private BossShip boss;
-    private long bossEntry = System.currentTimeMillis() + 35000;
-    private long midBossEntry = System.currentTimeMillis();
+    // factories
+    private List<EnemyFactory> factoryList;
 
     //timing
     //private int foregroundOffset;
@@ -65,18 +54,9 @@ public class GameScreen implements Screen {
     float y;
     int HiScore, score, heartCount;
     private String mode;
-    private float timeBetweenEnemySpawns = 3f;
-    private float enemySpawnTimer = 0;
-
-    //private final int WORLD_WIDTH= 72;
-    // private final int WORLD_HEIGHT= 128;
 
     public GameScreen(MainGame game) {
-        //background= new Texture("back.jpg");
-
         foregroundOffset = 0;
-        camera = new OrthographicCamera();
-        viewport = new StretchViewport(Constant.EXT_WINDOW_WIDTH, Constant.WINDOW_HEIGHT, camera);
 
         //Setup for the background
         background = new Texture("mainScreen.jpg");
@@ -98,11 +78,16 @@ public class GameScreen implements Screen {
         mode = "Normal speed";
         heartCount = 5;
 
+        // Objects
         playerShip = new PlayerShip();
         enemyShipList = new ArrayList<>();
         enemyLaserList = new ArrayList<>();
-        bossLaserList = new ArrayList<>();
         bullets = new ArrayList<>();
+
+        // Factory
+        factoryList = new ArrayList<>();
+        factoryList.add(new EnemyShipFactory());
+        factoryList.add(new BossFactory());
 
         this.game = game;
     }
@@ -118,8 +103,6 @@ public class GameScreen implements Screen {
         renderBackground();
         renderEnemy(deltaTime);
         renderEnemyLasers(deltaTime);
-        renderBoss(deltaTime);
-        renderBossLasers(deltaTime);
         renderShip(deltaTime);
         renderShipBullet(deltaTime);
         game.batch.end();
@@ -145,54 +128,13 @@ public class GameScreen implements Screen {
             game.batch.draw(heart, Constant.WINDOW_WIDTH + 10 + (i * 50), Constant.WINDOW_HEIGHT - 210, 40, 40);
     }
 
-    private void renderBoss(float deltaTime) {
-        if (boss != null) {
-            boss.update(deltaTime);
-            boss.draw(game.batch, deltaTime);
-            if (boss.canFireLaser()) {
-                bossLaserList.clear();
-                bossLaserList.addAll(Arrays.asList(boss.fireLasers()));
-            }
-            if(System.currentTimeMillis()>(boss.getTimeToExit()*2)){
-                boss=null;
-                bossLaserList.clear();
-                System.out.println("Boss Exited");
-            }
-        }
-    }
-
-    //draw midboss or boss lasers
-    private void renderBossLasers(float deltaTime) {
-        List<EnemyLaser> removeList = new ArrayList<>();
-        for (int i = 0; i < bossLaserList.size(); i++) {
-            EnemyLaser enemyLaser = bossLaserList.get(i);
-            enemyLaser.draw(game.batch);
-
-            // move lasers at specified angle
-            if(boss instanceof MidBoss) {
-                enemyLaser.boundingBox.x += MathUtils.cos(30 * i) * enemyLaser.movementSpeed * deltaTime;
-                enemyLaser.boundingBox.y += MathUtils.sin(30 * i) * enemyLaser.movementSpeed * deltaTime;
-            }else{
-                enemyLaser.boundingBox.x += MathUtils.cos(15 * i) * enemyLaser.movementSpeed * deltaTime;
-                enemyLaser.boundingBox.y -=  enemyLaser.movementSpeed * deltaTime;
-            }
-
-            if (enemyLaser.canRemove()) {
-                removeList.add(enemyLaser);
-            }
-        }
-        if (removeList.size() == bossLaserList.size()) {
-            bossLaserList.removeAll(removeList);
-        }
-    }
-
     private void renderEnemy(float deltaTime) {
-        spawnEnemyShips(deltaTime);
-        for (EnemyShip enemyShip : enemyShipList) {
-            enemyShip.update(deltaTime);
-            enemyShip.draw(game.batch, deltaTime);
-            if (enemyShip.canFireLaser()) {
-                enemyLaserList.addAll(Arrays.asList(enemyShip.fireLasers()));
+        spawnEnemy(deltaTime);
+        for (Enemy enemy : enemyShipList) {
+            enemy.update(deltaTime);
+            enemy.draw(game.batch, deltaTime);
+            if (enemy.canFireLaser()) {
+                enemyLaserList.addAll(Arrays.asList(enemy.fireLasers()));
             }
         }
     }
@@ -229,29 +171,9 @@ public class GameScreen implements Screen {
     }
 
     // Need factory later
-    private void spawnEnemyShips(float deltaTime) {
-        enemySpawnTimer += deltaTime;
-        Random rand = new Random();
-        if (enemySpawnTimer > timeBetweenEnemySpawns) {
-            EnemyShip spawned;
-            if (rand.nextBoolean()) {
-                spawned = new EnemyShipA();
-            } else {
-                spawned = new EnemyShipB();
-            }
-            enemyShipList.add(spawned);
-            enemySpawnTimer -= timeBetweenEnemySpawns;
-
-            if (midBossEntry < System.currentTimeMillis()) {
-                if(boss==null) {
-                    boss = new MidBoss();
-                }
-            }
-            if (bossEntry < System.currentTimeMillis()) {
-                if(boss==null||boss instanceof MidBoss) {
-                    boss = new Boss();
-                }
-            }
+    private void spawnEnemy(float deltaTime) {
+        for (EnemyFactory factory : factoryList) {
+            factory.update(deltaTime, this.enemyShipList);
         }
     }
 
