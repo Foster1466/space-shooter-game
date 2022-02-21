@@ -15,15 +15,15 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.javasupremacy.hardmode.MainGame;
 import com.javasupremacy.hardmode.utils.Constant;
 
-public class MenuScreen implements Screen {
+public class GameOverScreen implements Screen {
     private final MainGame game;
     private final Texture background;
     private final Stage stage;
     private final Skin skin;
 
-    public MenuScreen(MainGame game) {
+    public GameOverScreen(MainGame game) {
         this.game = game;
-        background = new Texture("menuScreen.jpg");
+        background = new Texture("GameOver.jpg");
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         Gdx.input.setInputProcessor(stage);
@@ -34,67 +34,15 @@ public class MenuScreen implements Screen {
     private void loadButtons() {
         int sizeUnit = 60;
         final Screen self = this;
-        // start button
-        final TextButton button1 = new TextButton("Start", skin, "small");
-        button1.setSize(sizeUnit * 4, sizeUnit);
-        button1.setPosition((Gdx.graphics.getWidth() - button1.getWidth()) / 2,350);
-        button1.getLabel().setFontScale(1.2f, 1.2f);
-        button1.addListener(new InputListener(){
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                startGame();
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
 
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                button1.getLabel().setFontScale(1.5f, 1.5f);
-            }
-            //DOne with the changes here beed to focus
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                button1.getLabel().setFontScale(1.2f, 1.2f);
-            }
-        });
-
-        // options button
-        final TextButton button2 = new TextButton("Options", skin, "small");
-        button2.setSize(sizeUnit * 4, sizeUnit);
-        button2.setPosition((Gdx.graphics.getWidth() - button2.getWidth()) / 2,250);
-        button2.getLabel().setFontScale(1.2f, 1.2f);
-        button2.addListener(new InputListener(){
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                button2.setText("Options");
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                button2.setText("In Progress");
-                return true;
-            }
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                button2.getLabel().setFontScale(1.5f, 1.5f);
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                button2.getLabel().setFontScale(1.2f, 1.2f);
-            }
-        });
-
-        // exit button
-        final TextButton button3 = new TextButton("Exit", skin, "small");
+        final TextButton button3 = new TextButton("Return to the menu", skin, "small");
         button3.setSize(sizeUnit * 4, sizeUnit);
         button3.setPosition((Gdx.graphics.getWidth() - button3.getWidth()) / 2,150);
         button3.getLabel().setFontScale(1.2f, 1.2f);
         button3.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.exit();
+                backToMenu();
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -111,15 +59,16 @@ public class MenuScreen implements Screen {
             }
         });
 
-        stage.addActor(button1);
-        stage.addActor(button2);
+ //       stage.addActor(button1);
+ //       stage.addActor(button2);
         stage.addActor(button3);
     }
 
-    private void startGame() {
+
+    private void backToMenu() {
         this.dispose();
         stage.dispose();
-        game.setScreen(new GameScreen(game));
+        game.setScreen(new MenuScreen(game));
     }
 
     @Override
