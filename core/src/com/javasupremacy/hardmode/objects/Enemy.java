@@ -1,9 +1,10 @@
 package com.javasupremacy.hardmode.objects;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 
-abstract class Enemy {
+abstract public class Enemy {
 
     // Ship Characteristics
     float movementSpeed;
@@ -36,4 +37,9 @@ abstract class Enemy {
     public void translate(float xChange, float yChange) {
         boundingBox.setPosition(boundingBox.x+xChange, boundingBox.y+yChange);
     }
+
+    abstract public void draw(Batch batch, float deltaTime);
+
+    abstract public boolean canFireLaser();
 }
+

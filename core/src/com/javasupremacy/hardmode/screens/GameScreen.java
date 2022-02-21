@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.javasupremacy.hardmode.MainGame;
@@ -17,6 +18,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
+import com.javasupremacy.hardmode.factories.BossFactory;
+import com.javasupremacy.hardmode.factories.EnemyFactory;
+import com.javasupremacy.hardmode.factories.EnemyShipFactory;
 import com.javasupremacy.hardmode.objects.*;
 import com.javasupremacy.hardmode.utils.Constant;
 
@@ -28,28 +32,20 @@ public class GameScreen implements Screen {
     private MainGame game;
     private int foregroundOffset;
 
-    //screen
-    private Camera camera;
-    private Viewport viewport;
-
-    //graphics
-    private TextureAtlas textureAtlas;
-
 
     private Texture background, foreground;
     private Texture heart;
     BitmapFont font0 = new BitmapFont();
     BitmapFont font1 = new BitmapFont();
-    private Texture spaceship;
-    private float backgroundHeight;
-
-    private Texture playerShipTexture;
 
     // game objects
     PlayerShip playerShip;
-    private List<EnemyShip> enemyShipList;
+    private List<Enemy> enemyShipList;
     private List<EnemyLaser> enemyLaserList;
     private List<PlayerBullet> bullets;
+
+    // factories
+    private List<EnemyFactory> factoryList;
 
     //timing
     //private int foregroundOffset;
@@ -58,44 +54,40 @@ public class GameScreen implements Screen {
     float y;
     int HiScore, score, heartCount;
     private String mode;
-    private float timeBetweenEnemySpawns = 3f;
-    private float enemySpawnTimer = 0;
 
-    //private final int WORLD_WIDTH= 72;
-   // private final int WORLD_HEIGHT= 128;
-
-    public GameScreen(MainGame game)
-    {
-        //background= new Texture("back.jpg");
-
-        foregroundOffset=0;
-        camera = new OrthographicCamera();
-        viewport= new StretchViewport(Constant.EXT_WINDOW_WIDTH, Constant.WINDOW_HEIGHT,camera);
+    public GameScreen(MainGame game) {
+        foregroundOffset = 0;
 
         //Setup for the background
         background = new Texture("mainScreen.jpg");
-        foreground= new Texture("back.jpg");
+        foreground = new Texture("back.jpg");
         heart = new Texture("heart.png");
 
         font0.setColor(0, 0, 0, 1);
         font0.getData().setScale(2f);
-        font1.setColor(1,1,1,1);
+        font1.setColor(1, 1, 1, 1);
         font1.getData().setScale(2f);
 
 
         //background scrolling starts here at below initialization
         //foregroundOffset=0;
-        x=10;
-        y=10;
-        HiScore=0;
-        score=0;
+        x = 10;
+        y = 10;
+        HiScore = 0;
+        score = 0;
         mode = "Normal speed";
         heartCount = 5;
 
+        // Objects
         playerShip = new PlayerShip();
         enemyShipList = new ArrayList<>();
         enemyLaserList = new ArrayList<>();
         bullets = new ArrayList<>();
+
+        // Factory
+        factoryList = new ArrayList<>();
+        factoryList.add(new EnemyShipFactory());
+        factoryList.add(new BossFactory());
 
         this.game = game;
     }
@@ -118,42 +110,41 @@ public class GameScreen implements Screen {
 
     private void renderBackground() {
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-        foregroundOffset ++;
-        if(foregroundOffset % Constant.WINDOW_HEIGHT == 0)
-        {
+        foregroundOffset++;
+        if (foregroundOffset % Constant.WINDOW_HEIGHT == 0) {
             //This if judges till where it should increment, increment is nothing but
             //offsetting down as you go through the screen
-            foregroundOffset=0;
+            foregroundOffset = 0;
         }
         game.batch.draw(background, 0, 0, Constant.EXT_WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         game.batch.draw(foreground, 5, -foregroundOffset, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
-        game.batch.draw(foreground, 5, -foregroundOffset+Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        game.batch.draw(foreground, 5, -foregroundOffset + Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
 
-        font0.draw(game.batch, mode, Constant.WINDOW_WIDTH+50, Constant.WINDOW_HEIGHT-20);
-        font1.draw(game.batch, "HiScore: "+String.format("%08d", HiScore), Constant.WINDOW_WIDTH+10, Constant.WINDOW_HEIGHT-60);
-        font1.draw(game.batch, "Score: "+String.format("%08d", score), Constant.WINDOW_WIDTH+10, Constant.WINDOW_HEIGHT-100);
-        font0.draw(game.batch, "HP: ", Constant.WINDOW_WIDTH+10, Constant.WINDOW_HEIGHT-140);
-        for(int i=0; i<heartCount; i++)
-            game.batch.draw(heart, Constant.WINDOW_WIDTH+10+(i*50), Constant.WINDOW_HEIGHT-210, 40,40);
+        font0.draw(game.batch, mode, Constant.WINDOW_WIDTH + 50, Constant.WINDOW_HEIGHT - 20);
+        font1.draw(game.batch, "HiScore: " + String.format("%08d", HiScore), Constant.WINDOW_WIDTH + 10, Constant.WINDOW_HEIGHT - 60);
+        font1.draw(game.batch, "Score: " + String.format("%08d", score), Constant.WINDOW_WIDTH + 10, Constant.WINDOW_HEIGHT - 100);
+        font0.draw(game.batch, "HP: ", Constant.WINDOW_WIDTH + 10, Constant.WINDOW_HEIGHT - 140);
+        for (int i = 0; i < heartCount; i++)
+            game.batch.draw(heart, Constant.WINDOW_WIDTH + 10 + (i * 50), Constant.WINDOW_HEIGHT - 210, 40, 40);
     }
 
     private void renderEnemy(float deltaTime) {
-        spawnEnemyShips(deltaTime);
-        for (EnemyShip enemyShip : enemyShipList) {
-            enemyShip.update(deltaTime);
-            enemyShip.draw(game.batch, deltaTime);
-            if (enemyShip.canFireLaser()) {
-                enemyLaserList.addAll(Arrays.asList(enemyShip.fireLasers()));
+        spawnEnemy(deltaTime);
+        for (Enemy enemy : enemyShipList) {
+            enemy.update(deltaTime);
+            enemy.draw(game.batch, deltaTime);
+            if (enemy.canFireLaser()) {
+                enemyLaserList.addAll(Arrays.asList(enemy.fireLasers()));
             }
         }
     }
 
-    private void renderEnemyLasers(float deltaTime){
+    private void renderEnemyLasers(float deltaTime) {
         List<EnemyLaser> removeList = new ArrayList<>();
         for (EnemyLaser enemyLaser : enemyLaserList) {
             enemyLaser.draw(game.batch);
             enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
-            if (enemyLaser.canRemove()){
+            if (enemyLaser.canRemove()) {
                 removeList.add(enemyLaser);
             }
         }
@@ -180,18 +171,9 @@ public class GameScreen implements Screen {
     }
 
     // Need factory later
-    private void spawnEnemyShips(float deltaTime){
-        enemySpawnTimer += deltaTime;
-        Random rand = new Random();
-        if (enemySpawnTimer > timeBetweenEnemySpawns) {
-            EnemyShip spawned;
-            if (rand.nextBoolean()) {
-                spawned = new EnemyShipA();
-            } else {
-                spawned = new EnemyShipB();
-            }
-            enemyShipList.add(spawned);
-            enemySpawnTimer -= timeBetweenEnemySpawns;
+    private void spawnEnemy(float deltaTime) {
+        for (EnemyFactory factory : factoryList) {
+            factory.update(deltaTime, this.enemyShipList);
         }
     }
 
