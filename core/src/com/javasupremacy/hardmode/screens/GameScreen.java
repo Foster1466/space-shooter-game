@@ -32,6 +32,8 @@ public class GameScreen implements Screen {
     private MainGame game;
     private int foregroundOffset;
 
+    private float clock;
+
 
     private Texture background, foreground;
     private Texture heart;
@@ -106,6 +108,10 @@ public class GameScreen implements Screen {
         renderShip(deltaTime);
         renderShipBullet(deltaTime);
         game.batch.end();
+        clock += deltaTime;
+        if (clock > 120) {
+            gameEnd();
+        }
     }
 
     private void renderBackground() {
@@ -175,6 +181,11 @@ public class GameScreen implements Screen {
         for (EnemyFactory factory : factoryList) {
             factory.update(deltaTime, this.enemyShipList);
         }
+    }
+
+    private void gameEnd() {
+        this.dispose();
+        game.setScreen(new GameOverScreen(game));
     }
 
     @Override
