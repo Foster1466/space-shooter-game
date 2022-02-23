@@ -7,11 +7,11 @@ import com.javasupremacy.hardmode.tracks.BossTrack;
 import com.javasupremacy.hardmode.tracks.EnemyShipATrack;
 import com.javasupremacy.hardmode.utils.Constant;
 
-public class Boss extends BossShip {
+public class Boss extends Enemy {
     public Boss() {
-        super(10);
+        super();
         // Every type of ship should have its default value
-        this.boundingBox = BossTrack.getInit();
+        this.hitbox = BossTrack.getInit();
         this.track = new BossTrack();
         this.laserWidth = 15;
         this.laserHeight = 15;
@@ -19,6 +19,5 @@ public class Boss extends BossShip {
         this.timeBetweenShots = 3.0f;
         this.shipTexture = new Texture("boss.png");;
         this.laserTexture = new Texture("boss_fire.png");
-        directionVector = new Vector2(0,-1);
     }
 }

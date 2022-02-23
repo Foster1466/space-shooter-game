@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.javasupremacy.hardmode.tracks.EnemyShipBTrack;
 
-public class EnemyShipB extends EnemyShip{
+public class EnemyShipB extends Enemy{
     public EnemyShipB() {
         // Every type of ship should have its default value
-        this.boundingBox = EnemyShipBTrack.getInit();
+        this.hitbox = EnemyShipBTrack.getInit();
         this.track = new EnemyShipBTrack();
         this.laserWidth = 4.0f;
         this.laserHeight = 20;
@@ -15,6 +15,5 @@ public class EnemyShipB extends EnemyShip{
         this.timeBetweenShots = 1.0f;
         this.shipTexture = new Texture("enemyRed3.png");;
         this.laserTexture = new Texture("laserRed03.png");
-        directionVector = new Vector2(0,-1);
     }
 }

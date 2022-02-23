@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BossPattern implements Pattern{
     @Override
-    public void fire(List<EnemyLaser> list, Rectangle boundingBox) {
+    public void fire(List<EnemyLaser> list, Rectangle hitbox) {
 
     }
 }

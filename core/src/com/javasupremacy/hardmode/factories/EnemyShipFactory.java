@@ -46,7 +46,7 @@ public class EnemyShipFactory extends EnemyFactory{
     }
 
     @Override
-    public void update(float deltaTime, List<Enemy> list) {
+    public void produce(float deltaTime, List<Enemy> list) {
         this.clock += deltaTime;
         if (nextEnemy != null && this.clock > nextTime) {
             list.add(nextEnemy);

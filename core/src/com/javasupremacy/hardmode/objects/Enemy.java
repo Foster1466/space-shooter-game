@@ -7,12 +7,7 @@ import com.javasupremacy.hardmode.tracks.Track;
 import com.javasupremacy.hardmode.utils.Constant;
 
 abstract public class Enemy {
-
-    // Ship Characteristics
-    float movementSpeed;
-
-    // Position and dimension
-    public Rectangle boundingBox;
+    public Rectangle hitbox;
     public Track track;
 
     // laser information
@@ -22,23 +17,61 @@ abstract public class Enemy {
     float laserMovementSpeed;
 
     // Graphics
-    Texture shipTexture, laserTexture;
+    Texture shipTexture;
+    Texture laserTexture;
 
     public Enemy() {
+
     }
 
-    public void update(float deltaTime){
-        timeSinceLastShot += deltaTime;
+    /**
+     * true if can fire
+     * @return
+     */
+    public boolean canFireLaser(){
+        boolean result = (timeSinceLastShot-timeBetweenShots>=0);
+        return result;
     }
 
-    public abstract EnemyLaser[] fireLasers();
+    /**
+     * Fire laser objects, reset fire timer
+     * @return
+     */
+    public EnemyLaser[] fireLasers() {
+        timeSinceLastShot = 0;
+        EnemyLaser[] enemyLaser = new EnemyLaser[2];
+        enemyLaser[0] = new EnemyLaser(hitbox.x+ hitbox.width*0.18f,
+                hitbox.y-laserHeight,
+                laserWidth,
+                laserHeight,
+                laserMovementSpeed,
+                laserTexture);
+        enemyLaser[1] = new EnemyLaser(hitbox.x+hitbox.width*0.82f,
+                hitbox.y-laserHeight,
+                laserWidth,
+                laserHeight,
+                laserMovementSpeed, laserTexture);
 
-    public abstract void draw(Batch batch, float deltaTime);
+        return enemyLaser;
+    }
 
-    public abstract boolean canFireLaser();
+    /**
+     * Move current position based on Track, then render
+     * @param batch
+     * @param deltaTime
+     */
+    public void draw(Batch batch, float deltaTime){
+        timeSinceLastShot += deltaTime; // Increment timer
+        track.update(deltaTime, this.hitbox);
+        batch.draw(shipTexture, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+    }
 
+    /**
+     * Check if current object is out of screen
+     * @return
+     */
     public boolean isOutOfBounds() {
-        if (this.boundingBox.x + boundingBox.width < 0 || this.boundingBox.x > Constant.WINDOW_WIDTH || this.boundingBox.y + boundingBox.height < 0 || this.boundingBox.y > Constant.WINDOW_HEIGHT) {
+        if (this.hitbox.x + hitbox.width < 0 || this.hitbox.x > Constant.WINDOW_WIDTH || this.hitbox.y + hitbox.height < 0 || this.hitbox.y > Constant.WINDOW_HEIGHT) {
             return true;
         }
         return false;

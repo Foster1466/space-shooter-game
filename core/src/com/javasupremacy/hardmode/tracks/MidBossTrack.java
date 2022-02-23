@@ -29,37 +29,37 @@ public class MidBossTrack implements Track{
     }
 
     @Override
-    public Rectangle update(float deltaTime, Rectangle boundingBox) {
+    public Rectangle update(float deltaTime, Rectangle hitbox) {
         timestamp += deltaTime;
         if (timestamp > ttl) {
             speed = 500;
-            boundingBox.x += speed * deltaTime;
+            hitbox.x += speed * deltaTime;
         } else {
             if (timestamp < timeToTurn) {
-                boundingBox.y -= speed * deltaTime;
+                hitbox.y -= speed * deltaTime;
             }
             else {
                 if (timestamp > switchTime) {
                     this.speed = 300;
                 }
                 if (ltr) {
-                    boundingBox.x += speed * deltaTime;
+                    hitbox.x += speed * deltaTime;
                     if (timestamp > switchTime)
-                        boundingBox.y -= speed * deltaTime;
+                        hitbox.y -= speed * deltaTime;
                 } else {
-                    boundingBox.x -= speed * deltaTime;
+                    hitbox.x -= speed * deltaTime;
                     if (timestamp > switchTime)
-                        boundingBox.y += speed * deltaTime;
+                        hitbox.y += speed * deltaTime;
                 }
 
-                if (boundingBox.x >= Constant.WINDOW_WIDTH - boundingBox.width) {
+                if (hitbox.x >= Constant.WINDOW_WIDTH - hitbox.width) {
                     ltr = false;
                 }
-                if (boundingBox.x <= 0) {
+                if (hitbox.x <= 0) {
                     ltr = true;
                 }
             }
         }
-        return boundingBox;
+        return hitbox;
     }
 }

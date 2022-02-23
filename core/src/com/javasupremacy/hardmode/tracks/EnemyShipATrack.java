@@ -24,12 +24,12 @@ public class EnemyShipATrack implements Track{
     }
 
     @Override
-    public Rectangle update(float deltaTime, Rectangle boundingBox) {
+    public Rectangle update(float deltaTime, Rectangle hitbox) {
         timestamp += deltaTime;
         if (timestamp < timeToTurn)
-            boundingBox.y -= speed * deltaTime;
+            hitbox.y -= speed * deltaTime;
         else
-            boundingBox.x += speed * deltaTime;
-        return boundingBox;
+            hitbox.x += speed * deltaTime;
+        return hitbox;
     }
 }

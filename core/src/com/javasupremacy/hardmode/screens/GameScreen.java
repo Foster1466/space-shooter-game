@@ -26,7 +26,7 @@ public class GameScreen implements Screen {
     private MainGame game;
     private int foregroundOffset;
 
-    private float clock;
+    private float timestamp;
 
 
     private Texture background, foreground;
@@ -85,6 +85,7 @@ public class GameScreen implements Screen {
         factoryList.add(new EnemyShipFactory());
         factoryList.add(new BossFactory());
 
+        timestamp = 0;
         this.game = game;
     }
 
@@ -97,13 +98,14 @@ public class GameScreen implements Screen {
     public void render(float deltaTime) {
         game.batch.begin();
         renderBackground();
+        spawnEnemy(deltaTime);
         renderEnemy(deltaTime);
         renderEnemyLasers(deltaTime);
         renderShip(deltaTime);
         renderShipBullet(deltaTime);
         game.batch.end();
-        clock += deltaTime;
-        if (clock > 150) {
+        timestamp += deltaTime;
+        if (timestamp > Constant.GAME_LENGTH) {
             gameEnd();
         }
     }
@@ -128,11 +130,15 @@ public class GameScreen implements Screen {
             game.batch.draw(heart, Constant.WINDOW_WIDTH + 10 + (i * 50), Constant.WINDOW_HEIGHT - 210, 40, 40);
     }
 
+    /**
+     * Iterate through list and draw enemy
+     * Also add lasers if can fire
+     * Remove out of screen enemies
+     * @param deltaTime
+     */
     private void renderEnemy(float deltaTime) {
-        spawnEnemy(deltaTime);
         List<Enemy> removeList = new ArrayList<>();
         for (Enemy enemy : enemyShipList) {
-            enemy.update(deltaTime);
             enemy.draw(game.batch, deltaTime);
             if (enemy.canFireLaser()) {
                 enemyLaserList.addAll(Arrays.asList(enemy.fireLasers()));
@@ -144,6 +150,11 @@ public class GameScreen implements Screen {
         enemyShipList.removeAll(removeList);
     }
 
+    /**
+     * Render all lasers
+     * Remove out of screen lasers
+     * @param deltaTime
+     */
     private void renderEnemyLasers(float deltaTime) {
         List<EnemyLaser> removeList = new ArrayList<>();
         for (EnemyLaser enemyLaser : enemyLaserList) {
@@ -156,10 +167,18 @@ public class GameScreen implements Screen {
         enemyLaserList.removeAll(removeList);
     }
 
+    /**
+     * Render player's ship
+     * @param deltaTime
+     */
     private void renderShip(float deltaTime) {
         playerShip.draw(game.batch, deltaTime);
     }
 
+    /**
+     * Render player's bullet
+     * @param deltaTime
+     */
     private void renderShipBullet(float deltaTime) {
         if (playerShip.isFiring()) {
             bullets.addAll(playerShip.fireBullet());
@@ -175,10 +194,13 @@ public class GameScreen implements Screen {
         bullets.removeAll(removeList);
     }
 
-    // Need factory later
+    /**
+     * For each factory, add enemy into list based on deltaTime
+     * @param deltaTime
+     */
     private void spawnEnemy(float deltaTime) {
         for (EnemyFactory factory : factoryList) {
-            factory.update(deltaTime, this.enemyShipList);
+            factory.produce(deltaTime, this.enemyShipList);
         }
     }
 

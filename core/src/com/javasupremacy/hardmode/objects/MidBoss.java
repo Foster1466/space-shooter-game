@@ -7,11 +7,11 @@ import com.javasupremacy.hardmode.tracks.EnemyShipATrack;
 import com.javasupremacy.hardmode.tracks.MidBossTrack;
 import com.javasupremacy.hardmode.utils.Constant;
 
-public class MidBoss extends BossShip {
+public class MidBoss extends Enemy {
     public MidBoss() {
-        super(10);
+        super();
         // Every type of ship should have its default value
-        this.boundingBox = MidBossTrack.getInit();
+        this.hitbox = MidBossTrack.getInit();
         this.track = new MidBossTrack();
         this.laserWidth = 15;
         this.laserHeight = 15;
@@ -19,6 +19,5 @@ public class MidBoss extends BossShip {
         this.timeBetweenShots = 3.0f;
         this.shipTexture = new Texture("midboss.png");;
         this.laserTexture = new Texture("midboss_fire.png");
-        directionVector = new Vector2(0,-1);
     }
 }

@@ -6,5 +6,5 @@ import com.javasupremacy.hardmode.objects.EnemyLaser;
 import java.util.List;
 
 public interface Pattern {
-    public void fire(List<EnemyLaser> list, Rectangle boundingBox);
+    public void fire(List<EnemyLaser> list, Rectangle hitbox);
 }

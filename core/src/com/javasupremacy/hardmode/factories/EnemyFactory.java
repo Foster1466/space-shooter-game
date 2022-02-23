@@ -11,5 +11,5 @@ abstract public class EnemyFactory {
         clock = 0;
     }
 
-    abstract public void update(float deltaTime, List<Enemy> list);
+    abstract public void produce(float deltaTime, List<Enemy> list);
 }
