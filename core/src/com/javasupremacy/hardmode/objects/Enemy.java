@@ -9,6 +9,7 @@ import com.javasupremacy.hardmode.utils.Constant;
 abstract public class Enemy {
     public Rectangle hitbox;
     public Track track;
+    public int hp; // Need this later
 
     // laser information
     float laserWidth, laserHeight;
