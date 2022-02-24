@@ -20,6 +20,8 @@ abstract public class Enemy {
     // Graphics
     Texture shipTexture;
     Texture laserTexture;
+    protected Texture SpecialLaserTexture;
+    boolean isFinalBoss;
 
     public Enemy() {
 
@@ -32,6 +34,10 @@ abstract public class Enemy {
     public boolean canFireLaser(){
         boolean result = (timeSinceLastShot-timeBetweenShots>=0);
         return result;
+    }
+
+    public boolean checkFinalBoss(){
+        return isFinalBoss;
     }
 
     /**
@@ -56,6 +62,31 @@ abstract public class Enemy {
         return enemyLaser;
     }
 
+    public EnemyLaser[] SpeicalfireLasers(){
+        timeSinceLastShot = 0;
+        float specialLaserWidth = 100;
+        float specialLaserHeight = 100;
+        EnemyLaser[] specialLaser = new EnemyLaser[3];
+        specialLaser[0] = new EnemyLaser(hitbox.x+ hitbox.width*0.15f,
+                hitbox.y-specialLaserHeight,
+                specialLaserWidth,
+                specialLaserHeight,
+                laserMovementSpeed,
+                SpecialLaserTexture);
+        specialLaser[1] = new EnemyLaser(hitbox.x+ hitbox.width*0.5f,
+                hitbox.y-specialLaserHeight,
+                specialLaserWidth,
+                specialLaserHeight,
+                laserMovementSpeed,
+                SpecialLaserTexture);
+        specialLaser[2] = new EnemyLaser(hitbox.x+ hitbox.width*0.85f,
+                hitbox.y-specialLaserHeight,
+                specialLaserWidth,
+                specialLaserHeight,
+                laserMovementSpeed,
+                SpecialLaserTexture);
+        return specialLaser;
+    }
     /**
      * Move current position based on Track, then render
      * @param batch

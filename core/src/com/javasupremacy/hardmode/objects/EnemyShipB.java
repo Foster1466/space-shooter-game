@@ -15,5 +15,6 @@ public class EnemyShipB extends Enemy{
         this.timeBetweenShots = 1.0f;
         this.shipTexture = new Texture("enemyRed3.png");;
         this.laserTexture = new Texture("laserRed03.png");
+        this.isFinalBoss = false;
     }
 }

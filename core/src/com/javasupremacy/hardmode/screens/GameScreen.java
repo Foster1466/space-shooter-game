@@ -5,13 +5,14 @@ package com.javasupremacy.hardmode.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.javasupremacy.hardmode.MainGame;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.javasupremacy.hardmode.factories.BossFactory;
 import com.javasupremacy.hardmode.factories.EnemyFactory;
 import com.javasupremacy.hardmode.factories.EnemyShipFactory;
@@ -22,62 +23,43 @@ import java.util.*;
 
 
 public class GameScreen implements Screen {
-
+    private BackgroundScreen backScreen;
+    private final Camera cameraForeground;
+    private final Viewport viewportForeground;
     private MainGame game;
     private int foregroundOffset;
-
+    //private int countSpecialLaser;
     private float timestamp;
 
 
-    private Texture background, foreground;
-    private Texture heart;
-    BitmapFont font0 = new BitmapFont();
-    BitmapFont font1 = new BitmapFont();
+    private Texture foreground;
+    private SpriteBatch sbatch = new SpriteBatch();
 
     // game objects
     PlayerShip playerShip;
     private List<Enemy> enemyShipList;
     private List<EnemyLaser> enemyLaserList;
+    private List<EnemyLaser> specailLaserList;
     private List<PlayerBullet> bullets;
 
     // factories
     private List<EnemyFactory> factoryList;
 
-    //timing
-    //private int foregroundOffset;
-    float speed = (float) 0.4;
-    float x;
-    float y;
-    int HiScore, score, heartCount;
-    private String mode;
-
     public GameScreen(MainGame game) {
+        this.backScreen = new BackgroundScreen();
+        this.cameraForeground = new OrthographicCamera();
+        ((OrthographicCamera) cameraForeground).setToOrtho(false, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        this.viewportForeground = new StretchViewport(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT,cameraForeground);
+
         foregroundOffset = 0;
-
-        //Setup for the background
-        background = new Texture("mainScreen.jpg");
+        //countSpecialLaser = 0;
         foreground = new Texture("back.jpg");
-        heart = new Texture("heart.png");
-
-        font0.setColor(0, 0, 0, 1);
-        font0.getData().setScale(2f);
-        font1.setColor(1, 1, 1, 1);
-        font1.getData().setScale(2f);
-
-
-        //background scrolling starts here at below initialization
-        //foregroundOffset=0;
-        x = 10;
-        y = 10;
-        HiScore = 0;
-        score = 0;
-        mode = "Normal speed";
-        heartCount = 5;
 
         // Objects
         playerShip = new PlayerShip();
         enemyShipList = new ArrayList<>();
         enemyLaserList = new ArrayList<>();
+        specailLaserList = new ArrayList<>();
         bullets = new ArrayList<>();
 
         // Factory
@@ -96,38 +78,33 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float deltaTime) {
-        game.batch.begin();
-        renderBackground();
+        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
+        this.backScreen.renderBackground();
+        sbatch.setProjectionMatrix(cameraForeground.combined);
+        Gdx.gl.glViewport(10,10, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+
+        sbatch.begin();
+        rollingForeground();
         spawnEnemy(deltaTime);
         renderEnemy(deltaTime);
         renderEnemyLasers(deltaTime);
         renderShip(deltaTime);
         renderShipBullet(deltaTime);
-        game.batch.end();
+        sbatch.end();
+        //game.batch.end();
         timestamp += deltaTime;
         if (timestamp > Constant.GAME_LENGTH) {
             gameEnd();
         }
     }
 
-    private void renderBackground() {
-        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
+    private void rollingForeground() {
         foregroundOffset++;
         if (foregroundOffset % Constant.WINDOW_HEIGHT == 0) {
-            //This if judges till where it should increment, increment is nothing but
-            //offsetting down as you go through the screen
             foregroundOffset = 0;
         }
-        game.batch.draw(background, 0, 0, Constant.EXT_WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
-        game.batch.draw(foreground, 5, -foregroundOffset, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
-        game.batch.draw(foreground, 5, -foregroundOffset + Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
-
-        font0.draw(game.batch, mode, Constant.WINDOW_WIDTH + 50, Constant.WINDOW_HEIGHT - 20);
-        font1.draw(game.batch, "HiScore: " + String.format("%08d", HiScore), Constant.WINDOW_WIDTH + 10, Constant.WINDOW_HEIGHT - 60);
-        font1.draw(game.batch, "Score: " + String.format("%08d", score), Constant.WINDOW_WIDTH + 10, Constant.WINDOW_HEIGHT - 100);
-        font0.draw(game.batch, "HP: ", Constant.WINDOW_WIDTH + 10, Constant.WINDOW_HEIGHT - 140);
-        for (int i = 0; i < heartCount; i++)
-            game.batch.draw(heart, Constant.WINDOW_WIDTH + 10 + (i * 50), Constant.WINDOW_HEIGHT - 210, 40, 40);
+        sbatch.draw(foreground, 0, -foregroundOffset, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
+        sbatch.draw(foreground, 0, -foregroundOffset + Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
     }
 
     /**
@@ -139,9 +116,11 @@ public class GameScreen implements Screen {
     private void renderEnemy(float deltaTime) {
         List<Enemy> removeList = new ArrayList<>();
         for (Enemy enemy : enemyShipList) {
-            enemy.draw(game.batch, deltaTime);
+            enemy.draw(sbatch, deltaTime);
             if (enemy.canFireLaser()) {
                 enemyLaserList.addAll(Arrays.asList(enemy.fireLasers()));
+                if(enemy.checkFinalBoss()&& timestamp>120)
+                    specailLaserList.addAll(Arrays.asList(enemy.SpeicalfireLasers()));
             }
             if (enemy.isOutOfBounds()) {
                 removeList.add(enemy);
@@ -156,15 +135,37 @@ public class GameScreen implements Screen {
      * @param deltaTime
      */
     private void renderEnemyLasers(float deltaTime) {
-        List<EnemyLaser> removeList = new ArrayList<>();
+        int countSpecialLaser=0;
+        List<EnemyLaser> removeList1 = new ArrayList<>();
+        List<EnemyLaser> removeList2 = new ArrayList<>();
         for (EnemyLaser enemyLaser : enemyLaserList) {
-            enemyLaser.draw(game.batch);
+            enemyLaser.draw(sbatch);
             enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
             if (enemyLaser.canRemove()) {
-                removeList.add(enemyLaser);
+                removeList1.add(enemyLaser);
             }
         }
-        enemyLaserList.removeAll(removeList);
+        if(!specailLaserList.isEmpty() && timestamp>120) {
+            for (EnemyLaser enemyLaser : specailLaserList) {
+                enemyLaser.draw(sbatch);
+                if(countSpecialLaser%3 ==0) {
+                    enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
+                    enemyLaser.boundingBox.x -= enemyLaser.movementSpeed * deltaTime;///
+                }
+                if(countSpecialLaser%3 ==1){
+                    enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
+                }
+                if(countSpecialLaser%3 ==2){
+                    enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
+                    enemyLaser.boundingBox.x += enemyLaser.movementSpeed * deltaTime;///
+                }
+                countSpecialLaser++;
+            }
+        }
+        enemyLaserList.removeAll(removeList1);
+        if(countSpecialLaser%3 == 0) {
+            specailLaserList.removeAll(removeList2);
+        }
     }
 
     /**
@@ -172,7 +173,7 @@ public class GameScreen implements Screen {
      * @param deltaTime
      */
     private void renderShip(float deltaTime) {
-        playerShip.draw(game.batch, deltaTime);
+        playerShip.draw(sbatch, deltaTime);
     }
 
     /**
@@ -186,7 +187,7 @@ public class GameScreen implements Screen {
         List<PlayerBullet> removeList = new ArrayList<>();
         for (PlayerBullet bullet : bullets) {
             bullet.update(deltaTime);
-            bullet.render(game.batch);
+            bullet.render(sbatch);
             if (bullet.canRemove()) {
                 removeList.add(bullet);
             }

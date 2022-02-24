@@ -13,11 +13,13 @@ public class Boss extends Enemy {
         // Every type of ship should have its default value
         this.hitbox = BossTrack.getInit();
         this.track = new BossTrack();
-        this.laserWidth = 15;
-        this.laserHeight = 15;
+        this.laserWidth = 30;
+        this.laserHeight = 30;
         this.laserMovementSpeed = 200;
         this.timeBetweenShots = 3.0f;
         this.shipTexture = new Texture("boss.png");;
         this.laserTexture = new Texture("boss_fire.png");
+        this.SpecialLaserTexture = new Texture("boss-red-fire.png");
+        this.isFinalBoss = true;
     }
 }

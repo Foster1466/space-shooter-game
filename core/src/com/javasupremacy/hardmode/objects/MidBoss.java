@@ -19,5 +19,6 @@ public class MidBoss extends Enemy {
         this.timeBetweenShots = 3.0f;
         this.shipTexture = new Texture("midboss.png");;
         this.laserTexture = new Texture("midboss_fire.png");
+        this.isFinalBoss = false;
     }
 }
