@@ -7,13 +7,13 @@ public class Constant {
     public static final int EXT_WINDOW_HEIGHT  = 820;
     public static final int WINDOW_WIDTH = 536;
     public static final int WINDOW_HEIGHT = 800;
-    public static final int GAME_LENGTH = 150; // seconds
+    public static final int GAME_LENGTH = 150; // 2:30
 
     public static int UP = Input.Keys.UP;
     public static int DOWN = Input.Keys.DOWN;
     public static int LEFT = Input.Keys.LEFT;
     public static int RIGHT = Input.Keys.RIGHT;
-    public static int SPACE = Input.Keys.SPACE;
+    public static int FIRE = Input.Keys.SPACE;
     public static int SLOW_MODE = Input.Keys.SHIFT_LEFT;
 
 }
