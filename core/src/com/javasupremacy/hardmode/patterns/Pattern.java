@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface Pattern {
     /**
-     * Add a lasers to the list.
+     * Add lasers to the list.
      * @param list
      * @param hitbox
      */
