@@ -15,5 +15,4 @@ public class Constant {
     public static int RIGHT = Input.Keys.RIGHT;
     public static int FIRE = Input.Keys.SPACE;
     public static int SLOW_MODE = Input.Keys.SHIFT_LEFT;
-
 }

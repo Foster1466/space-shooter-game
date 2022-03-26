@@ -7,6 +7,7 @@ import com.javasupremacy.hardmode.tracks.EnemyShipATrack;
 public class EnemyShipA extends Enemy{
     public EnemyShipA() {
         // Every type of ship should have its default value
+        this.hp = 1;
         this.hitbox = EnemyShipATrack.getInit();
         this.track = new EnemyShipATrack();
         this.pattern = new EnemyShipAPattern();

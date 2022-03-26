@@ -4,6 +4,7 @@ import com.javasupremacy.hardmode.objects.Enemy;
 import com.javasupremacy.hardmode.objects.EnemyShipA;
 import com.javasupremacy.hardmode.objects.EnemyShipB;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -14,7 +15,7 @@ public class EnemyShipFactory extends EnemyFactory{
     private Enemy nextEnemy;
 
     private Queue<Float> releaseTime;
-    private Queue<Enemy> toBeReleased;
+    private Queue<Class> toBeReleased;
 
     public EnemyShipFactory() {
         super();
@@ -28,21 +29,18 @@ public class EnemyShipFactory extends EnemyFactory{
         float timestamp = 5;
         for (int i = 0; i < 10; i++) {
             releaseTime.offer(timestamp);
-            toBeReleased.offer(new EnemyShipA());
+            toBeReleased.offer(EnemyShipA.class);
             timestamp += 2;
         }
 
         timestamp = 80;
         for (int i = 0; i < 10; i++) {
             releaseTime.offer(timestamp);
-            toBeReleased.offer(new EnemyShipB());
+            toBeReleased.offer(EnemyShipB.class);
             timestamp += 1;
         }
 
-        if (!releaseTime.isEmpty()) {
-            nextTime = releaseTime.poll();
-            nextEnemy = toBeReleased.poll();
-        }
+        updateNext();
     }
 
     @Override
@@ -51,10 +49,24 @@ public class EnemyShipFactory extends EnemyFactory{
         if (nextEnemy != null && this.clock > nextTime) {
             list.add(nextEnemy);
             nextEnemy = null;
+            updateNext();
+        }
+    }
 
-            if (!releaseTime.isEmpty()) {
-                nextTime = releaseTime.poll();
-                nextEnemy = toBeReleased.poll();
+    private void updateNext() {
+        if (!releaseTime.isEmpty()) {
+            nextTime = releaseTime.poll();
+            Class cls = toBeReleased.poll();
+            try {
+                nextEnemy = (Enemy) cls.getConstructor().newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
             }
         }
     }

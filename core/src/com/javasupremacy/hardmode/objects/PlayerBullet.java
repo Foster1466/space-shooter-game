@@ -21,8 +21,7 @@ public class PlayerBullet {
         this.y = y;
 //        this.rect = new CollisionRect(x, y, WIDTH, HEIGHT);
 
-        if (texture == null)
-            texture = new Texture("bulletBeige.png");
+        texture = new Texture("bulletBeige.png");
     }
 
     public void update (float deltaTime) {
@@ -36,9 +35,4 @@ public class PlayerBullet {
     public void render (SpriteBatch batch) {
         batch.draw(texture, x, y);
     }
-
-//    public CollisionRect getCollisionRect () {
-//        return rect;
-//    }
-
 }

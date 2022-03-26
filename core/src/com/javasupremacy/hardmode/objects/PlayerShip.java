@@ -17,9 +17,6 @@ public class PlayerShip implements Controllable{
 
     public float movementSpeed;
 
-    public float xPosition, yPosition;
-    float width, height;
-
     private boolean isSlow;
 
     private Texture spaceship;
@@ -33,11 +30,12 @@ public class PlayerShip implements Controllable{
     private List<PlayerBullet> bulletList; // A reference to main game bullet list
 
     public PlayerShip(List<PlayerBullet> bulletList) {
-        this.movementSpeed = 2f;
-        this.width = 20;
-        this.height = 40;
-        this.xPosition = (Constant.WINDOW_WIDTH - width) / 2;
-        this.yPosition = 50;
+        this.movementSpeed = 4f;
+        float width = 20;
+        float height = 40;
+        float x = (Constant.WINDOW_WIDTH - width) / 2;
+        float y = 50;
+        this.hitbox = new Rectangle(x, y, width, height);
         this.spaceship = new Texture("man.png");
         this.bulletList = bulletList;
     }
@@ -65,38 +63,38 @@ public class PlayerShip implements Controllable{
     public List<PlayerBullet> fireBullet() {
         shootTimestamp = 0;
         List<PlayerBullet> bullets = new ArrayList<>();
-        bullets.add(new PlayerBullet(xPosition + (width / 2), yPosition + height));
+        bullets.add(new PlayerBullet(hitbox.x + (hitbox.width / 2), hitbox.y + hitbox.height));
         return bullets;
     }
 
     /**
      * switch slow mode
-     * @param isSLow
+     * @param isSlow
      */
-    public void slowMode(boolean isSLow) {
+    public void slowMode(boolean isSlow) {
         this.isSlow = isSlow;
     }
 
     public void moveUp() {
-        this.yPosition = Math.min(yPosition + this.getSpeed(), Constant.WINDOW_HEIGHT- this.height);
+        hitbox.y = Math.min(hitbox.y + this.getSpeed(), Constant.WINDOW_HEIGHT- hitbox.height);
     }
 
     public void moveDown() {
-        this.yPosition = Math.max(yPosition - this.getSpeed(), 0);
+        hitbox.y = Math.max(hitbox.y - this.getSpeed(), 0);
     }
 
     public void moveLeft() {
-        this.xPosition = Math.max(xPosition - this.getSpeed(), 0);
+        hitbox.x = Math.max(hitbox.x - this.getSpeed(), 0);
     }
 
     public void moveRight() {
-        this.xPosition = Math.min(xPosition + this.getSpeed(), Constant.WINDOW_WIDTH - this.width);
+        hitbox.x = Math.min(hitbox.x + this.getSpeed(), Constant.WINDOW_WIDTH - hitbox.width);
     }
 
     public void fire() {
         if (shootTimestamp >= shootInterval) {
             shootTimestamp = 0;
-            this.bulletList.add(new PlayerBullet(xPosition + (width / 2), yPosition + height));
+            this.bulletList.add(new PlayerBullet(hitbox.x + (hitbox.width / 2), hitbox.y + hitbox.height));
         }
     }
 
@@ -110,7 +108,11 @@ public class PlayerShip implements Controllable{
 
     public void draw(Batch batch, float deltaTime) {
         update(deltaTime);
-        batch.draw(spaceship, xPosition, yPosition, width, height);
+        batch.draw(spaceship, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+    }
+
+    public boolean overlaps(Rectangle other) {
+        return this.hitbox.overlaps(other);
     }
 }
 

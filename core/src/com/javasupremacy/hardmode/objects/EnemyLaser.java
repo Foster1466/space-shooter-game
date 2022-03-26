@@ -8,18 +8,18 @@ import com.javasupremacy.hardmode.utils.Constant;
 public class EnemyLaser {
     // position and dimensions
     //float xPosition, yPosition, width, height;
-    private Rectangle hitbox;
+    public Rectangle hitbox;
 
     // laser physical characteristics
-    public float movementSpeed;
+    private float movementSpeed;
     // direction between 0 - 1
-    public float xDirection; // right positive, left negative
-    public float yDirection; // down positive, up negative
+    private float xDirection; // right positive, left negative
+    private float yDirection; // down positive, up negative
 
-    public float acceleration;
+    private float acceleration;
 
     // graphics
-    Texture textureReg;
+    private Texture textureReg;
 
     public EnemyLaser(Builder builder) {
         this.hitbox = builder.hitbox;

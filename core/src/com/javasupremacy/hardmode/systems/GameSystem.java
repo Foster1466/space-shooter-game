@@ -67,12 +67,8 @@ public class GameSystem {
     private void updateGame(float deltaTime) {
         timestamp += deltaTime;
         spawnEnemy(deltaTime);
-        int destroyedScore = enemyCollision();
-        this.scoreSystem.addScore(destroyedScore);
-        if(playerCollision()) {
-            this.scoreSystem.updateLives(-1);
-        }
         command.run();
+        detectCollesion();
     }
 
     /**
@@ -85,21 +81,29 @@ public class GameSystem {
         }
     }
 
-    /**
-     * Find all enemy collision and remove destroyed
-     * @return score for destroyed enemies
-     */
-    private int enemyCollision() {
-        int score = 0;
-        return score;
+    private void detectCollesion() {
+        playerCollision();
+        enemyCollision();
     }
 
-    /**
-     *
-     * @return true if player is hit by any enemy laser
-     */
-    private boolean playerCollision() {
-        return false;
+    private void playerCollision() {
+        List<EnemyLaser> removeList = new ArrayList<>();
+        for (EnemyLaser laser : enemyLaserList) {
+            if (playerShip.overlaps(laser.hitbox)) {
+                removeList.add(laser);
+                scoreSystem.updateLives(-1);
+                System.out.println(scoreSystem.getLives());
+            }
+        }
+        enemyLaserList.removeAll(removeList);
+    }
+
+    private void enemyCollision() {
+        for (Enemy enemy : enemyShipList) {
+            for (PlayerBullet bullet : bullets) {
+
+            }
+        }
     }
 
     /**

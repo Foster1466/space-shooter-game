@@ -10,7 +10,7 @@ public class ScoreSystem {
         lives = 5;
     }
 
-    public void addScore(int update) {
+    public void updateScore(int update) {
         score += update;
     }
 

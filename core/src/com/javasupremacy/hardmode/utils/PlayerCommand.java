@@ -30,9 +30,10 @@ public class PlayerCommand {
     public void run() {
         for (Controllable sub : subscribers) {
             // slow mode by hold
-            sub.slowMode(false);
             if (Gdx.input.isKeyPressed(Constant.SLOW_MODE)) {
                 sub.slowMode(true);
+            } else {
+                sub.slowMode(false);
             }
 
             // Movements
