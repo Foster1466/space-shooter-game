@@ -127,27 +127,10 @@ public class GameSystem {
         List<EnemyLaser> removeList1 = new ArrayList<>();
         List<EnemyLaser> removeList2 = new ArrayList<>();
         for (EnemyLaser enemyLaser : enemyLaserList) {
+            enemyLaser.move(deltaTime);
             enemyLaser.draw(sbatch);
-            enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
             if (enemyLaser.canRemove()) {
                 removeList1.add(enemyLaser);
-            }
-        }
-        if(!specailLaserList.isEmpty() && timestamp>120) {
-            for (EnemyLaser enemyLaser : specailLaserList) {
-                enemyLaser.draw(sbatch);
-                if(countSpecialLaser%3 ==0) {
-                    enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
-                    enemyLaser.boundingBox.x -= enemyLaser.movementSpeed * deltaTime;///
-                }
-                if(countSpecialLaser%3 ==1){
-                    enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
-                }
-                if(countSpecialLaser%3 ==2){
-                    enemyLaser.boundingBox.y -= enemyLaser.movementSpeed * deltaTime;
-                    enemyLaser.boundingBox.x += enemyLaser.movementSpeed * deltaTime;///
-                }
-                countSpecialLaser++;
             }
         }
         enemyLaserList.removeAll(removeList1);

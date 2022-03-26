@@ -16,12 +16,12 @@ public class MidBossPattern implements Pattern{
     Texture laserTexture;
 
     public MidBossPattern() {
-        laserWidth = 4.0f;
-        laserHeight = 20f;
+        laserWidth = 50;
+        laserHeight = 50;
         timeBetweenShots = 1.0f;
         timeSinceLastShot = 0;
         laserMovementSpeed = 200f;
-        laserTexture = new Texture("laserRed03.png");
+        laserTexture = new Texture("midboss_fire.png");
     }
 
     @Override
@@ -29,17 +29,18 @@ public class MidBossPattern implements Pattern{
         timeSinceLastShot += deltaTime;
         if (canFire()) {
             timeSinceLastShot = 0;
-            list.add(new EnemyLaser(hitbox.x+ hitbox.width*0.18f,
-                    hitbox.y-laserHeight,
-                    laserWidth,
-                    laserHeight,
-                    laserMovementSpeed,
-                    laserTexture));
-            list.add(new EnemyLaser(hitbox.x+hitbox.width*0.82f,
-                    hitbox.y-laserHeight,
-                    laserWidth,
-                    laserHeight,
-                    laserMovementSpeed, laserTexture));
+            list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.18f,
+                        hitbox.y - laserHeight,
+                        laserWidth,
+                        laserHeight)
+                    .speed(laserMovementSpeed)
+                    .build());
+            list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.82f,
+                            hitbox.y - laserHeight,
+                            laserWidth,
+                            laserHeight)
+                    .speed(laserMovementSpeed)
+                    .build());
         }
     }
 

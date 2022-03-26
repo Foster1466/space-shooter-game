@@ -29,17 +29,18 @@ public class EnemyShipBPattern implements Pattern{
         timeSinceLastShot += deltaTime;
         if (canFire()) {
             timeSinceLastShot = 0;
-            list.add(new EnemyLaser(hitbox.x+ hitbox.width*0.18f,
-                    hitbox.y-laserHeight,
-                    laserWidth,
-                    laserHeight,
-                    laserMovementSpeed,
-                    laserTexture));
-            list.add(new EnemyLaser(hitbox.x+hitbox.width*0.82f,
-                    hitbox.y-laserHeight,
-                    laserWidth,
-                    laserHeight,
-                    laserMovementSpeed, laserTexture));
+            list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.18f,
+                            hitbox.y - laserHeight,
+                            laserWidth,
+                            laserHeight)
+                    .speed(laserMovementSpeed)
+                    .build());
+            list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.82f,
+                            hitbox.y - laserHeight,
+                            laserWidth,
+                            laserHeight)
+                    .speed(laserMovementSpeed)
+                    .build());
         }
     }
 

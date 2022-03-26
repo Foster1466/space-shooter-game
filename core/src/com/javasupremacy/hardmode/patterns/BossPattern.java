@@ -38,17 +38,18 @@ public class BossPattern implements Pattern{
             if (timestamp >= 15) {
                 speicalfireLasers(list, hitbox);
             } else {
-                list.add(new EnemyLaser(hitbox.x + hitbox.width * 0.18f,
-                        hitbox.y - laserHeight,
-                        laserWidth,
-                        laserHeight,
-                        laserMovementSpeed,
-                        laserTexture));
-                list.add(new EnemyLaser(hitbox.x + hitbox.width * 0.82f,
-                        hitbox.y - laserHeight,
-                        laserWidth,
-                        laserHeight,
-                        laserMovementSpeed, laserTexture));
+                list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.18f,
+                                hitbox.y - laserHeight,
+                                laserWidth,
+                                laserHeight)
+                        .speed(laserMovementSpeed)
+                        .build());
+                list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.82f,
+                                hitbox.y - laserHeight,
+                                laserWidth,
+                                laserHeight)
+                        .speed(laserMovementSpeed)
+                        .build());
             }
         }
     }
@@ -56,24 +57,27 @@ public class BossPattern implements Pattern{
     private void speicalfireLasers(List<EnemyLaser> list, Rectangle hitbox){
         float specialLaserWidth = 50;
         float specialLaserHeight = 50;
-        list.add(new EnemyLaser(hitbox.x+ hitbox.width*0.15f,
-                hitbox.y-specialLaserHeight,
-                specialLaserWidth,
-                specialLaserHeight,
-                laserMovementSpeed,
-                SpecialLaserTexture));
-        list.add(new EnemyLaser(hitbox.x+ hitbox.width*0.5f,
-                hitbox.y-specialLaserHeight,
-                specialLaserWidth,
-                specialLaserHeight,
-                laserMovementSpeed,
-                laserTexture));
-        list.add(new EnemyLaser(hitbox.x+ hitbox.width*0.85f,
-                hitbox.y-specialLaserHeight,
-                specialLaserWidth,
-                specialLaserHeight,
-                laserMovementSpeed,
-                SpecialLaserTexture));
+        list.add(new EnemyLaser.Builder(SpecialLaserTexture).hitbox(hitbox.x + hitbox.width * 0.15f,
+                    hitbox.y - laserHeight,
+                    laserWidth,
+                    laserHeight)
+                .speed(laserMovementSpeed)
+                .direction(-1, 1)
+                .build());
+        list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.50f,
+                        hitbox.y - laserHeight,
+                        laserWidth,
+                        laserHeight)
+                .speed(laserMovementSpeed)
+                .direction(0, 1)
+                .build());
+        list.add(new EnemyLaser.Builder(SpecialLaserTexture).hitbox(hitbox.x + hitbox.width * 0.85f,
+                        hitbox.y - laserHeight,
+                        laserWidth,
+                        laserHeight)
+                .speed(laserMovementSpeed)
+                .direction(1, 1)
+                .build());
 
     }
 
