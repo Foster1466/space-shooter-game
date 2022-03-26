@@ -3,99 +3,37 @@ package com.javasupremacy.hardmode.objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.javasupremacy.hardmode.patterns.Pattern;
 import com.javasupremacy.hardmode.tracks.Track;
 import com.javasupremacy.hardmode.utils.Constant;
+
+import java.util.List;
 
 abstract public class Enemy {
     public Rectangle hitbox;
     public Track track;
+    public Pattern pattern;
     public int hp; // Need this later
-
-    // laser information
-    float laserWidth, laserHeight;
-    float timeBetweenShots;
-    float timeSinceLastShot = 0;
-    float laserMovementSpeed;
 
     // Graphics
     Texture shipTexture;
-    Texture laserTexture;
-    protected Texture SpecialLaserTexture;
-    boolean isFinalBoss;
 
     public Enemy() {
 
     }
 
     /**
-     * true if can fire
-     * @return
-     */
-    public boolean canFireLaser(){
-        boolean result = (timeSinceLastShot-timeBetweenShots>=0);
-        return result;
-    }
-
-    public boolean checkFinalBoss(){
-        return isFinalBoss;
-    }
-
-    /**
-     * Fire laser objects, reset fire timer
-     * @return
-     */
-    public EnemyLaser[] fireLasers() {
-        timeSinceLastShot = 0;
-        EnemyLaser[] enemyLaser = new EnemyLaser[2];
-        enemyLaser[0] = new EnemyLaser(hitbox.x+ hitbox.width*0.18f,
-                hitbox.y-laserHeight,
-                laserWidth,
-                laserHeight,
-                laserMovementSpeed,
-                laserTexture);
-        enemyLaser[1] = new EnemyLaser(hitbox.x+hitbox.width*0.82f,
-                hitbox.y-laserHeight,
-                laserWidth,
-                laserHeight,
-                laserMovementSpeed, laserTexture);
-
-        return enemyLaser;
-    }
-
-    public EnemyLaser[] SpeicalfireLasers(){
-        timeSinceLastShot = 0;
-        float specialLaserWidth = 100;
-        float specialLaserHeight = 100;
-        EnemyLaser[] specialLaser = new EnemyLaser[3];
-        specialLaser[0] = new EnemyLaser(hitbox.x+ hitbox.width*0.15f,
-                hitbox.y-specialLaserHeight,
-                specialLaserWidth,
-                specialLaserHeight,
-                laserMovementSpeed,
-                SpecialLaserTexture);
-        specialLaser[1] = new EnemyLaser(hitbox.x+ hitbox.width*0.5f,
-                hitbox.y-specialLaserHeight,
-                specialLaserWidth,
-                specialLaserHeight,
-                laserMovementSpeed,
-                SpecialLaserTexture);
-        specialLaser[2] = new EnemyLaser(hitbox.x+ hitbox.width*0.85f,
-                hitbox.y-specialLaserHeight,
-                specialLaserWidth,
-                specialLaserHeight,
-                laserMovementSpeed,
-                SpecialLaserTexture);
-        return specialLaser;
-    }
-    /**
      * Move current position based on Track, then render
      * @param batch
      * @param deltaTime
      */
     public void draw(Batch batch, float deltaTime){
-        timeSinceLastShot += deltaTime; // Increment timer
         track.update(deltaTime, this.hitbox);
         batch.draw(shipTexture, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+    }
+
+    public void fire(float deltaTime, List<EnemyLaser> lasers) {
+        pattern.fire(deltaTime, lasers, this.hitbox);
     }
 
     /**

@@ -12,7 +12,6 @@ import com.javasupremacy.hardmode.utils.Constant;
 import com.javasupremacy.hardmode.utils.PlayerCommand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GameSystem {
@@ -33,13 +32,15 @@ public class GameSystem {
 
     public GameSystem() {
         timestamp = 0;
+
         bullets = new ArrayList<>();
         playerShip = new PlayerShip(bullets);
         enemyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
         specailLaserList = new ArrayList<>();
 
-        command = new PlayerCommand(playerShip);
+        command = new PlayerCommand();
+        command.add(playerShip);
 
         factoryList = new ArrayList<>();
         factoryList.add(new BossFactory());
@@ -111,14 +112,7 @@ public class GameSystem {
         List<Enemy> removeList = new ArrayList<>();
         for (Enemy enemy : enemyShipList) {
             enemy.draw(sbatch, deltaTime);
-            if (enemy.canFireLaser()) {
-                enemyLaserList.addAll(Arrays.asList(enemy.fireLasers()));
-                if(enemy.checkFinalBoss()&& timestamp>120)
-                    specailLaserList.addAll(Arrays.asList(enemy.SpeicalfireLasers()));
-            }
-            if (enemy.isOutOfBounds()) {
-                removeList.add(enemy);
-            }
+            enemy.fire(deltaTime, enemyLaserList);
         }
         enemyShipList.removeAll(removeList);
     }

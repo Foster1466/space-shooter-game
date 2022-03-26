@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlayerShip {
+public class PlayerShip implements Controllable{
 
     public float movementSpeed;
 

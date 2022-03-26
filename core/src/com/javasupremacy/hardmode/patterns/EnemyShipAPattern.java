@@ -7,7 +7,7 @@ import com.javasupremacy.hardmode.objects.EnemyShipA;
 
 import java.util.List;
 
-public class MidBossPattern implements Pattern{
+public class EnemyShipAPattern implements Pattern{
     // laser information
     float laserWidth, laserHeight;
     float timeBetweenShots;
@@ -15,7 +15,7 @@ public class MidBossPattern implements Pattern{
     float laserMovementSpeed;
     Texture laserTexture;
 
-    public MidBossPattern() {
+    public EnemyShipAPattern() {
         laserWidth = 4.0f;
         laserHeight = 20f;
         timeBetweenShots = 1.0f;

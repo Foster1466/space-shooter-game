@@ -11,5 +11,5 @@ public interface Pattern {
      * @param list
      * @param hitbox
      */
-    public void fire(List<EnemyLaser> list, Rectangle hitbox);
+    public void fire(float deltaTime, List<EnemyLaser> list, Rectangle hitbox);
 }
