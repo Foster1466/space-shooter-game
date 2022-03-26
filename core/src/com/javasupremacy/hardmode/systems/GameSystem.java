@@ -45,8 +45,10 @@ public class GameSystem {
         factoryList = new ArrayList<>();
         factoryList.add(new BossFactory());
         factoryList.add(new EnemyShipFactory());
+    }
 
-        scoreSystem = new ScoreSystem();
+    public void setScoreSystem(ScoreSystem ss) {
+        this.scoreSystem = ss;
     }
 
     /**

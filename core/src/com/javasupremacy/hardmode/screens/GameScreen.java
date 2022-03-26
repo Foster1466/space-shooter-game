@@ -18,6 +18,7 @@ import com.javasupremacy.hardmode.factories.EnemyFactory;
 import com.javasupremacy.hardmode.factories.EnemyShipFactory;
 import com.javasupremacy.hardmode.objects.*;
 import com.javasupremacy.hardmode.systems.GameSystem;
+import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.utils.Constant;
 import com.javasupremacy.hardmode.utils.PlayerCommand;
 
@@ -35,6 +36,7 @@ public class GameScreen implements Screen {
     private SpriteBatch sbatch;
 
     private GameSystem gameSystem;
+    private ScoreSystem scoreSystem;
 
     public GameScreen(MainGame game) {
         sbatch = new SpriteBatch();
@@ -47,6 +49,8 @@ public class GameScreen implements Screen {
         foreground = new Texture("back.jpg");
 
         gameSystem = new GameSystem();
+        scoreSystem = new ScoreSystem();
+        gameSystem.setScoreSystem(scoreSystem);
 
         this.game = game;
     }
