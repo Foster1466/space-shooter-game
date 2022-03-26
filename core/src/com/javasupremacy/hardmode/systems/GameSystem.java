@@ -160,8 +160,8 @@ public class GameSystem {
     private void renderShipBullet(SpriteBatch sbatch, float deltaTime) {
         List<PlayerBullet> removeList = new ArrayList<>();
         for (PlayerBullet bullet : bullets) {
-            bullet.update(deltaTime);
-            bullet.render(sbatch);
+            bullet.move(deltaTime);
+            bullet.draw(sbatch);
             if (bullet.canRemove()) {
                 removeList.add(bullet);
             }

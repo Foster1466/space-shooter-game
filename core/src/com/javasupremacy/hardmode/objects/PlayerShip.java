@@ -27,7 +27,7 @@ public class PlayerShip implements Controllable{
 
     private float slowMultiplier=0.5f;
 
-    private List<PlayerBullet> bulletList; // A reference to main game bullet list
+    private List<PlayerBullet> bulletList;
 
     public PlayerShip(List<PlayerBullet> bulletList) {
         this.movementSpeed = 4f;
@@ -57,44 +57,43 @@ public class PlayerShip implements Controllable{
     }
 
     /**
-     * We will need more shooting patterns when power ups are introduced
-     * @return
-     */
-    public List<PlayerBullet> fireBullet() {
-        shootTimestamp = 0;
-        List<PlayerBullet> bullets = new ArrayList<>();
-        bullets.add(new PlayerBullet(hitbox.x + (hitbox.width / 2), hitbox.y + hitbox.height));
-        return bullets;
-    }
-
-    /**
      * switch slow mode
      * @param isSlow
      */
+    @Override
     public void slowMode(boolean isSlow) {
         this.isSlow = isSlow;
     }
 
+    @Override
     public void moveUp() {
         hitbox.y = Math.min(hitbox.y + this.getSpeed(), Constant.WINDOW_HEIGHT- hitbox.height);
     }
 
+    @Override
     public void moveDown() {
         hitbox.y = Math.max(hitbox.y - this.getSpeed(), 0);
     }
 
+    @Override
     public void moveLeft() {
         hitbox.x = Math.max(hitbox.x - this.getSpeed(), 0);
     }
 
+    @Override
     public void moveRight() {
         hitbox.x = Math.min(hitbox.x + this.getSpeed(), Constant.WINDOW_WIDTH - hitbox.width);
     }
 
+    @Override
     public void fire() {
         if (shootTimestamp >= shootInterval) {
             shootTimestamp = 0;
-            this.bulletList.add(new PlayerBullet(hitbox.x + (hitbox.width / 2), hitbox.y + hitbox.height));
+            this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
+                    .hitbox(new Rectangle(hitbox.x + (hitbox.width / 2),  hitbox.y + hitbox.height, 12, 26))
+                    .speed(400)
+                    .direction(0, 1)
+                    .build());
         }
     }
 
