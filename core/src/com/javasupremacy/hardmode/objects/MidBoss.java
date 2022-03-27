@@ -13,7 +13,7 @@ public class MidBoss extends Enemy {
         super();
         // Every type of ship should have its default value
         this.hp = 20;
-        this.score = 500;
+        this.score = 2000;
         this.hitbox = MidBossTrack.getInit();
         this.track = new MidBossTrack();
         this.pattern = new MidBossPattern();

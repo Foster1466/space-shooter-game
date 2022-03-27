@@ -2,6 +2,7 @@ package com.javasupremacy.hardmode.objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.javasupremacy.hardmode.patterns.BossPattern;
+import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.tracks.BossTrack;
 
 public class Boss extends Enemy {
@@ -9,10 +10,16 @@ public class Boss extends Enemy {
         super();
         // Every type of ship should have its default value
         this.hp = 30;
-        this.score = 1000;
+        this.score = 3000;
         this.hitbox = BossTrack.getInit();
         this.track = new BossTrack();
         this.pattern = new BossPattern();
         this.shipTexture = new Texture("boss.png");
+    }
+
+    @Override
+    public void die(ScoreSystem ss) {
+        ss.updateScore(this.score);
+        ss.end(true);
     }
 }

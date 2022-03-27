@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.patterns.Pattern;
+import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.tracks.Track;
 import com.javasupremacy.hardmode.utils.Constant;
 
@@ -50,6 +51,10 @@ abstract public class Enemy {
 
     public boolean overlaps(Rectangle other) {
         return this.hitbox.overlaps(other);
+    }
+
+    public void die(ScoreSystem ss) {
+        ss.updateScore(this.score);
     }
 }
 

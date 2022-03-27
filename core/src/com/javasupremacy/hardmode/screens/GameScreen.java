@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
 
         gameSystem = new GameSystem();
         scoreSystem = new ScoreSystem();
-        //gameSystem.setScoreSystem(scoreSystem);
+        gameSystem.setScoreSystem(scoreSystem);
 
         this.game = game;
     }
@@ -64,8 +64,6 @@ public class GameScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-        scoreSystem.updateLives(gameSystem.getPlayerCollision());
-        scoreSystem.updateScore(gameSystem.getEnemyCollision());
         this.backScreen.renderBackground(scoreSystem.getLives(), scoreSystem.getScore());
         sbatch.setProjectionMatrix(cameraForeground.combined);
         Gdx.gl.glViewport(10,10, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
@@ -76,6 +74,9 @@ public class GameScreen implements Screen {
         sbatch.end();
 
         if (gameSystem.canEnd()) {
+            this.gameEnd();
+        }
+        if (scoreSystem.canEnd()) {
             this.gameEnd();
         }
     }
