@@ -13,6 +13,8 @@ import java.util.List;
 
 public class GameSystem {
     private float timestamp;
+    private int recordPlayerCollision;
+    private int recordScore;
     // Game Objects
     PlayerShip playerShip;
     private List<PlayerBullet> bullets;
@@ -29,6 +31,7 @@ public class GameSystem {
 
     public GameSystem() {
         timestamp = 0;
+        recordPlayerCollision = Constant.NUM_LIVES;
 
         bullets = new ArrayList<>();
         playerShip = new PlayerShip(bullets);
@@ -44,9 +47,9 @@ public class GameSystem {
         factoryList.add(new EnemyShipFactory());
     }
 
-    public void setScoreSystem(ScoreSystem ss) {
+    /*public void setScoreSystem(ScoreSystem ss) {
         this.scoreSystem = ss;
-    }
+    }*/
 
     /**
      * Read JSON for milestone 3
@@ -90,11 +93,15 @@ public class GameSystem {
         for (EnemyLaser laser : enemyLaserList) {
             if (playerShip.overlaps(laser.hitbox)) {
                 removeList.add(laser);
-                scoreSystem.updateLives(-1);
-                System.out.println(scoreSystem.getLives());
+                this.recordPlayerCollision --;
+                //System.out.println(scoreSystem.getLives());
             }
         }
         enemyLaserList.removeAll(removeList);
+    }
+
+    public int getPlayerCollision(){
+        return this.recordPlayerCollision;
     }
 
     private void enemyCollision() {
@@ -105,15 +112,22 @@ public class GameSystem {
                 if (enemy.overlaps(bullet.hitbox)) {
                     enemy.hp -= 1;
                     removeBulletList.add(bullet);
+                    recordScore += 20;
                     if (enemy.hp <= 0) {
                         removeEnemyList.add(enemy);
-                        scoreSystem.updateScore(enemy.score);
+                        recordScore += enemy.score;
+                        //scoreSystem.updateScore(enemy.score);
+                        //System.out.println(scoreSystem.getScore());
                     }
                 }
             }
         }
         bullets.removeAll(removeBulletList);
         enemyShipList.removeAll(removeEnemyList);
+    }
+
+    public int getEnemyCollision(){
+        return this.recordScore;
     }
 
     /**
@@ -175,4 +189,10 @@ public class GameSystem {
     public boolean canEnd() {
         return timestamp > Constant.GAME_LENGTH;
     }
+    /*public boolean canEnd() {
+        if(timestamp > Constant.GAME_LENGTH || recordPlayerCollision<=0)
+            return true;
+        else
+            return false;
+    }*/
 }

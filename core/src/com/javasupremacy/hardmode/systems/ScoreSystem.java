@@ -1,5 +1,7 @@
 package com.javasupremacy.hardmode.systems;
 
+import com.javasupremacy.hardmode.utils.Constant;
+
 public class ScoreSystem {
 
     private int score;
@@ -7,15 +9,15 @@ public class ScoreSystem {
 
     public ScoreSystem() {
         score = 0;
-        lives = 5;
+        lives = Constant.NUM_LIVES;
     }
 
-    public void updateScore(int update) {
-        score += update;
+    public void updateScore(int enemyCollision) {
+        score = enemyCollision;
     }
 
-    public void updateLives(int update) {
-        lives += update;
+    public void updateLives(int numPlayerCollision) {
+        lives = numPlayerCollision;
     }
 
     public int getScore() {

@@ -11,7 +11,7 @@ public class BossPattern implements Pattern{
 
     // laser information
     float timestamp;
-    float laserWidth, laserHeight;
+    float laserWidth, laserHeight, speciallaserWidth, speciallaserHeight;
     float timeBetweenShots;
     float timeSinceLastShot;
     float laserMovementSpeed;
@@ -23,6 +23,8 @@ public class BossPattern implements Pattern{
         timestamp = 0;
         laserWidth = 50;
         laserHeight = 50;
+        speciallaserWidth = 150;
+        speciallaserHeight = 150;
         timeBetweenShots = 1.0f;
         timeSinceLastShot = 0;
         laserMovementSpeed = 200f;
@@ -58,9 +60,9 @@ public class BossPattern implements Pattern{
         float specialLaserWidth = 50;
         float specialLaserHeight = 50;
         list.add(new EnemyLaser.Builder(SpecialLaserTexture).hitbox(hitbox.x + hitbox.width * 0.15f,
-                    hitbox.y - laserHeight,
-                    laserWidth,
-                    laserHeight)
+                    hitbox.y,
+                        speciallaserWidth,
+                        speciallaserHeight)
                 .speed(laserMovementSpeed)
                 .direction(-1, 1)
                 .build());
@@ -72,9 +74,9 @@ public class BossPattern implements Pattern{
                 .direction(0, 1)
                 .build());
         list.add(new EnemyLaser.Builder(SpecialLaserTexture).hitbox(hitbox.x + hitbox.width * 0.85f,
-                        hitbox.y - laserHeight,
-                        laserWidth,
-                        laserHeight)
+                        hitbox.y,
+                        speciallaserWidth,
+                        speciallaserHeight)
                 .speed(laserMovementSpeed)
                 .direction(1, 1)
                 .build());

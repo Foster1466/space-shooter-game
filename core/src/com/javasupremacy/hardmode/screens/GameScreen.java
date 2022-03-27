@@ -31,6 +31,7 @@ public class GameScreen implements Screen {
     private final Viewport viewportForeground;
     private MainGame game;
     private int foregroundOffset;
+    private int initialScore=0;
 
     private Texture foreground;
     private SpriteBatch sbatch;
@@ -40,7 +41,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(MainGame game) {
         sbatch = new SpriteBatch();
-        this.backScreen = new BackgroundScreen();
+        this.backScreen = new BackgroundScreen(Constant.NUM_LIVES);
         this.cameraForeground = new OrthographicCamera();
         ((OrthographicCamera) cameraForeground).setToOrtho(false, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         this.viewportForeground = new StretchViewport(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT,cameraForeground);
@@ -50,7 +51,7 @@ public class GameScreen implements Screen {
 
         gameSystem = new GameSystem();
         scoreSystem = new ScoreSystem();
-        gameSystem.setScoreSystem(scoreSystem);
+        //gameSystem.setScoreSystem(scoreSystem);
 
         this.game = game;
     }
@@ -63,7 +64,9 @@ public class GameScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-        this.backScreen.renderBackground();
+        scoreSystem.updateLives(gameSystem.getPlayerCollision());
+        scoreSystem.updateScore(gameSystem.getEnemyCollision());
+        this.backScreen.renderBackground(scoreSystem.getLives(), scoreSystem.getScore());
         sbatch.setProjectionMatrix(cameraForeground.combined);
         Gdx.gl.glViewport(10,10, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
 

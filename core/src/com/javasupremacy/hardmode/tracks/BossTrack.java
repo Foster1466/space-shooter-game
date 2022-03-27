@@ -31,7 +31,7 @@ public class BossTrack implements Track{
     @Override
     public Rectangle update(float deltaTime, Rectangle hitbox) {
         timestamp += deltaTime;
-        System.out.println(timestamp);
+        //System.out.println(timestamp);
         if (timestamp > ttl) {
             speed = 500;
             hitbox.x += speed * deltaTime;
