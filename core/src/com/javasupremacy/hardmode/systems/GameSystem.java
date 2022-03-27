@@ -4,10 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.javasupremacy.hardmode.factories.BossFactory;
 import com.javasupremacy.hardmode.factories.EnemyFactory;
 import com.javasupremacy.hardmode.factories.EnemyShipFactory;
-import com.javasupremacy.hardmode.objects.Enemy;
-import com.javasupremacy.hardmode.objects.EnemyLaser;
-import com.javasupremacy.hardmode.objects.PlayerBullet;
-import com.javasupremacy.hardmode.objects.PlayerShip;
+import com.javasupremacy.hardmode.objects.*;
 import com.javasupremacy.hardmode.utils.Constant;
 import com.javasupremacy.hardmode.utils.PlayerCommand;
 
@@ -101,11 +98,22 @@ public class GameSystem {
     }
 
     private void enemyCollision() {
-        for (Enemy enemy : enemyShipList) {
-            for (PlayerBullet bullet : bullets) {
-
+        List<PlayerBullet> removeBulletList = new ArrayList<>();
+        List<Enemy> removeEnemyList = new ArrayList<>();
+        for (PlayerBullet bullet : bullets) {
+            for (Enemy enemy : enemyShipList) {
+                if (enemy.overlaps(bullet.hitbox)) {
+                    enemy.hp -= 1;
+                    removeBulletList.add(bullet);
+                    if (enemy.hp <= 0) {
+                        removeEnemyList.add(enemy);
+                        scoreSystem.updateScore(enemy.score);
+                    }
+                }
             }
         }
+        bullets.removeAll(removeBulletList);
+        enemyShipList.removeAll(removeEnemyList);
     }
 
     /**
@@ -129,9 +137,7 @@ public class GameSystem {
      * @param deltaTime
      */
     private void renderEnemyLasers(SpriteBatch sbatch, float deltaTime) {
-        int countSpecialLaser=0;
         List<EnemyLaser> removeList1 = new ArrayList<>();
-        List<EnemyLaser> removeList2 = new ArrayList<>();
         for (EnemyLaser enemyLaser : enemyLaserList) {
             enemyLaser.move(deltaTime);
             enemyLaser.draw(sbatch);
@@ -140,9 +146,6 @@ public class GameSystem {
             }
         }
         enemyLaserList.removeAll(removeList1);
-        if(countSpecialLaser%3 == 0) {
-            specailLaserList.removeAll(removeList2);
-        }
     }
 
     /**

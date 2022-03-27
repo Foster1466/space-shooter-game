@@ -9,6 +9,7 @@ public class Boss extends Enemy {
         super();
         // Every type of ship should have its default value
         this.hp = 50;
+        this.score = 50;
         this.hitbox = BossTrack.getInit();
         this.track = new BossTrack();
         this.pattern = new BossPattern();

@@ -14,6 +14,7 @@ abstract public class Enemy {
     public Track track;
     public Pattern pattern;
     public int hp; // Need this later
+    public int score;
 
     // Graphics
     Texture shipTexture;
@@ -45,6 +46,10 @@ abstract public class Enemy {
             return true;
         }
         return false;
+    }
+
+    public boolean overlaps(Rectangle other) {
+        return this.hitbox.overlaps(other);
     }
 }
 
