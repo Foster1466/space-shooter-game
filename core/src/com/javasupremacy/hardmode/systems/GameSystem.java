@@ -15,6 +15,7 @@ public class GameSystem {
     private float timestamp;
     private int recordPlayerCollision;
     private int recordScore;
+    private boolean isWin;
     // Game Objects
     PlayerShip playerShip;
     private List<PlayerBullet> bullets;
@@ -114,10 +115,11 @@ public class GameSystem {
                     removeBulletList.add(bullet);
                     recordScore += 20;
                     if (enemy.hp <= 0) {
+                        this.isWin = enemy.isFinalBossDie();
                         removeEnemyList.add(enemy);
                         recordScore += enemy.score;
-                        //scoreSystem.updateScore(enemy.score);
                         //System.out.println(scoreSystem.getScore());
+                        //System.out.println(this.isWin);
                     }
                 }
             }
@@ -186,13 +188,16 @@ public class GameSystem {
         bullets.removeAll(removeList);
     }
 
-    public boolean canEnd() {
-        return timestamp > Constant.GAME_LENGTH;
-    }
     /*public boolean canEnd() {
-        if(timestamp > Constant.GAME_LENGTH || recordPlayerCollision<=0)
+        return timestamp > Constant.GAME_LENGTH;
+    }*/
+    public boolean canEnd() {
+        if(timestamp > Constant.GAME_LENGTH || recordPlayerCollision<=0 || isWin==true)
             return true;
         else
             return false;
-    }*/
+    }
+    public boolean getIsWin(){
+        return this.isWin;
+    }
 }

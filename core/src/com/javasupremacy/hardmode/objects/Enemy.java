@@ -15,6 +15,7 @@ abstract public class Enemy {
     public Pattern pattern;
     public int hp; // Need this later
     public int score;
+    //public boolean finalBossDie = false;
 
     // Graphics
     Texture shipTexture;
@@ -50,6 +51,9 @@ abstract public class Enemy {
 
     public boolean overlaps(Rectangle other) {
         return this.hitbox.overlaps(other);
+    }
+    public boolean isFinalBossDie(){
+        return false;
     }
 }
 

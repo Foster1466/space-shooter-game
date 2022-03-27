@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
 
     private void gameEnd() {
         this.dispose();
-        game.setScreen(new GameOverScreen(game));
+        game.setScreen(new GameOverScreen(game, gameSystem.getIsWin(), scoreSystem.getScore()));
     }
 
     @Override
