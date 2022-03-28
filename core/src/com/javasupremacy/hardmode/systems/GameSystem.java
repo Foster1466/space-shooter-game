@@ -13,7 +13,6 @@ import java.util.List;
 
 public class GameSystem {
     private float timestamp;
-
     // Game Objects
     PlayerShip playerShip;
     private List<PlayerBullet> bullets;
@@ -170,6 +169,6 @@ public class GameSystem {
     }
 
     public boolean canEnd() {
-        return timestamp > Constant.GAME_LENGTH;
+        return timestamp > Constant.GAME_LENGTH || scoreSystem.canEnd();
     }
 }

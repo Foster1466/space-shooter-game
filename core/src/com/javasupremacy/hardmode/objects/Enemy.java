@@ -16,6 +16,7 @@ abstract public class Enemy {
     public Pattern pattern;
     public int hp; // Need this later
     public int score;
+    //public boolean finalBossDie = false;
 
     // Graphics
     Texture shipTexture;

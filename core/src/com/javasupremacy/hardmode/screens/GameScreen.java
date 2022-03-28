@@ -13,16 +13,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.javasupremacy.hardmode.factories.BossFactory;
-import com.javasupremacy.hardmode.factories.EnemyFactory;
-import com.javasupremacy.hardmode.factories.EnemyShipFactory;
-import com.javasupremacy.hardmode.objects.*;
 import com.javasupremacy.hardmode.systems.GameSystem;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.utils.Constant;
-import com.javasupremacy.hardmode.utils.PlayerCommand;
-
-import java.util.*;
 
 
 public class GameScreen implements Screen {
@@ -31,7 +24,6 @@ public class GameScreen implements Screen {
     private final Viewport viewportForeground;
     private MainGame game;
     private int foregroundOffset;
-    private int initialScore=0;
 
     private Texture foreground;
     private SpriteBatch sbatch;
@@ -76,9 +68,6 @@ public class GameScreen implements Screen {
         if (gameSystem.canEnd()) {
             this.gameEnd();
         }
-        if (scoreSystem.canEnd()) {
-            this.gameEnd();
-        }
     }
 
     private void rollingForeground() {
@@ -92,7 +81,7 @@ public class GameScreen implements Screen {
 
     private void gameEnd() {
         this.dispose();
-        game.setScreen(new GameOverScreen(game));
+        game.setScreen(new GameOverScreen(game, scoreSystem.isWin(), scoreSystem.getScore()));
     }
 
     @Override
