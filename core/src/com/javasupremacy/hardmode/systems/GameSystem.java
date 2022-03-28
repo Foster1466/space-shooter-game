@@ -123,6 +123,9 @@ public class GameSystem {
         for (Enemy enemy : enemyShipList) {
             enemy.draw(sbatch, deltaTime);
             enemy.fire(deltaTime, enemyLaserList);
+            if (enemy.isOutOfBounds()) {
+                removeList.add(enemy);
+            }
         }
         enemyShipList.removeAll(removeList);
     }
