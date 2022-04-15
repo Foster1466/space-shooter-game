@@ -9,6 +9,8 @@ public class Constant {
     public static final int WINDOW_HEIGHT = 800;
     public static final int GAME_LENGTH = 150; // 2:30
 
+    //public static JsonReader reader = new JsonReader();
+    //reader.initialContent();
     public static int UP = Input.Keys.UP;
     public static int DOWN = Input.Keys.DOWN;
     public static int LEFT = Input.Keys.LEFT;
@@ -16,4 +18,9 @@ public class Constant {
     public static int FIRE = Input.Keys.SPACE;
     public static int SLOW_MODE = Input.Keys.SHIFT_LEFT;
     public static int NUM_LIVES = 13;
+    public static JsonReader reader;
+    public Constant(int gameLevel) {
+        reader = new JsonReader(gameLevel);
+        NUM_LIVES = reader.getPhoneNumber();
+    }
 }

@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
         gameSystem = new GameSystem();
         scoreSystem = new ScoreSystem();
         gameSystem.setScoreSystem(scoreSystem);
-
+        //reader = new JsonReader("JSONFile.json");
         this.game = game;
     }
 
