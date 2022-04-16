@@ -20,6 +20,6 @@ public class Boss extends Enemy {
     @Override
     public void die(ScoreSystem ss) {
         ss.updateScore(this.score);
-        ss.end(true);
+        ss.updateEnd(true);
     }
 }

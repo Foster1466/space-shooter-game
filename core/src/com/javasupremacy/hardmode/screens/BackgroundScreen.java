@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.javasupremacy.hardmode.observer.Observer;
+import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.utils.Constant;
 
-public class BackgroundScreen {
+public class BackgroundScreen extends Observer {
     private final Camera cameraBackground;
     private final Viewport viewportBackground;
     private final Texture background;
@@ -18,9 +20,11 @@ public class BackgroundScreen {
     private final BitmapFont font0, font1;
     private SpriteBatch sbatch;
     private String mode;
+    private int hearCount, score;
 
 
-    public BackgroundScreen(int heartCount) {
+    public BackgroundScreen(ScoreSystem subject) {
+        this.subject = subject;
         this.cameraBackground = new OrthographicCamera();
         ((OrthographicCamera) cameraBackground).setToOrtho(false, Constant.EXT_WINDOW_WIDTH, Constant.EXT_WINDOW_HEIGHT);
         this.viewportBackground = new StretchViewport(Constant.EXT_WINDOW_WIDTH, Constant.EXT_WINDOW_HEIGHT,cameraBackground);
@@ -33,11 +37,14 @@ public class BackgroundScreen {
         this.font1.setColor(1,1,1,1);
         this.font1.getData().setScale(2f);
         this.mode = "Normal speed";
+        this.subject.attachBackScreen(this);
+        this.hearCount = this.subject.getLives();
+        this.score = this.subject.getScore();
         //score=0;
         sbatch = new SpriteBatch();
     }
 
-    public void renderBackground(int heartCount, int score){
+    public void renderBackground(){
         sbatch.setProjectionMatrix(cameraBackground.combined);
         Gdx.gl.glViewport(0,0, Constant.EXT_WINDOW_WIDTH, Constant.EXT_WINDOW_HEIGHT);
         sbatch.begin();
@@ -46,9 +53,9 @@ public class BackgroundScreen {
         this.checkMode();
         font0.draw(sbatch, mode, Constant.WINDOW_WIDTH+55, Constant.WINDOW_HEIGHT-20);
         //font1.draw(sbatch, "HiScore: "+String.format("%08d", HiScore), Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-60);
-        font1.draw(sbatch, "Score: "+String.format("%08d", score), Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-60);
+        font1.draw(sbatch, "Score: "+String.format("%08d", this.score), Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-60);
         font0.draw(sbatch, "HP: ", Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-100);
-        for(int i=0; i<heartCount; i++)
+        for(int i=0; i<this.hearCount; i++)
             sbatch.draw(heart, Constant.WINDOW_WIDTH+15+((i%6)*50), Constant.WINDOW_HEIGHT-(170+50*(i/6)), 40,40);
         sbatch.end();
     }
@@ -58,5 +65,15 @@ public class BackgroundScreen {
             this.mode = "Slow speed";
         else
             this.mode = "Normal speed";
+    }
+
+    @Override
+    public void updateScore() {
+        this.score = subject.getScore();
+    }
+
+    @Override
+    public void updateLives() {
+        this.hearCount = subject.getLives();
     }
 }

@@ -32,8 +32,9 @@ public class GameScreen implements Screen {
     private ScoreSystem scoreSystem;
 
     public GameScreen(MainGame game) {
+        scoreSystem = new ScoreSystem();
         sbatch = new SpriteBatch();
-        this.backScreen = new BackgroundScreen(Constant.NUM_LIVES);
+        this.backScreen = new BackgroundScreen(scoreSystem);
         this.cameraForeground = new OrthographicCamera();
         ((OrthographicCamera) cameraForeground).setToOrtho(false, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         this.viewportForeground = new StretchViewport(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT,cameraForeground);
@@ -42,7 +43,7 @@ public class GameScreen implements Screen {
         foreground = new Texture("back.jpg");
 
         gameSystem = new GameSystem();
-        scoreSystem = new ScoreSystem();
+        //scoreSystem = new ScoreSystem();
         gameSystem.setScoreSystem(scoreSystem);
         //reader = new JsonReader("JSONFile.json");
         this.game = game;
@@ -56,7 +57,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-        this.backScreen.renderBackground(scoreSystem.getLives(), scoreSystem.getScore());
+        this.backScreen.renderBackground();
         sbatch.setProjectionMatrix(cameraForeground.combined);
         Gdx.gl.glViewport(10,10, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
 
