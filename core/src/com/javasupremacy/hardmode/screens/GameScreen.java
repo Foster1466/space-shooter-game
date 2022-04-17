@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
         foregroundOffset = 0;
         foreground = new Texture("back.jpg");
 
-        gameSystem = new GameSystem();
+        gameSystem = new GameSystem(this.backScreen);
         //scoreSystem = new ScoreSystem();
         gameSystem.setScoreSystem(scoreSystem);
         //reader = new JsonReader("JSONFile.json");

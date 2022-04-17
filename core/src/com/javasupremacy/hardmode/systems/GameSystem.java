@@ -5,13 +5,15 @@ import com.javasupremacy.hardmode.factories.BossFactory;
 import com.javasupremacy.hardmode.factories.EnemyFactory;
 import com.javasupremacy.hardmode.factories.EnemyShipFactory;
 import com.javasupremacy.hardmode.objects.*;
+import com.javasupremacy.hardmode.observer.CheatingObserver;
+import com.javasupremacy.hardmode.screens.BackgroundScreen;
 import com.javasupremacy.hardmode.utils.Constant;
 import com.javasupremacy.hardmode.utils.PlayerCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSystem {
+public class GameSystem extends CheatingObserver {
     private float timestamp;
     // Game Objects
     PlayerShip playerShip;
@@ -25,12 +27,13 @@ public class GameSystem {
     // Factories
     private List<EnemyFactory> factoryList;
     private ScoreSystem scoreSystem;
+    private boolean isCheating;
 
-    public GameSystem() {
+    public GameSystem(BackgroundScreen subject) {
         timestamp = 0;
 
         bullets = new ArrayList<>();
-        playerShip = new PlayerShip(bullets);
+        playerShip = new PlayerShip(bullets, subject);
         enemyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
 
@@ -40,6 +43,9 @@ public class GameSystem {
         factoryList = new ArrayList<>();
         factoryList.add(new BossFactory());
         factoryList.add(new EnemyShipFactory());
+
+        this.subject = subject;
+        this.subject.attachCheatingObserver(this);
     }
 
     public void setScoreSystem(ScoreSystem ss) {
@@ -79,7 +85,7 @@ public class GameSystem {
     }
 
     private void detectCollesion() {
-        playerCollision();
+        if(!isCheating) {playerCollision();}
         enemyCollision();
     }
 
@@ -173,5 +179,10 @@ public class GameSystem {
 
     public boolean canEnd() {
         return timestamp > Constant.GAME_LENGTH || scoreSystem.canEnd();
+    }
+
+    @Override
+    public void updateCheating() {
+        this.isCheating = subject.getIsCheating();
     }
 }

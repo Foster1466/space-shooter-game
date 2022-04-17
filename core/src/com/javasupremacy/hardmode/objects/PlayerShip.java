@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.javasupremacy.hardmode.observer.CheatingObserver;
+import com.javasupremacy.hardmode.screens.BackgroundScreen;
 import com.javasupremacy.hardmode.utils.Constant;
 //import com.sun.org.apache.bcel.internal.Const;
 
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlayerShip implements Controllable{
+public class PlayerShip  extends CheatingObserver implements Controllable{
 
     public float movementSpeed;
 
@@ -29,15 +31,17 @@ public class PlayerShip implements Controllable{
 
     private List<PlayerBullet> bulletList;
 
-    public PlayerShip(List<PlayerBullet> bulletList) {
+    public PlayerShip(List<PlayerBullet> bulletList, BackgroundScreen subject) {
         this.movementSpeed = 4f;
-        float width = 20;
-        float height = 40;
+        float width = 20; //50
+        float height = 40; //70
         float x = (Constant.WINDOW_WIDTH - width) / 2;
         float y = 50;
         this.hitbox = new Rectangle(x, y, width, height);
         this.spaceship = new Texture("man.png");
         this.bulletList = bulletList;
+        this.subject = subject;
+        this.subject.attachCheatingObserver(this);
     }
 
     /**
@@ -112,6 +116,18 @@ public class PlayerShip implements Controllable{
 
     public boolean overlaps(Rectangle other) {
         return this.hitbox.overlaps(other);
+    }
+
+    @Override
+    public void updateCheating() {
+        if(this.subject.getIsCheating()) {
+            this.hitbox = new Rectangle( hitbox.x , hitbox.y, 50, 70);
+            this.spaceship = new Texture("ghost.png");
+        }
+        else {
+            this.hitbox = new Rectangle( hitbox.x , hitbox.y, 20, 40);
+            this.spaceship = new Texture("man.png");
+        }
     }
 }
 
