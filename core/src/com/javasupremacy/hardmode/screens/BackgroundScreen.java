@@ -14,14 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.javasupremacy.hardmode.observer.CheatingObserver;
 import com.javasupremacy.hardmode.observer.Observer;
+import com.javasupremacy.hardmode.systems.GameSystem;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.utils.Constant;
-
-import java.util.ArrayList;
-
-//import java.util.List;
 
 
 public class BackgroundScreen extends Observer {
@@ -34,7 +30,7 @@ public class BackgroundScreen extends Observer {
     private String mode;
     private int hearCount, score;
     private boolean isCheating;
-    private ArrayList<CheatingObserver> observers;
+    private GameSystem observer;
     private final TextButton cheatingButton;
     private final Skin skin;
     private final Stage stage;
@@ -64,17 +60,10 @@ public class BackgroundScreen extends Observer {
         this.cheatingButton = new TextButton("Start Cheating", skin, "small");
         this.loadButtons();
         sbatch = new SpriteBatch();
-        this.observers = new ArrayList<>();
     }
 
-    public void attachCheatingObserver(CheatingObserver observer){
-        this.observers.add(observer);
-    }
-
-    public void notifyAllObservers(){
-        for (CheatingObserver observer: this.observers){
-            observer.updateCheating();
-        }
+    public void attachCheatingObserver(GameSystem observer){
+        this.observer = observer;
     }
 
     public void renderBackground(){
@@ -116,16 +105,13 @@ public class BackgroundScreen extends Observer {
         cheatingButton.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                //cheatingButton.setText("Stop Cheating");
                 if(!isCheating) {
                     isCheating = true;
-                    notifyAllObservers();
-                    //observer.updateCheating();
+                    observer.updateCheating();
                 }
                 else {
                     isCheating = false;
-                    notifyAllObservers();
-                    //observer.updateCheating();
+                    observer.updateCheating();
                 }
             }
             @Override

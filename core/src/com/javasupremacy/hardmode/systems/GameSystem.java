@@ -33,7 +33,7 @@ public class GameSystem extends CheatingObserver {
         timestamp = 0;
 
         bullets = new ArrayList<>();
-        playerShip = new PlayerShip(bullets, subject);
+        playerShip = new PlayerShip(bullets);
         enemyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
 
@@ -184,5 +184,6 @@ public class GameSystem extends CheatingObserver {
     @Override
     public void updateCheating() {
         this.isCheating = subject.getIsCheating();
+        this.playerShip.changeMode(this.isCheating);
     }
 }
