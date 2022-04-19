@@ -119,7 +119,7 @@ public class PlayerShip implements Controllable{
             isthrow = true;
             this.bomblist.add(new PlayerSpecialBomb.Builder(new Texture("specialBomb.png"))
                     .hitbox(new Rectangle(hitbox.x - (hitbox.width/3), hitbox.y + hitbox.height, 30, 30))
-                    .speed(200)
+                    .speed(250)
                     .direction(0, 1)
                     .build());
         }

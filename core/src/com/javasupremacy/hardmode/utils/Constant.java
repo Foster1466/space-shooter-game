@@ -23,6 +23,7 @@ public class Constant {
     public static JsonReader reader;
     public Constant(int gameLevel) {
         reader = new JsonReader(gameLevel);
-        NUM_LIVES = reader.getPhoneNumber();
+        NUM_LIVES = reader.getLivesNumber();
+        NUM_BOMB = reader.getBombsNumber();
     }
 }

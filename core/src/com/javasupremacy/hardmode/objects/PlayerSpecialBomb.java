@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.utils.Constant;
-import org.jetbrains.annotations.NotNull;
 
 public class PlayerSpecialBomb {
 
@@ -14,6 +13,7 @@ public class PlayerSpecialBomb {
     private float xDirection, yDirection;
     private float acceleration;
     private boolean isBombing;
+    private float launchDistance;
 
     private Texture textureReg;
 
@@ -26,19 +26,21 @@ public class PlayerSpecialBomb {
         this.textureReg = builder.textureReg;
         this.bombingSpeed = 400;
         this.isBombing = false;
+        this.launchDistance = 0;
     }
 
     public boolean canRemove() {
-        return (hitbox.x+hitbox.width) > Constant.WINDOW_WIDTH
-                || (hitbox.y+hitbox.height) > Constant.WINDOW_HEIGHT || hitbox.y < 0;
+        return hitbox.width > Constant.WINDOW_WIDTH
+                || hitbox.height > Constant.WINDOW_HEIGHT || hitbox.y < 0;
     }
 
     public void move(float deltaTime) {
         hitbox.x += movementSpeed * xDirection * deltaTime;
-        if(hitbox.y < 200 && !this.isBombing) {
+        if(this.launchDistance < 250 && !this.isBombing) {
+            this.launchDistance += movementSpeed * yDirection * deltaTime;
             hitbox.y += movementSpeed * yDirection * deltaTime;
         }
-        else if((hitbox.y) >= 200 && !this.isBombing) {
+        else if(this.launchDistance >= 250 && !this.isBombing) {
             this.textureReg = new Texture("bombScenes.png");
             this.hitbox =  new Rectangle(hitbox.x-33, hitbox.y, 100, 200);
             this.isBombing = true;

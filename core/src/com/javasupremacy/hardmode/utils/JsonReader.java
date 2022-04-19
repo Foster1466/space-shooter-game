@@ -5,22 +5,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
-//import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class JsonReader {
     private Object obj = null;
     private JSONObject js;
-    private int phoneNumber;
+    private int livesNumber, bombsNumber;
     public JsonReader(int level) {
         try {
             switch (level) {
                 case 1:
-                    obj = new JSONParser().parse(Gdx.files.internal("glassy/skin/level1.json").readString());
+                    obj = new JSONParser().parse(Gdx.files.internal("config-json/level1.json").readString());
                     break;
                 case 2:
-                    obj = new JSONParser().parse(Gdx.files.internal("glassy/skin/level2.json").readString());
+                    obj = new JSONParser().parse(Gdx.files.internal("config-json/level2.json").readString());
                     break;
             }
        } catch (ParseException e) {
@@ -28,10 +24,13 @@ public class JsonReader {
         }
         js = (JSONObject) obj;
         JSONObject subObj = (JSONObject) js.get("player");
-        phoneNumber = Integer.valueOf((String) subObj.get("lives"));
+        livesNumber = Integer.valueOf((String) subObj.get("lives"));
+        bombsNumber = Integer.valueOf((String) subObj.get("bombs"));
     }
 
-    public int getPhoneNumber(){
-        return this.phoneNumber;
+    public int getLivesNumber(){
+        return this.livesNumber;
     }
+
+    public int getBombsNumber() {return this.bombsNumber;}
 }
