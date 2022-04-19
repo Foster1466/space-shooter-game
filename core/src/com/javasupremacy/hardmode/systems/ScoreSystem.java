@@ -7,12 +7,14 @@ public class ScoreSystem{
 
     private int score;
     private int lives;
+    private int bombs;
     private boolean win;
     private Observer backScreen;
 
     public ScoreSystem() {
         score = 0;
         lives = Constant.NUM_LIVES;
+        bombs = Constant.NUM_BOMB;
         win = false;
     }
 
@@ -30,12 +32,21 @@ public class ScoreSystem{
         this.backScreen.updateLives();
     }
 
+    public void updateBombs(int num) {
+        bombs -= num;
+        this.backScreen.updateBombs();
+    }
+
     public int getScore() {
         return score;
     }
 
     public int getLives() {
         return lives;
+    }
+
+    public int getBombs() {
+        return bombs;
     }
 
     public void updateEnd(boolean win) {

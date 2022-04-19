@@ -25,10 +25,11 @@ public class BackgroundScreen extends Observer {
     private final Viewport viewportBackground;
     private final Texture background;
     private final Texture heart, infinity;
+    private final Texture bomb;
     private final BitmapFont font0, font1;
     private SpriteBatch sbatch;
     private String mode;
-    private int hearCount, score;
+    private int hearCount, score, bombCount;
     private boolean isCheating;
     private GameSystem observer;
     private final TextButton cheatingButton;
@@ -43,6 +44,7 @@ public class BackgroundScreen extends Observer {
         this.background = new Texture("mainScreen.jpg");
         this.heart = new Texture("heart.png");
         this.infinity = new Texture("infinity-symbol.png");
+        this.bomb = new Texture("specialBomb.png");
         this.font0 = new BitmapFont();
         this.font1 = new BitmapFont();
         this.font0.setColor(0, 0, 0, 1);
@@ -51,6 +53,7 @@ public class BackgroundScreen extends Observer {
         this.font1.getData().setScale(2f);
         this.mode = "Normal speed";
         this.subject.attachBackScreen(this);
+        this.bombCount = this.subject.getBombs();
         this.hearCount = this.subject.getLives();
         this.score = this.subject.getScore();
         this.isCheating = false;
@@ -75,19 +78,25 @@ public class BackgroundScreen extends Observer {
         font0.draw(sbatch, mode, Constant.WINDOW_WIDTH+55, Constant.WINDOW_HEIGHT-20);
         //font1.draw(sbatch, "HiScore: "+String.format("%08d", HiScore), Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-60);
         font1.draw(sbatch, "Score: "+String.format("%08d", this.score), Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-60);
-        font0.draw(sbatch, "HP: ", Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-100);
+        font0.draw(sbatch, "HP: ", Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-170);
+        this.showBombs();
         this.showLives();
         sbatch.end();
         stage.act();
         stage.draw();
     }
 
+    private void showBombs(){
+        for(int i=0; i<this.bombCount; i++)
+            sbatch.draw(bomb, Constant.WINDOW_WIDTH+15+((i%6)*50), Constant.WINDOW_HEIGHT-(140+50*(i/6)), 40,40);
+    }
+
     private void showLives(){
         if(!isCheating)
             for(int i=0; i<this.hearCount; i++)
-                sbatch.draw(heart, Constant.WINDOW_WIDTH+15+((i%6)*50), Constant.WINDOW_HEIGHT-(170+50*(i/6)), 40,40);
+                sbatch.draw(heart, Constant.WINDOW_WIDTH+15+((i%6)*50), Constant.WINDOW_HEIGHT-(240+50*(i/6)), 40,40);
         else
-            sbatch.draw(infinity, Constant.WINDOW_WIDTH+100, Constant.WINDOW_HEIGHT-135, 60,40);
+            sbatch.draw(infinity, Constant.WINDOW_WIDTH+100, Constant.WINDOW_HEIGHT-205, 60,40);
     }
 
     private void checkMode(){
@@ -148,6 +157,9 @@ public class BackgroundScreen extends Observer {
     public void updateLives() {
         this.hearCount = subject.getLives();
     }
+
+    @Override
+    public void updateBombs() { this.bombCount = subject.getBombs(); }
 
     public boolean getIsCheating(){ return this.isCheating; }
 }

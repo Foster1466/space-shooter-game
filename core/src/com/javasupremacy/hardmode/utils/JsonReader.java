@@ -27,9 +27,8 @@ public class JsonReader {
             e.printStackTrace();
         }
         js = (JSONObject) obj;
-        JSONArray arr = (JSONArray) js.get("player");
-        JSONObject subJs = (JSONObject) arr.get(0);
-        phoneNumber = Integer.valueOf((String) subJs.get("lives"));
+        JSONObject subObj = (JSONObject) js.get("player");
+        phoneNumber = Integer.valueOf((String) subObj.get("lives"));
     }
 
     public int getPhoneNumber(){

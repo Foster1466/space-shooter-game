@@ -16,19 +16,21 @@ public class PlayerShip implements Controllable{
 
     public float movementSpeed;
 
-    private boolean isSlow;
+    private boolean isSlow, isthrow;
 
     private Texture spaceship, manmode, ghostmode;
     private Rectangle hitbox, manbox, ghostbox;
 
     private float shootInterval = 0.2f;
+    private float bombInterval = 2.5f;
     private float shootTimestamp = 0;
 
     private float slowMultiplier=0.5f;
 
     private List<PlayerBullet> bulletList;
+    private List<PlayerSpecialBomb> bomblist;
 
-    public PlayerShip(List<PlayerBullet> bulletList) {
+    public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist) {
         this.movementSpeed = 4f;
         float width = 20;
         float height = 40;
@@ -41,6 +43,8 @@ public class PlayerShip implements Controllable{
         this.ghostmode = new Texture("ghost.png");
         this.spaceship = this.manmode;
         this.bulletList = bulletList;
+        this.bomblist = bomblist;
+        this.isthrow = false;
     }
 
     /**
@@ -107,6 +111,23 @@ public class PlayerShip implements Controllable{
                     .build());
         }
     }
+
+    @Override
+    public void throwBomb() {
+        if (shootTimestamp >= bombInterval) {
+            shootTimestamp = 0;
+            isthrow = true;
+            this.bomblist.add(new PlayerSpecialBomb.Builder(new Texture("specialBomb.png"))
+                    .hitbox(new Rectangle(hitbox.x - (hitbox.width/3), hitbox.y + hitbox.height, 30, 30))
+                    .speed(200)
+                    .direction(0, 1)
+                    .build());
+        }
+    }
+
+    public boolean getIsThrow(){ return this.isthrow;}
+
+    public void setIsThrow(boolean isthrow) {this.isthrow=isthrow;}
 
     private float getSpeed() {
         float speed = this.movementSpeed;

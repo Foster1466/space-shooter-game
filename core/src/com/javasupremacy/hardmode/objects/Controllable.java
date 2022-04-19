@@ -7,4 +7,7 @@ public interface Controllable {
     public void moveRight();
     public void fire();
     public void slowMode(boolean slow);
+    public void throwBomb();
+    public boolean getIsThrow();
+    public void setIsThrow(boolean isThrow);
 }

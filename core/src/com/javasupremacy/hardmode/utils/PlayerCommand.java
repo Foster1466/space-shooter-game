@@ -3,6 +3,7 @@ package com.javasupremacy.hardmode.utils;
 import com.badlogic.gdx.Gdx;
 import com.javasupremacy.hardmode.objects.Controllable;
 import com.javasupremacy.hardmode.objects.PlayerShip;
+import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.sun.org.apache.xpath.internal.functions.FuncFalse;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class PlayerCommand {
     List<Controllable> subscribers;
+    private ScoreSystem checkBombs;
 
 
     public PlayerCommand() {
@@ -19,6 +21,8 @@ public class PlayerCommand {
     public void add(Controllable subscriber) {
         subscribers.add(subscriber);
     }
+
+    public void setCheckBombs(ScoreSystem checkBombs){this.checkBombs = checkBombs;}
 
     public void remove(Controllable subscriber) {
         subscribers.remove(subscriber);
@@ -52,6 +56,14 @@ public class PlayerCommand {
             // Fire
             if (Gdx.input.isKeyPressed(Constant.FIRE)) {
                 sub.fire();
+            }
+            //Bomb
+            if (Gdx.input.isKeyPressed(Constant.BOMB) && checkBombs.getBombs()>0) {
+                sub.throwBomb();
+                if(sub.getIsThrow()) {
+                    checkBombs.updateBombs(1);
+                    sub.setIsThrow(false);
+                }
             }
         }
     }

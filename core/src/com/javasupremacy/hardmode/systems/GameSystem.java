@@ -18,6 +18,7 @@ public class GameSystem extends CheatingObserver {
     // Game Objects
     PlayerShip playerShip;
     private List<PlayerBullet> bullets;
+    private List<PlayerSpecialBomb> specialBombs;
     private List<Enemy> enemyShipList;
     private List<EnemyLaser> enemyLaserList;
 
@@ -33,7 +34,8 @@ public class GameSystem extends CheatingObserver {
         timestamp = 0;
 
         bullets = new ArrayList<>();
-        playerShip = new PlayerShip(bullets);
+        specialBombs = new ArrayList<>();
+        playerShip = new PlayerShip(bullets, specialBombs);
         enemyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
 
@@ -50,6 +52,7 @@ public class GameSystem extends CheatingObserver {
 
     public void setScoreSystem(ScoreSystem ss) {
         this.scoreSystem = ss;
+        this.command.setCheckBombs(ss);
     }
 
     /**
@@ -65,6 +68,7 @@ public class GameSystem extends CheatingObserver {
         renderEnemyLasers(sbatch, deltaTime);
         renderShip(sbatch, deltaTime);
         renderShipBullet(sbatch, deltaTime);
+        renderShipBomb(sbatch, deltaTime);
     }
 
     private void updateGame(float deltaTime) {
@@ -175,6 +179,19 @@ public class GameSystem extends CheatingObserver {
             }
         }
         bullets.removeAll(removeList);
+    }
+
+    private void renderShipBomb(SpriteBatch sbatch, float deltaTime) {
+        List<PlayerSpecialBomb> removeList = new ArrayList<>();
+        for (PlayerSpecialBomb bomb : specialBombs) {
+            bomb.move(deltaTime);
+            bomb.draw(sbatch);
+            if (bomb.canRemove()) {
+                removeList.add(bomb);
+                enemyLaserList.clear();
+            }
+        }
+        specialBombs.removeAll(removeList);
     }
 
     public boolean canEnd() {

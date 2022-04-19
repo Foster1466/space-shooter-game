@@ -16,8 +16,10 @@ public class Constant {
     public static int LEFT = Input.Keys.LEFT;
     public static int RIGHT = Input.Keys.RIGHT;
     public static int FIRE = Input.Keys.SPACE;
+    public static int BOMB = Input.Keys.B;
     public static int SLOW_MODE = Input.Keys.SHIFT_LEFT;
     public static int NUM_LIVES = 13;
+    public static int NUM_BOMB = 5;
     public static JsonReader reader;
     public Constant(int gameLevel) {
         reader = new JsonReader(gameLevel);
