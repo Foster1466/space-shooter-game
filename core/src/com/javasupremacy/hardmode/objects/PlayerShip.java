@@ -3,6 +3,7 @@ package com.javasupremacy.hardmode.objects;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
@@ -29,8 +30,10 @@ public class PlayerShip implements Controllable{
 
     private List<PlayerBullet> bulletList;
     private List<PlayerSpecialBomb> bomblist;
+    private Sound fireSound;
 
     public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist) {
+        fireSound= Gdx.audio.newSound(Gdx.files.internal("arcade.ogg"));
         this.movementSpeed = 4f;
         float width = 20;
         float height = 40;
@@ -104,6 +107,7 @@ public class PlayerShip implements Controllable{
     public void fire() {
         if (shootTimestamp >= shootInterval) {
             shootTimestamp = 0;
+            fireSound.play();
             this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
                     .hitbox(new Rectangle(hitbox.x + (hitbox.width / 2),  hitbox.y + hitbox.height, 12, 26))
                     .speed(400)

@@ -5,6 +5,7 @@ package com.javasupremacy.hardmode.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,6 +31,7 @@ public class GameScreen implements Screen {
 
     private GameSystem gameSystem;
     private ScoreSystem scoreSystem;
+    private Music bgm;
 
     public GameScreen(MainGame game) {
         scoreSystem = new ScoreSystem();
@@ -41,6 +43,11 @@ public class GameScreen implements Screen {
 
         foregroundOffset = 0;
         foreground = new Texture("back.jpg");
+
+        //LOAD BGM AUDIO FILE AND INITIALIZE OBJECT
+        bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm.ogg"));
+        bgm.setLooping(true);
+        bgm.play();
 
         gameSystem = new GameSystem(this.backScreen);
         //scoreSystem = new ScoreSystem();
@@ -107,6 +114,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        bgm.stop();
+        bgm.dispose();
 
     }
 }
