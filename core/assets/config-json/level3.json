@@ -6,6 +6,6 @@
 	},
 	"enemy":
 	{
-		"cluster": false
+		"cluster": true
 	}
 }

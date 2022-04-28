@@ -20,10 +20,12 @@ public class Constant {
     public static int SLOW_MODE = Input.Keys.SHIFT_LEFT;
     public static int NUM_LIVES = 13;
     public static int NUM_BOMB = 5;
+    public static boolean HAS_CLUSTER = false;
     public static JsonReader reader;
     public Constant(int gameLevel) {
         reader = new JsonReader(gameLevel);
         NUM_LIVES = reader.getLivesNumber();
         NUM_BOMB = reader.getBombsNumber();
+        HAS_CLUSTER = reader.getIsCluster();
     }
 }

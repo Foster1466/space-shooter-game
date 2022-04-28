@@ -84,8 +84,33 @@ public class OptionScreen implements Screen{
             }
         });
 
+        final TextButton optionButton3 = new TextButton("Level-3", skin, "small");
+        optionButton3.setSize(sizeUnit * 4, sizeUnit);
+        optionButton3.setPosition((Gdx.graphics.getWidth() - optionButton3.getWidth()) / 2,200);
+        optionButton3.getLabel().setFontScale(1.2f, 1.2f);
+        optionButton3.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                new Constant(3);
+                backToMenu();
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                optionButton3.getLabel().setFontScale(1.5f, 1.5f);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                optionButton3.getLabel().setFontScale(1.2f, 1.2f);
+            }
+        });
         stage.addActor(optionButton1);
         stage.addActor(optionButton2);
+        stage.addActor(optionButton3);
     }
 
     private void backToMenu() {

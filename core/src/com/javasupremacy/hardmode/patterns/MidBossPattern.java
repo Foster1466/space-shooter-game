@@ -2,8 +2,10 @@ package com.javasupremacy.hardmode.patterns;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.javasupremacy.hardmode.objects.ClusterLaser;
 import com.javasupremacy.hardmode.objects.EnemyLaser;
 import com.javasupremacy.hardmode.objects.EnemyShipA;
+import com.javasupremacy.hardmode.utils.Constant;
 
 import java.util.List;
 
@@ -29,18 +31,25 @@ public class MidBossPattern implements Pattern{
         timeSinceLastShot += deltaTime;
         if (canFire()) {
             timeSinceLastShot = 0;
-            list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.18f,
-                        hitbox.y - laserHeight,
+            float Xhitbox = hitbox.x + hitbox.width * 0.18f;
+            float Yhitbox = hitbox.y - laserHeight;
+            list.addAll(new ClusterLaser().ClusterLaser(laserTexture, 2, 3, Xhitbox+15,
+                    Yhitbox+15, laserWidth, laserHeight, laserMovementSpeed));
+            list.add(new EnemyLaser.Builder(laserTexture).hitbox(Xhitbox,
+                            Yhitbox,
                         laserWidth,
                         laserHeight)
                     .speed(laserMovementSpeed)
-                    .build());
-            list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.82f,
-                            hitbox.y - laserHeight,
+                    .build(Constant.HAS_CLUSTER));
+            Xhitbox = hitbox.x + hitbox.width * 0.82f;
+            list.addAll(new ClusterLaser().ClusterLaser(laserTexture, 2, 3, Xhitbox+15,
+                    Yhitbox+15, laserWidth, laserHeight, laserMovementSpeed));
+            list.add(new EnemyLaser.Builder(laserTexture).hitbox(Xhitbox,
+                            Yhitbox,
                             laserWidth,
                             laserHeight)
                     .speed(laserMovementSpeed)
-                    .build());
+                    .build(Constant.HAS_CLUSTER));
         }
     }
 

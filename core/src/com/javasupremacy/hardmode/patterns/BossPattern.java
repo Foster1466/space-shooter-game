@@ -3,7 +3,9 @@ package com.javasupremacy.hardmode.patterns;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.objects.Boss;
+import com.javasupremacy.hardmode.objects.ClusterLaser;
 import com.javasupremacy.hardmode.objects.EnemyLaser;
+import com.javasupremacy.hardmode.utils.Constant;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class BossPattern implements Pattern{
         laserTexture = new Texture("boss_fire.png");
         SpecialLaserTexture = new Texture("boss-red-fire.png");
     }
+
     @Override
     public void fire(float deltaTime, List<EnemyLaser> list, Rectangle hitbox) {
         timestamp += deltaTime;
@@ -40,46 +43,56 @@ public class BossPattern implements Pattern{
             if (timestamp >= 15) {
                 speicalfireLasers(list, hitbox);
             } else {
-                list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.18f,
-                                hitbox.y - laserHeight,
+                float Xhitbox = hitbox.x + hitbox.width * 0.18f;
+                float Yhitbox = hitbox.y - laserHeight;
+                list.addAll(new ClusterLaser().ClusterLaser(laserTexture, 2, 5, Xhitbox+15,
+                                Yhitbox+15, laserWidth, laserHeight, laserMovementSpeed));
+                list.add(new EnemyLaser.Builder(laserTexture).hitbox(Xhitbox,
+                                Yhitbox,
                                 laserWidth,
                                 laserHeight)
                         .speed(laserMovementSpeed)
-                        .build());
-                list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.82f,
-                                hitbox.y - laserHeight,
+                        .build(Constant.HAS_CLUSTER));
+                Xhitbox = hitbox.x + hitbox.width * 0.82f;
+                list.addAll(new ClusterLaser().ClusterLaser(laserTexture, 2, 5, Xhitbox+15,
+                        Yhitbox+15, laserWidth, laserHeight, laserMovementSpeed));
+                list.add(new EnemyLaser.Builder(laserTexture).hitbox(Xhitbox,
+                                Yhitbox,
                                 laserWidth,
                                 laserHeight)
                         .speed(laserMovementSpeed)
-                        .build());
+                        .build(Constant.HAS_CLUSTER));
             }
         }
     }
 
     private void speicalfireLasers(List<EnemyLaser> list, Rectangle hitbox){
-        float specialLaserWidth = 50;
-        float specialLaserHeight = 50;
+        //float specialLaserWidth = 50;
+        //float specialLaserHeight = 50;
         list.add(new EnemyLaser.Builder(SpecialLaserTexture).hitbox(hitbox.x + hitbox.width * 0.15f,
                     hitbox.y,
                         speciallaserWidth,
                         speciallaserHeight)
                 .speed(laserMovementSpeed)
                 .direction(-1, 1)
-                .build());
-        list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.50f,
-                        hitbox.y - laserHeight,
+                .build(false));
+        float Xhitbox = hitbox.x + hitbox.width * 0.18f;
+        float Yhitbox = hitbox.y - laserHeight;
+        list.addAll(new ClusterLaser().ClusterLaser(laserTexture, 2, 5, Xhitbox+15,
+                Yhitbox+15, laserWidth, laserHeight, laserMovementSpeed));
+        list.add(new EnemyLaser.Builder(laserTexture).hitbox(Xhitbox,
+                        Yhitbox,
                         laserWidth,
                         laserHeight)
                 .speed(laserMovementSpeed)
-                .direction(0, 1)
-                .build());
+                .build(Constant.HAS_CLUSTER));
         list.add(new EnemyLaser.Builder(SpecialLaserTexture).hitbox(hitbox.x + hitbox.width * 0.85f,
                         hitbox.y,
                         speciallaserWidth,
                         speciallaserHeight)
                 .speed(laserMovementSpeed)
                 .direction(1, 1)
-                .build());
+                .build(false));
 
     }
 
