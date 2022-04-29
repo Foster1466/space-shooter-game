@@ -120,6 +120,7 @@ public class GameScreen implements Screen {
         asteroidY = MathUtils.random(Constant.EXT_WINDOW_WIDTH / 2, Constant.EXT_WINDOW_HEIGHT);
     }
 
+
     private void setAsteroid2Position() {
         asteroidX2 = Constant.WINDOW_WIDTH;
         asteroidY2 = MathUtils.random(Constant.EXT_WINDOW_WIDTH / 2, Constant.EXT_WINDOW_HEIGHT);

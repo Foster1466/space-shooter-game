@@ -22,6 +22,7 @@ import com.javasupremacy.hardmode.utils.Constant;
 
 public class BackgroundScreen extends Observer {
     private final Camera cameraBackground;
+
     private final Viewport viewportBackground;
     private final Texture background;
     private final Texture heart, infinity;

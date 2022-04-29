@@ -59,6 +59,7 @@ public class OptionScreen implements Screen{
             }
         });
 
+
         final TextButton optionButton2 = new TextButton("Level-2", skin, "small");
         optionButton2.setSize(sizeUnit * 4, sizeUnit);
         optionButton2.setPosition((Gdx.graphics.getWidth() - optionButton2.getWidth()) / 2,300);

@@ -32,6 +32,7 @@ public class PlayerShip implements Controllable{
     private List<PlayerSpecialBomb> bomblist;
     private Sound fireSound;
     private Sound bombSound;
+
     public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist) {
         fireSound= Gdx.audio.newSound(Gdx.files.internal("arcade.ogg"));
         bombSound= Gdx.audio.newSound(Gdx.files.internal("bomb.ogg"));

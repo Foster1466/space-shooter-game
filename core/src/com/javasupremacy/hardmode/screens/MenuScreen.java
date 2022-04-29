@@ -33,7 +33,7 @@ public class MenuScreen implements Screen {
     private void loadButtons() {
         int sizeUnit = 60;
         //final Screen self = this;
-        // start button
+        // start button,
         final TextButton button1 = new TextButton("Start", skin, "small");
         button1.setSize(sizeUnit * 4, sizeUnit);
         button1.setPosition((Gdx.graphics.getWidth() - button1.getWidth()) / 2,350);
