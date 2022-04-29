@@ -3,5 +3,9 @@
 	{
 		"lives": "8",
 		"bombs": "4"
+	},
+	"enemy":
+	{
+		"cluster": false
 	}
 }

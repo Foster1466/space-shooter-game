@@ -34,13 +34,13 @@ public class EnemyShipAPattern implements Pattern{
                             laserWidth,
                             laserHeight)
                     .speed(laserMovementSpeed)
-                    .build());
+                    .build(false));
             list.add(new EnemyLaser.Builder(laserTexture).hitbox(hitbox.x + hitbox.width * 0.82f,
                             hitbox.y - laserHeight,
                             laserWidth,
                             laserHeight)
                     .speed(laserMovementSpeed)
-                    .build());
+                    .build(false));
         }
     }
 
