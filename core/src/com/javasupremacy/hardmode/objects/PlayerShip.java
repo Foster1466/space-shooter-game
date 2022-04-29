@@ -31,9 +31,10 @@ public class PlayerShip implements Controllable{
     private List<PlayerBullet> bulletList;
     private List<PlayerSpecialBomb> bomblist;
     private Sound fireSound;
-
+    private Sound bombSound;
     public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist) {
         fireSound= Gdx.audio.newSound(Gdx.files.internal("arcade.ogg"));
+        bombSound= Gdx.audio.newSound(Gdx.files.internal("bomb.ogg"));
         this.movementSpeed = 4f;
         float width = 20;
         float height = 40;
@@ -121,6 +122,7 @@ public class PlayerShip implements Controllable{
         if (shootTimestamp >= bombInterval) {
             shootTimestamp = 0;
             isthrow = true;
+            bombSound.play();
             this.bomblist.add(new PlayerSpecialBomb.Builder(new Texture("specialBomb.png"))
                     .hitbox(new Rectangle(hitbox.x - (hitbox.width/3), hitbox.y + hitbox.height, 30, 30))
                     .speed(250)

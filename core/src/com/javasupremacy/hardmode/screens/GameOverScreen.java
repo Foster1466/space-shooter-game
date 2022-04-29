@@ -84,6 +84,7 @@ public class GameOverScreen implements Screen {
     private void backToMenu() {
         this.dispose();
         stage.dispose();
+        Gdx.graphics.setWindowedMode(Constant.WINDOW_WIDTH,Constant.WINDOW_HEIGHT);
         game.setScreen(new MenuScreen(game));
     }
 
@@ -96,7 +97,7 @@ public class GameOverScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.batch.begin();
-        game.batch.draw(background, 0, 0, Constant.EXT_WINDOW_WIDTH, Constant.EXT_WINDOW_HEIGHT);
+        game.batch.draw(background, 0, 0, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         if(showScore)
             font0.draw(game.batch, "Score: "+String.format("%d", score), 250, 60);
         game.batch.end();

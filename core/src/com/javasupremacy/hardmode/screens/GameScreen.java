@@ -9,8 +9,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.javasupremacy.hardmode.MainGame;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,6 +27,10 @@ public class GameScreen implements Screen {
     private final Viewport viewportForeground;
     private MainGame game;
     private int foregroundOffset;
+    //ASTEROID
+    private Texture asteroid;
+    private int asteroidX, asteroidY;
+    private int asteroidX2, asteroidY2;
 
     private Texture foreground;
     private SpriteBatch sbatch;
@@ -39,10 +45,14 @@ public class GameScreen implements Screen {
         this.backScreen = new BackgroundScreen(scoreSystem);
         this.cameraForeground = new OrthographicCamera();
         ((OrthographicCamera) cameraForeground).setToOrtho(false, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
-        this.viewportForeground = new StretchViewport(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT,cameraForeground);
+        this.viewportForeground = new FitViewport(Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT,cameraForeground);
 
         foregroundOffset = 0;
         foreground = new Texture("back.jpg");
+
+        //LOAD ASTEROID
+        asteroid = new Texture("asteroid.png");
+        setAsteroidPosition();
 
         //LOAD BGM AUDIO FILE AND INITIALIZE OBJECT
         bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm.ogg"));
@@ -70,6 +80,7 @@ public class GameScreen implements Screen {
 
         sbatch.begin();
         rollingForeground();
+        rollAsteroid();
         gameSystem.render(sbatch, deltaTime);
         sbatch.end();
 
@@ -86,6 +97,34 @@ public class GameScreen implements Screen {
         sbatch.draw(foreground, 0, -foregroundOffset, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
         sbatch.draw(foreground, 0, -foregroundOffset + Constant.WINDOW_HEIGHT, Constant.WINDOW_WIDTH, Constant.WINDOW_HEIGHT);
     }
+    //ROLL ASTEROID
+    private void rollAsteroid() {
+        asteroidX--;
+        asteroidY--;
+        if (asteroidX < -100 || asteroidY < -100) {
+            setAsteroidPosition();
+        }
+        sbatch.draw(asteroid, asteroidX, asteroidY, 100, 100);
+
+        asteroidX2 -= 2;
+        asteroidY2 -= 2;
+        if (asteroidX2 < -50 || asteroidY2 < -50) {
+            setAsteroid2Position();
+        }
+        sbatch.draw(asteroid, asteroidX2, asteroidY2, 50, 50);
+    }
+
+    //SET RANDOM ENTRY POINT FOR ASTEROID
+    private void setAsteroidPosition() {
+        asteroidX = Constant.WINDOW_WIDTH;
+        asteroidY = MathUtils.random(Constant.EXT_WINDOW_WIDTH / 2, Constant.EXT_WINDOW_HEIGHT);
+    }
+
+    private void setAsteroid2Position() {
+        asteroidX2 = Constant.WINDOW_WIDTH;
+        asteroidY2 = MathUtils.random(Constant.EXT_WINDOW_WIDTH / 2, Constant.EXT_WINDOW_HEIGHT);
+    }
+
 
     private void gameEnd() {
         this.dispose();

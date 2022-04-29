@@ -123,6 +123,7 @@ public class BackgroundScreen extends Observer {
                     observer.updateCheating();
                 }
             }
+
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 if(!isCheating)
