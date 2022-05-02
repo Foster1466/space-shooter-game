@@ -1,8 +1,9 @@
 {
 	"player":
 	{
-		"lives": "8",
-		"bombs": "4"
+		"lives": "5",
+		"bombs": "4",
+		"award-prob": 0.6
 	},
 	"enemy":
 	{

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.javasupremacy.hardmode.objects.Controllable;
 import com.javasupremacy.hardmode.objects.PlayerShip;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
-import com.sun.org.apache.xpath.internal.functions.FuncFalse;
 
 import java.util.ArrayList;
 import java.util.List;

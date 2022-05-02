@@ -25,6 +25,7 @@ public class PlayerShip implements Controllable{
     private float shootInterval = 0.2f;
     private float bombInterval = 2.5f;
     private float shootTimestamp = 0;
+    private float levelTimestep = 0;
 
     private float slowMultiplier=0.5f;
 
@@ -32,8 +33,12 @@ public class PlayerShip implements Controllable{
     private List<PlayerSpecialBomb> bomblist;
     private Sound fireSound;
     private Sound bombSound;
+    private int powerLevel;
+    private List<PowerUp> powerUps;
+    private double type1UpperBound, type1LowerBound;
 
-    public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist) {
+
+    public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist, List<PowerUp> powerUps) {
         fireSound= Gdx.audio.newSound(Gdx.files.internal("arcade.ogg"));
         bombSound= Gdx.audio.newSound(Gdx.files.internal("bomb.ogg"));
         this.movementSpeed = 4f;
@@ -50,22 +55,27 @@ public class PlayerShip implements Controllable{
         this.bulletList = bulletList;
         this.bomblist = bomblist;
         this.isthrow = false;
+        this.powerLevel = 0;
+        this.powerUps = powerUps;
+        this.type1UpperBound = 0.8*Constant.AWARD_PROB;
+        this.type1LowerBound = 0.5*Constant.AWARD_PROB;
     }
 
     /**
      *
      * @return true if playership is firing
      */
-    public boolean isFiring() {
-        boolean canFire = false;
-        if (shootTimestamp >= shootInterval) {
-            canFire = true;
-        }
-        return Gdx.input.isKeyPressed(Constant.FIRE) && canFire;
-    }
 
     public void update(float deltaTime) {
         shootTimestamp += deltaTime;
+    }
+
+    @Override
+    public void increasePower(int i)
+    {
+        levelTimestep = 0;
+        if(powerLevel < 3)
+            powerLevel++;
     }
 
     /**
@@ -107,13 +117,87 @@ public class PlayerShip implements Controllable{
 
     @Override
     public void fire() {
-        if (shootTimestamp >= shootInterval) {
-            shootTimestamp = 0;
-            fireSound.play();
-            this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
-                    .hitbox(new Rectangle(hitbox.x + (hitbox.width / 2),  hitbox.y + hitbox.height, 12, 26))
-                    .speed(400)
-                    .direction(0, 1)
+        if(powerLevel<1) {
+            if (shootTimestamp >= shootInterval) {
+                shootTimestamp = 0;
+                fireSound.play();
+                this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
+                        .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) - 5, (hitbox.y + hitbox.height) - 5, 12, 26))
+                        .speed(400)
+                        .direction(0, 1)
+                        .build());
+
+            }
+        }
+        else if(powerLevel<2 && powerLevel>=1) {
+            //2 bullets
+            if (shootTimestamp >= shootInterval) {
+                levelTimestep += shootTimestamp;
+                shootTimestamp = 0;
+                fireSound.play();
+                this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
+                        .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) - 15, (hitbox.y + hitbox.height) - 5, 12, 26))
+                        .speed(400)
+                        .direction(0, 1)
+                        .build());
+                this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
+                        .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) + 15, (hitbox.y + hitbox.height) - 5, 12, 26))
+                        .speed(400)
+                        .direction(0, 1)
+                        .build());
+            }
+            if (levelTimestep >= 10f){
+                powerLevel--;
+                levelTimestep = 0;
+            }
+        }
+        else
+        {//for 3 bullets
+            if (shootTimestamp >= shootInterval) {
+                levelTimestep += shootTimestamp;
+                shootTimestamp = 0;
+                fireSound.play();
+                this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
+                        .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) , (hitbox.y + hitbox.height) , 12, 26))
+                        .speed(400)
+                        .direction(0, 1)
+                        .build());
+                this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
+                        .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) - 15, (hitbox.y + hitbox.height) + 15, 12, 26))
+                        .speed(400)
+                        .direction(0, 1)
+                        .build());
+                this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
+                        .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) + 15, (hitbox.y + hitbox.height) + 15, 12, 26))
+                        .speed(400)
+                        .direction(0, 1)
+                        .build());
+                if (levelTimestep >= 5f){
+                    powerLevel--;
+                    levelTimestep = 0;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void getPowerUp(Rectangle hitbox) {
+        double rand=Math.random();
+        if(rand<type1UpperBound && rand>=type1LowerBound) {
+            // 1-reward
+            // 2--powerup
+            // 3--nothing
+            powerUps.add(new PowerUp.Builder(1).hitbox(hitbox.x,
+                            hitbox.y,
+                            30,
+                            30)
+                    .build());
+        }
+        else if(rand<type1LowerBound && rand>=0.2) {
+            powerUps.add(new PowerUp.Builder(2).hitbox(hitbox.x,
+                            hitbox.y,
+                            30,
+                            30)
                     .build());
         }
     }

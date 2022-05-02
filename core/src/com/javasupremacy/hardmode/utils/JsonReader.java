@@ -9,6 +9,7 @@ public class JsonReader {
     private Object obj = null;
     private JSONObject js;
     private int livesNumber, bombsNumber;
+    private double awardProb;
     private boolean isCluster;
     public JsonReader(int level) {
         try {
@@ -30,8 +31,10 @@ public class JsonReader {
         JSONObject subObj = (JSONObject) js.get("player");
         livesNumber = Integer.valueOf((String) subObj.get("lives"));
         bombsNumber = Integer.valueOf((String) subObj.get("bombs"));
+        awardProb = (double) subObj.get("award-prob");
         subObj = (JSONObject) js.get("enemy");
         isCluster = (boolean) subObj.get("cluster");
+        System.out.println(awardProb);
     }
 
     public int getLivesNumber(){
@@ -39,6 +42,8 @@ public class JsonReader {
     }
 
     public int getBombsNumber() {return this.bombsNumber;}
+
+    public double getAwardProb() {return this.awardProb;}
 
     public boolean getIsCluster() {return this.isCluster;}
 }

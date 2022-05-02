@@ -21,6 +21,7 @@ public class GameSystem extends CheatingObserver {
     private List<PlayerSpecialBomb> specialBombs;
     private List<Enemy> enemyShipList;
     private List<EnemyLaser> enemyLaserList;
+    private List<PowerUp> powerUps;
 
     // Input command
     private PlayerCommand command;
@@ -30,12 +31,16 @@ public class GameSystem extends CheatingObserver {
     private ScoreSystem scoreSystem;
     private boolean isCheating;
 
+    private int awaredCount;
+
     public GameSystem(BackgroundScreen subject) {
         timestamp = 0;
+        awaredCount = 0;
 
         bullets = new ArrayList<>();
         specialBombs = new ArrayList<>();
-        playerShip = new PlayerShip(bullets, specialBombs);
+        powerUps= new ArrayList<>();
+        playerShip = new PlayerShip(bullets, specialBombs, powerUps);
         enemyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
 
@@ -69,6 +74,7 @@ public class GameSystem extends CheatingObserver {
         renderShip(sbatch, deltaTime);
         renderShipBullet(sbatch, deltaTime);
         renderShipBomb(sbatch, deltaTime);
+        renderPowerUps(sbatch,deltaTime);
     }
 
     private void updateGame(float deltaTime) {
@@ -76,6 +82,7 @@ public class GameSystem extends CheatingObserver {
         spawnEnemy(deltaTime);
         command.run();
         detectCollesion();
+        powerUpCollsion();
     }
 
     /**
@@ -104,15 +111,37 @@ public class GameSystem extends CheatingObserver {
         enemyLaserList.removeAll(removeList);
     }
 
+    private void powerUpCollsion() {
+        List<PowerUp> remPow = new ArrayList<>();
+        for (PowerUp powerUp : powerUps) {
+            if (playerShip.overlaps(powerUp.hitbox)) {
+                remPow.add(powerUp);
+                if(powerUp.getType()==1)
+                    scoreSystem.updateLives(1);
+                else if(powerUp.getType()==2)
+                    playerShip.increasePower(1);
+            }
+        }
+        powerUps.removeAll(remPow);
+    }
+
+
     private void enemyCollision() {
         List<PlayerBullet> removeBulletList = new ArrayList<>();
         List<Enemy> removeEnemyList = new ArrayList<>();
         for (PlayerBullet bullet : bullets) {
             for (Enemy enemy : enemyShipList) {
                 if (enemy.overlaps(bullet.hitbox)) {
+                    awaredCount++;
                     enemy.hp -= 1;
                     removeBulletList.add(bullet);
+                    if(awaredCount >= 5) {
+                        playerShip.getPowerUp(enemy.hitbox);
+                        awaredCount = 0;
+                    }
                     if (enemy.hp <= 0) {
+                        awaredCount = 0;
+                        playerShip.getPowerUp(enemy.hitbox);
                         removeEnemyList.add(enemy);
                         enemy.die(scoreSystem);
                     }
@@ -180,6 +209,16 @@ public class GameSystem extends CheatingObserver {
         }
         bullets.removeAll(removeList);
     }
+
+    private void renderPowerUps(SpriteBatch sbatch, float deltatime)
+    {
+        for(PowerUp powerUp: powerUps)
+        {
+            powerUp.move(deltatime);
+            powerUp.draw(sbatch);
+        }
+    }
+
 
     private void renderShipBomb(SpriteBatch sbatch, float deltaTime) {
         List<PlayerSpecialBomb> removeList = new ArrayList<>();

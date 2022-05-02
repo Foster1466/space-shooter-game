@@ -10,4 +10,6 @@ public interface Controllable {
     public void throwBomb();
     public boolean getIsThrow();
     public void setIsThrow(boolean isThrow);
+    public void increasePower(int i);
+    public void getPowerUp(com.badlogic.gdx.math.Rectangle hitbox);
 }
