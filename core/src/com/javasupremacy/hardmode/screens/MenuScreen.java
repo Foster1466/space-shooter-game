@@ -23,7 +23,7 @@ public class MenuScreen implements Screen {
 
     public MenuScreen(MainGame game) {
         this.game = game;
-        background = new Texture("menuScreen.jpg");
+        background = new Texture("menu2.jpg");
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         Gdx.input.setInputProcessor(stage);

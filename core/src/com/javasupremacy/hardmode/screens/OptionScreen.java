@@ -25,7 +25,7 @@ public class OptionScreen implements Screen{
     public OptionScreen(MainGame game) {
         this.game = game;
         //this.menu = menu;
-        background = new Texture("menuScreen.jpg");
+        background = new Texture("menu2.jpg");
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         Gdx.input.setInputProcessor(stage);
