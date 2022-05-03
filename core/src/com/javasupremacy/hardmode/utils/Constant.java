@@ -15,6 +15,10 @@ public class Constant {
     public static int DOWN = Input.Keys.DOWN;
     public static int LEFT = Input.Keys.LEFT;
     public static int RIGHT = Input.Keys.RIGHT;
+    public static int W = Input.Keys.W;
+    public static int A = Input.Keys.A;
+    public static int S = Input.Keys.S;
+    public static int D = Input.Keys.D;
     public static int FIRE = Input.Keys.SPACE;
     public static int BOMB = Input.Keys.B;
     public static int SLOW_MODE = Input.Keys.SHIFT_LEFT;

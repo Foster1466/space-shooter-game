@@ -21,6 +21,7 @@ public class OptionScreen implements Screen{
     private final Texture background;
     private final Stage stage;
     private final Skin skin;
+    public static int keyBind = 0;
 
     public OptionScreen(MainGame game) {
         this.game = game;
@@ -33,14 +34,14 @@ public class OptionScreen implements Screen{
     }
     private void loadButtons() {
         int sizeUnit = 60;
-        final TextButton optionButton1 = new TextButton("Level-1", skin, "small");
+        final TextButton optionButton1 = new TextButton("Arrow Keys", skin, "small");
         optionButton1.setSize(sizeUnit * 4, sizeUnit);
         optionButton1.setPosition((Gdx.graphics.getWidth() - optionButton1.getWidth()) / 2,400);
         optionButton1.getLabel().setFontScale(1.2f, 1.2f);
         optionButton1.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                new Constant(1);
+                keyBind = 0;
                 backToMenu();
             }
             @Override
@@ -60,14 +61,14 @@ public class OptionScreen implements Screen{
         });
 
 
-        final TextButton optionButton2 = new TextButton("Level-2", skin, "small");
+        final TextButton optionButton2 = new TextButton("W-A-S-D", skin, "small");
         optionButton2.setSize(sizeUnit * 4, sizeUnit);
         optionButton2.setPosition((Gdx.graphics.getWidth() - optionButton2.getWidth()) / 2,300);
         optionButton2.getLabel().setFontScale(1.2f, 1.2f);
         optionButton2.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                new Constant(2);
+                keyBind = 1;
                 backToMenu();
             }
             @Override
@@ -85,33 +86,8 @@ public class OptionScreen implements Screen{
             }
         });
 
-        final TextButton optionButton3 = new TextButton("Level-3", skin, "small");
-        optionButton3.setSize(sizeUnit * 4, sizeUnit);
-        optionButton3.setPosition((Gdx.graphics.getWidth() - optionButton3.getWidth()) / 2,200);
-        optionButton3.getLabel().setFontScale(1.2f, 1.2f);
-        optionButton3.addListener(new InputListener(){
-            @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                new Constant(3);
-                backToMenu();
-            }
-            @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                optionButton3.getLabel().setFontScale(1.5f, 1.5f);
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                optionButton3.getLabel().setFontScale(1.2f, 1.2f);
-            }
-        });
         stage.addActor(optionButton1);
         stage.addActor(optionButton2);
-        stage.addActor(optionButton3);
     }
 
     private void backToMenu() {

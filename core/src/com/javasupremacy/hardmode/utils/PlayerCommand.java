@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.javasupremacy.hardmode.objects.Controllable;
 import com.javasupremacy.hardmode.objects.PlayerShip;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
+import com.javasupremacy.hardmode.screens.OptionScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public class PlayerCommand {
     List<Controllable> subscribers;
     private ScoreSystem checkBombs;
-
+    public int inputType = OptionScreen.keyBind;
 
     public PlayerCommand() {
         subscribers = new ArrayList<>();
@@ -33,24 +34,35 @@ public class PlayerCommand {
     public void run() {
         for (Controllable sub : subscribers) {
             // slow mode by hold
-            if (Gdx.input.isKeyPressed(Constant.SLOW_MODE)) {
-                sub.slowMode(true);
-            } else {
-                sub.slowMode(false);
+            sub.slowMode(Gdx.input.isKeyPressed(Constant.SLOW_MODE));
+            if(inputType==0) {
+                // Movements
+                if (Gdx.input.isKeyPressed(Constant.UP)) {
+                    sub.moveUp();
+                }
+                if (Gdx.input.isKeyPressed(Constant.DOWN)) {
+                    sub.moveDown();
+                }
+                if (Gdx.input.isKeyPressed(Constant.LEFT)) {
+                    sub.moveLeft();
+                }
+                if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
+                    sub.moveRight();
+                }
             }
-
-            // Movements
-            if (Gdx.input.isKeyPressed(Constant.UP)) {
-                sub.moveUp();
-            }
-            if (Gdx.input.isKeyPressed(Constant.DOWN)) {
-                sub.moveDown();
-            }
-            if (Gdx.input.isKeyPressed(Constant.LEFT)) {
-                sub.moveLeft();
-            }
-            if (Gdx.input.isKeyPressed(Constant.RIGHT)) {
-                sub.moveRight();
+            else {
+                if (Gdx.input.isKeyPressed(Constant.W)) {
+                    sub.moveUp();
+                }
+                if (Gdx.input.isKeyPressed(Constant.S)) {
+                    sub.moveDown();
+                }
+                if (Gdx.input.isKeyPressed(Constant.A)) {
+                    sub.moveLeft();
+                }
+                if (Gdx.input.isKeyPressed(Constant.D)) {
+                    sub.moveRight();
+                }
             }
             // Fire
             if (Gdx.input.isKeyPressed(Constant.FIRE)) {
