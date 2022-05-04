@@ -2,18 +2,19 @@
 
 ## Milestone 3
 ### Lego
-- [ ] Power up and rewards
+- [x] Power up and rewards
+- [ ] Add more movements and bullts
+- [ ] Resemble the boss pattern to Touhou demo
 ### Gargi
-- [ ] Background/BGM/Aesthetic elements
+- [x] Background/BGM/Aesthetic elements
 ### Gary
 - [x] Json reading
 - [ ] Bomb System
 - [x] Cheating mode
 ### Foster the Intel guy
-- [ ] Move level selection out of option
-- [ ] Make key-binding in option instead
+- [x] Move level selection out of option
+- [x] Make key-binding in option instead
 ### Kolxy the Microsoft guy
 - [ ] Revamp all movements
 - [ ] Add spawn points to all objects
-- [ ] Add more movements and bullts
-- [ ] Resemble the boss pattern to Touhou demo
+- [ ] Parse Json
