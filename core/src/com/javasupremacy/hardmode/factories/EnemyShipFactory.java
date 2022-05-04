@@ -25,6 +25,7 @@ public class EnemyShipFactory implements EnemyFactory{
                 .movement((String) object.get("movement"))
                 .laserStrategy((String) object.get("laser"))
                 .laserMovement((String) object.get("laserMovement"))
+                .isFinalBoss((boolean) object.get("isFinalBoss"))
                 .build();
     }
 }

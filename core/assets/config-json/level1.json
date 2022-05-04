@@ -20,7 +20,8 @@
 			"interval": 1,
 			"count": 10,
 			"reward": 100,
-			"spawnTime": 3
+			"spawnTime": 3,
+			"isFinalBoss": false
 		},
 		{
 			"hp": 3,
@@ -35,7 +36,8 @@
 			"interval": 1,
 			"count": 10,
 			"reward": 300,
-			"spawnTime": 30
+			"spawnTime": 30,
+			"isFinalBoss": false
 		},
 		{
 			"hp": 3,

@@ -40,6 +40,8 @@ public class GameSystem extends CheatingObserver {
 
     private int awaredCount;
 
+    private boolean end = false;
+
     public GameSystem(BackgroundScreen subject) {
         this.subject = subject;
         this.subject.attachCheatingObserver(this);
@@ -73,7 +75,6 @@ public class GameSystem extends CheatingObserver {
         JSONArray enemyConfigs = config.getEnemies();
         for (Object obj : enemyConfigs) {
             JSONObject enemyObj = (JSONObject) obj;
-            System.out.println((String) enemyObj.get("texture"));
             float timestamp = ((Long)enemyObj.get("spawnTime")).floatValue();
             int count = ((Long)enemyObj.get("count")).intValue();
             for (int i = 0; i < count; i++) {
@@ -108,7 +109,6 @@ public class GameSystem extends CheatingObserver {
     }
 
     private void spawnEnemy() {
-        System.out.println(timestamp);
         if (releaseTime.size() > 0 && timestamp > releaseTime.peek()) {
             releaseTime.poll();
             Enemy enemy = enemyFactory.produce(toBeReleased.poll());
@@ -184,6 +184,9 @@ public class GameSystem extends CheatingObserver {
             enemy.draw(sbatch, deltaTime);
             enemy.fire(deltaTime, enemyLaserList);
             if (enemy.isOutOfBounds()) {
+                if (enemy.isFinalBoss) {
+                    this.end = true;
+                }
                 removeList.add(enemy);
             }
         }
@@ -255,7 +258,7 @@ public class GameSystem extends CheatingObserver {
     }
 
     public boolean canEnd() {
-        return timestamp > Constant.GAME_LENGTH || scoreSystem.canEnd();
+        return timestamp > Constant.GAME_LENGTH || scoreSystem.canEnd() || this.end;
     }
 
     @Override
