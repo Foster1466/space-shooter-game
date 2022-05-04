@@ -137,13 +137,21 @@ public class GameSystem extends CheatingObserver {
 
     private void playerCollision() {
         List<EnemyLaser> removeList = new ArrayList<>();
+        List<EnemyLaser> removeHeavyList = new ArrayList<>();
         for (EnemyLaser laser : enemyLaserList) {
             if (playerShip.overlaps(laser.hitbox)) {
                 removeList.add(laser);
                 scoreSystem.updateLives(-1);
             }
         }
+        for (EnemyLaser heavy : heavyLaserList) {
+            if (playerShip.overlaps(heavy.hitbox)){
+                removeHeavyList.add(heavy);
+                scoreSystem.updateLives(-2);
+            }
+        }
         enemyLaserList.removeAll(removeList);
+        heavyLaserList.removeAll(removeHeavyList);
     }
 
     private void powerUpCollsion() {
@@ -277,6 +285,7 @@ public class GameSystem extends CheatingObserver {
             if (bomb.canRemove()) {
                 removeList.add(bomb);
                 enemyLaserList.clear();
+                heavyLaserList.clear();
                 for (Enemy enemy : enemyShipList){
                     enemy.hp -= 5;
                     if (enemy.hp <= 0) {

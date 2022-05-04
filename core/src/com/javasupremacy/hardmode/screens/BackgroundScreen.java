@@ -36,6 +36,7 @@ public class BackgroundScreen extends Observer {
     private final TextButton cheatingButton;
     private final Skin skin;
     private final Stage stage;
+    private int hpYposition;
 
     public BackgroundScreen(ScoreSystem subject) {
         this.subject = subject;
@@ -57,6 +58,7 @@ public class BackgroundScreen extends Observer {
         this.bombCount = this.subject.getBombs();
         this.hearCount = this.subject.getLives();
         this.score = this.subject.getScore();
+        this.hpYposition = Constant.WINDOW_HEIGHT-(140+50*((this.bombCount-1)/6))-50;
         this.isCheating = false;
         this.skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
         this.stage = new Stage(this.viewportBackground);
@@ -64,6 +66,7 @@ public class BackgroundScreen extends Observer {
         this.cheatingButton = new TextButton("Start Cheating", skin, "small");
         this.loadButtons();
         sbatch = new SpriteBatch();
+
     }
 
     public void attachCheatingObserver(GameSystem observer){
@@ -79,7 +82,7 @@ public class BackgroundScreen extends Observer {
         font0.draw(sbatch, mode, Constant.WINDOW_WIDTH+55, Constant.WINDOW_HEIGHT-20);
         //font1.draw(sbatch, "HiScore: "+String.format("%08d", HiScore), Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-60);
         font1.draw(sbatch, "Score: "+String.format("%08d", this.score), Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-60);
-        font0.draw(sbatch, "HP: ", Constant.WINDOW_WIDTH+15, Constant.WINDOW_HEIGHT-170);
+        font0.draw(sbatch, "HP: ", Constant.WINDOW_WIDTH+15, this.hpYposition);
         this.showBombs();
         this.showLives();
         sbatch.end();
@@ -95,9 +98,9 @@ public class BackgroundScreen extends Observer {
     private void showLives(){
         if(!isCheating)
             for(int i=0; i<this.hearCount; i++)
-                sbatch.draw(heart, Constant.WINDOW_WIDTH+15+((i%6)*50), Constant.WINDOW_HEIGHT-(240+50*(i/6)), 40,40);
+                sbatch.draw(heart, Constant.WINDOW_WIDTH+15+((i%6)*50), this.hpYposition-(70+50*(i/6)), 40,40);
         else
-            sbatch.draw(infinity, Constant.WINDOW_WIDTH+100, Constant.WINDOW_HEIGHT-205, 60,40);
+            sbatch.draw(infinity, Constant.WINDOW_WIDTH+100, this.hpYposition-35, 60,40);
     }
 
     private void checkMode(){

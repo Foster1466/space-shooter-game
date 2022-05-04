@@ -1,8 +1,8 @@
 {
 	"player":
 	{
-		"lives": 5,
-		"bombs": 5,
+		"lives": 12,
+		"bombs": 10,
 		"award-prob": 1.0
 	},
 	"enemy":
@@ -59,7 +59,7 @@
 		},{
 			"hp": 3,
 			"texture": "enemyRed3.png",
-			"x": 400,
+			"x": 450,
 			"y": 800,
 			"width": 50,
 			"height": 50,

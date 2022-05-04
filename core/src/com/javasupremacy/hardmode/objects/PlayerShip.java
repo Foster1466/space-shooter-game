@@ -59,7 +59,6 @@ public class PlayerShip implements Controllable{
         this.powerLevel = 0;
         this.powerUps = powerUps;
         this.type1UpperBound = 0.8 * ((double)object);
-        System.out.println(type1UpperBound);
         this.type1LowerBound = 0.5 * ((double)object);
     }
 

@@ -10,8 +10,8 @@ public class ReverseLMovement implements Movement{
 
     public ReverseLMovement() {
         timestamp = 0;
-        timeToTurn = 5;
-        speed = 50;
+        timeToTurn = 2;
+        speed = 100;
     }
 
     @Override

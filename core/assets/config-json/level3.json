@@ -2,13 +2,13 @@
 	"player":
 	{
 		"lives": 5,
-		"bombs": 5,
+		"bombs": 8,
 		"award-prob": 1.0
 	},
 	"enemy":
 	[
 		{
-			"hp": 3,
+			"hp": 5,
 			"texture": "enemyRed3.png",
 			"x": 30,
 			"y" : 800,
@@ -53,7 +53,7 @@
 		},{
 		"hp": 10,
 		"texture": "enemyShipB.png",
-		"x": 500,
+		"x": 450,
 		"y": 800,
 		"width": 50,
 		"height": 50,
@@ -67,7 +67,7 @@
 			}
 		],
 		"interval": 1,
-		"count": 10,
+		"count": 20,
 		"reward": 300,
 		"spawnTime": 60,
 		"isFinalBoss": false
@@ -92,6 +92,12 @@
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 15
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "HeavyLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 17
 				},
 				{
 					"texture": "laserRed03.png",

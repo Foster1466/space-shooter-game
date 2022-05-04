@@ -1,8 +1,8 @@
 {
 	"player":
 	{
-		"lives": 5,
-		"bombs": 5,
+		"lives": 8,
+		"bombs": 10,
 		"award-prob": 0.5
 	},
 	"enemy":
@@ -43,6 +43,12 @@
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 0
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "HeavyLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 10
 				}
 			],
 			"interval": 1,
@@ -53,7 +59,7 @@
 		},{
 		"hp": 3,
 		"texture": "enemyShipB.png",
-		"x": 400,
+		"x": 450,
 		"y": 800,
 		"width": 50,
 		"height": 50,
@@ -92,6 +98,12 @@
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 15
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "HeavyLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 17
 				},
 				{
 					"texture": "laserRed03.png",
