@@ -23,11 +23,18 @@ public class LMovement implements Movement{
             hitbox.x += speed * deltaTime;
     }
 
-    public static Rectangle getInit() {
-        float width = 30;
-        float height = 30;
-        float x = 50;
-        float y = Constant.WINDOW_HEIGHT - 5;
-        return new Rectangle(x, y, width, height);
+    @Override
+    public void setDirection(float xDirection, float yDirection) {
+        // DO NOTHING
+    }
+
+    @Override
+    public void setSpeed(float speed) {
+
+    }
+
+    @Override
+    public void setAcceleration(float acceleration) {
+        // DO NOTHING
     }
 }

@@ -4,18 +4,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.movement.Movement;
-import com.javasupremacy.hardmode.patterns.Pattern;
 import com.javasupremacy.hardmode.strategy.LaserStrategy;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
-import com.javasupremacy.hardmode.tracks.Track;
 import com.javasupremacy.hardmode.utils.Constant;
+import com.javasupremacy.hardmode.wrapper.LaserWrapper;
 
 import java.util.List;
 
 abstract public class Enemy {
     public Rectangle hitbox;
     public Movement movement;
-    public LaserStrategy laserStrategy;
+    public LaserWrapper laserWrapper;
     public int hp; // Need this later
     public int score;
     public boolean isFinalBoss;
@@ -38,7 +37,7 @@ abstract public class Enemy {
     }
 
     public void fire(float deltaTime, List<EnemyLaser> lasers) {
-        laserStrategy.fire(deltaTime, this.hitbox, lasers);
+        laserWrapper.fire(deltaTime, this.hitbox, lasers);
     }
 
     /**

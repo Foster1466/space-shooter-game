@@ -2,19 +2,26 @@ package com.javasupremacy.hardmode.factories;
 
 import com.javasupremacy.hardmode.objects.Enemy;
 import com.javasupremacy.hardmode.objects.EnemyShip;
-import com.javasupremacy.hardmode.objects.EnemyShipA;
-import com.javasupremacy.hardmode.objects.EnemyShipB;
+import com.javasupremacy.hardmode.wrapper.LaserWrapper;
+import org.graalvm.compiler.lir.aarch64.AArch64Move;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 public class EnemyShipFactory implements EnemyFactory{
 
     @Override
     public Enemy produce(JSONObject object) {
+        LaserWrapper laserWrapper = new LaserWrapper();
+        JSONArray lasers = (JSONArray) object.get("laser");
+        for (Object obj : lasers) {
+            JSONObject laser = (JSONObject) obj;
+            laserWrapper.addLaser(
+                    ((Long)laser.get("effectiveFrom")).intValue(),
+                    (String) laser.get("strategy"),
+                    (String) laser.get("movement"),
+                    (String) laser.get("texture")
+            );
+        }
         return new EnemyShip.Builder()
                 .hp(((Long) object.get("hp")).intValue())
                 .score(((Long) object.get("reward")).intValue())
@@ -24,8 +31,7 @@ public class EnemyShipFactory implements EnemyFactory{
                         ((Long) object.get("width")).intValue(),
                         ((Long) object.get("height")).intValue())
                 .movement((String) object.get("movement"))
-                .laserStrategy((String) object.get("laser"))
-                .laserMovement((String) object.get("laserMovement"))
+                .laserWrapper(laserWrapper)
                 .isFinalBoss((boolean) object.get("isFinalBoss"))
                 .build();
     }

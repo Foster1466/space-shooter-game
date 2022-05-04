@@ -7,6 +7,7 @@ import com.javasupremacy.hardmode.objects.EnemyLaser;
 import java.util.List;
 
 public interface LaserStrategy {
-    public void setLaserMovement(Movement movement);
+    public void setLaserMovement(String movement);
+    public void setTexture(String filename);
     public void fire (float deltaTime, Rectangle hitbox, List<EnemyLaser> enemyLaserList);
 }

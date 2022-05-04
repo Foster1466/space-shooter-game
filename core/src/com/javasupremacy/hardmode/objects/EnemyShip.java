@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.movement.Movement;
 import com.javasupremacy.hardmode.strategy.LaserStrategy;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
+import com.javasupremacy.hardmode.wrapper.LaserWrapper;
+
+import java.util.List;
 
 public class EnemyShip extends Enemy {
 
@@ -15,7 +18,7 @@ public class EnemyShip extends Enemy {
         this.score = builder.score;
         this.shipTexture = builder.texture;
         this.movement = builder.movement;
-        this.laserStrategy = builder.laserStrategy;
+        this.laserWrapper = builder.laserWrapper;
         this.isFinalBoss = builder.isFinalBoss;
     }
 
@@ -33,7 +36,7 @@ public class EnemyShip extends Enemy {
         private Texture texture;
         private Rectangle hitbox;
         private Movement movement;
-        private LaserStrategy laserStrategy;
+        private LaserWrapper laserWrapper;
         private boolean isFinalBoss;
 
         public Builder() {
@@ -71,26 +74,9 @@ public class EnemyShip extends Enemy {
             }
         }
 
-        public Builder laserStrategy(String strategy) {
-            try {
-                Class cls = Class.forName("com.javasupremacy.hardmode.strategy." + strategy);
-                this.laserStrategy = (LaserStrategy) cls.getConstructor().newInstance();
-            } catch (Throwable e) {
-                System.err.println(e);
-            } finally {
-                return this;
-            }
-        }
-
-        public Builder laserMovement(String laserMovement) {
-            try {
-                Class cls = Class.forName("com.javasupremacy.hardmode.movement." + laserMovement);
-                this.laserStrategy.setLaserMovement((Movement) cls.getConstructor().newInstance());
-            } catch (Throwable e) {
-                System.err.println(e);
-            } finally {
-                return this;
-            }
+        public Builder laserWrapper(LaserWrapper laserWrapper) {
+            this.laserWrapper = laserWrapper;
+            return this;
         }
 
         public Builder isFinalBoss(boolean isFinalBoss) {
