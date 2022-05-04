@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.javasupremacy.hardmode.MainGame;
 import com.javasupremacy.hardmode.utils.Constant;
+import com.javasupremacy.hardmode.utils.JsonReader;
 
 public class LevelScreen implements Screen{
     private final MainGame game;
@@ -40,7 +41,7 @@ public class LevelScreen implements Screen{
         optionButton1.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                new Constant(1);
+                Constant.config = new JsonReader(1);
                 startGame();
             }
             @Override
@@ -67,7 +68,7 @@ public class LevelScreen implements Screen{
         optionButton2.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                new Constant(2);
+                Constant.config = new JsonReader(2);
                 startGame();
             }
             @Override
@@ -92,7 +93,7 @@ public class LevelScreen implements Screen{
         optionButton3.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                new Constant(3);
+                Constant.config = new JsonReader(3);
                 startGame();
             }
             @Override

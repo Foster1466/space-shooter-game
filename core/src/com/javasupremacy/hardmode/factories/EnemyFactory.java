@@ -1,15 +1,11 @@
 package com.javasupremacy.hardmode.factories;
 
 import com.javasupremacy.hardmode.objects.Enemy;
+import org.json.simple.JSONObject;
 
 import java.util.List;
 
-abstract public class EnemyFactory {
-    float clock;
+public interface EnemyFactory {
 
-    public EnemyFactory() {
-        clock = 0;
-    }
-
-    abstract public void produce(float deltaTime, List<Enemy> list);
+    public Enemy produce(JSONObject object);
 }

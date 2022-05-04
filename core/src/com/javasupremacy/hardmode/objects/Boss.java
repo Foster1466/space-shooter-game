@@ -12,14 +12,14 @@ public class Boss extends Enemy {
         this.hp = 30;
         this.score = 3000;
         this.hitbox = BossTrack.getInit();
-        this.track = new BossTrack();
-        this.pattern = new BossPattern();
         this.shipTexture = new Texture("boss.png");
     }
 
-    @Override
     public void die(ScoreSystem ss) {
         ss.updateScore(this.score);
-        ss.updateEnd(true);
+        // Final boss die ends game
+        if (this.isFinalBoss) {
+            ss.updateEnd(true);
+        }
     }
 }

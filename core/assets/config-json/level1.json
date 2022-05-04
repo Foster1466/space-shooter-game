@@ -1,12 +1,57 @@
 {
 	"player":
 	{
-		"lives": "5",
-		"bombs": "5",
+		"lives": 5,
+		"bombs": 5,
 		"award-prob": 1.0
 	},
 	"enemy":
-	{
-		"cluster": false
-	}
+	[
+		{
+			"hp": 1,
+			"texture": "enemyRed3.png",
+			"x": 30,
+			"y" : 800,
+			"width": 30,
+			"height": 30,
+			"movement": "LMovement",
+			"laser": "NormalLaserStrategy",
+			"laserMovement": "LMovement",
+			"interval": 1,
+			"count": 10,
+			"reward": 100,
+			"spawnTime": 3
+		},
+		{
+			"hp": 3,
+			"texture": "enemyRed3.png",
+			"x": 400,
+			"y": 800,
+			"width": 50,
+			"height": 50,
+			"movement": "ReverseLMovement",
+			"laser": "NormalLaserStrategy",
+			"laserMovement": "LMovement",
+			"interval": 1,
+			"count": 10,
+			"reward": 300,
+			"spawnTime": 30
+		},
+		{
+			"hp": 3,
+			"texture": "boss.png",
+			"x": 400,
+			"y": 800,
+			"width": 100,
+			"height": 100,
+			"movement": "LMovement",
+			"laser": "NormalLaserStrategy",
+			"laserMovement": "LMovement",
+			"interval": 1,
+			"count": 1,
+			"reward": 300,
+			"spawnTime": 60,
+			"isFinalBoss": true
+		}
+	]
 }

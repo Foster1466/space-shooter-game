@@ -26,12 +26,12 @@ public class Constant {
     public static int NUM_BOMB = 5;
     public static double AWARD_PROB = 1.0;
     public static boolean HAS_CLUSTER = false;
-    public static JsonReader reader;
-    public Constant(int gameLevel) {
-        reader = new JsonReader(gameLevel);
-        NUM_LIVES = reader.getLivesNumber();
-        NUM_BOMB = reader.getBombsNumber();
-        AWARD_PROB = reader.getAwardProb();
-        HAS_CLUSTER = reader.getIsCluster();
-    }
+    public static JsonReader config;
+//    public Constant(int gameLevel) {
+//        reader = new JsonReader(gameLevel);
+//        NUM_LIVES = reader.getLivesNumber();
+//        NUM_BOMB = reader.getBombsNumber();
+//        AWARD_PROB = reader.getAwardProb();
+//        HAS_CLUSTER = reader.getIsCluster();
+//    }
 }

@@ -3,7 +3,9 @@ package com.javasupremacy.hardmode.objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
+import com.javasupremacy.hardmode.movement.Movement;
 import com.javasupremacy.hardmode.patterns.Pattern;
+import com.javasupremacy.hardmode.strategy.LaserStrategy;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.tracks.Track;
 import com.javasupremacy.hardmode.utils.Constant;
@@ -12,17 +14,17 @@ import java.util.List;
 
 abstract public class Enemy {
     public Rectangle hitbox;
-    public Track track;
-    public Pattern pattern;
+    public Movement movement;
+    public LaserStrategy laserStrategy;
     public int hp; // Need this later
     public int score;
-    //public boolean finalBossDie = false;
+    public boolean isFinalBoss;
 
     // Graphics
     Texture shipTexture;
 
     public Enemy() {
-
+        isFinalBoss = false;
     }
 
     /**
@@ -31,12 +33,12 @@ abstract public class Enemy {
      * @param deltaTime
      */
     public void draw(Batch batch, float deltaTime){
-        track.update(deltaTime, this.hitbox);
+        movement.move(deltaTime, this.hitbox);
         batch.draw(shipTexture, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
 
     public void fire(float deltaTime, List<EnemyLaser> lasers) {
-        pattern.fire(deltaTime, lasers, this.hitbox);
+        laserStrategy.fire(deltaTime, this.hitbox, lasers);
     }
 
     /**
@@ -54,8 +56,6 @@ abstract public class Enemy {
         return this.hitbox.overlaps(other);
     }
 
-    public void die(ScoreSystem ss) {
-        ss.updateScore(this.score);
-    }
+    public abstract void die(ScoreSystem ss);
 }
 

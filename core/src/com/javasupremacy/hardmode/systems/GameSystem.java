@@ -1,17 +1,21 @@
 package com.javasupremacy.hardmode.systems;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.javasupremacy.hardmode.factories.BossFactory;
 import com.javasupremacy.hardmode.factories.EnemyFactory;
 import com.javasupremacy.hardmode.factories.EnemyShipFactory;
 import com.javasupremacy.hardmode.objects.*;
 import com.javasupremacy.hardmode.observer.CheatingObserver;
 import com.javasupremacy.hardmode.screens.BackgroundScreen;
 import com.javasupremacy.hardmode.utils.Constant;
+import com.javasupremacy.hardmode.utils.JsonReader;
 import com.javasupremacy.hardmode.utils.PlayerCommand;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class GameSystem extends CheatingObserver {
     private float timestamp;
@@ -27,13 +31,23 @@ public class GameSystem extends CheatingObserver {
     private PlayerCommand command;
 
     // Factories
-    private List<EnemyFactory> factoryList;
+    EnemyFactory enemyFactory;
+    private Queue<Float> releaseTime;
+    private Queue<JSONObject> toBeReleased;
+
     private ScoreSystem scoreSystem;
     private boolean isCheating;
 
     private int awaredCount;
 
     public GameSystem(BackgroundScreen subject) {
+        this.subject = subject;
+        this.subject.attachCheatingObserver(this);
+        init();
+    }
+
+    public void init() {
+        JsonReader config = Constant.config;
         timestamp = 0;
         awaredCount = 0;
 
@@ -47,24 +61,32 @@ public class GameSystem extends CheatingObserver {
         command = new PlayerCommand();
         command.add(playerShip);
 
-        factoryList = new ArrayList<>();
-        factoryList.add(new BossFactory());
-        factoryList.add(new EnemyShipFactory());
+        enemyFactory = new EnemyShipFactory();
+        releaseTime = new LinkedList<>();
+        toBeReleased = new LinkedList<>();
 
-        this.subject = subject;
-        this.subject.attachCheatingObserver(this);
+        loadEnemyShips(config);
+    }
+
+    public void loadEnemyShips(JsonReader config) {
+
+        JSONArray enemyConfigs = config.getEnemies();
+        for (Object obj : enemyConfigs) {
+            JSONObject enemyObj = (JSONObject) obj;
+            System.out.println((String) enemyObj.get("texture"));
+            float timestamp = ((Long)enemyObj.get("spawnTime")).floatValue();
+            int count = ((Long)enemyObj.get("count")).intValue();
+            for (int i = 0; i < count; i++) {
+                toBeReleased.offer(enemyObj);
+                releaseTime.offer(timestamp);
+                timestamp += ((Long)enemyObj.get("interval")).floatValue();
+            }
+        }
     }
 
     public void setScoreSystem(ScoreSystem ss) {
         this.scoreSystem = ss;
         this.command.setCheckBombs(ss);
-    }
-
-    /**
-     * Read JSON for milestone 3
-     */
-    private void initialize() {
-
     }
 
     public void render(SpriteBatch sbatch, float deltaTime) {
@@ -79,19 +101,18 @@ public class GameSystem extends CheatingObserver {
 
     private void updateGame(float deltaTime) {
         timestamp += deltaTime;
-        spawnEnemy(deltaTime);
+        spawnEnemy();
         command.run();
         detectCollesion();
         powerUpCollsion();
     }
 
-    /**
-     * For each factory, add enemy into list based on deltaTime
-     * @param deltaTime
-     */
-    private void spawnEnemy(float deltaTime) {
-        for (EnemyFactory factory : factoryList) {
-            factory.produce(deltaTime, this.enemyShipList);
+    private void spawnEnemy() {
+        System.out.println(timestamp);
+        if (releaseTime.size() > 0 && timestamp > releaseTime.peek()) {
+            releaseTime.poll();
+            Enemy enemy = enemyFactory.produce(toBeReleased.poll());
+            enemyShipList.add(enemy);
         }
     }
 
