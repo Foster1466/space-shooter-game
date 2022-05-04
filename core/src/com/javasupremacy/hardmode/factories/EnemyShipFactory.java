@@ -17,6 +17,7 @@ public class EnemyShipFactory implements EnemyFactory{
     public Enemy produce(JSONObject object) {
         return new EnemyShip.Builder()
                 .hp(((Long) object.get("hp")).intValue())
+                .score(((Long) object.get("reward")).intValue())
                 .texture((String) object.get("texture"))
                 .hitbox(((Long) object.get("x")).intValue(),
                         ((Long) object.get("y")).intValue(),
