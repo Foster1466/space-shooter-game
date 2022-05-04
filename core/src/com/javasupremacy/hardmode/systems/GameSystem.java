@@ -57,6 +57,7 @@ public class GameSystem extends CheatingObserver {
         specialBombs = new ArrayList<>();
         powerUps= new ArrayList<>();
         playerShip = new PlayerShip(bullets, specialBombs, powerUps);
+        Constant.playerShip = playerShip; // Hack for tracking lasers
         enemyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
 

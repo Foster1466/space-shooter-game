@@ -1,6 +1,7 @@
 package com.javasupremacy.hardmode.utils;
 
 import com.badlogic.gdx.Input;
+import com.javasupremacy.hardmode.objects.PlayerShip;
 
 public class Constant {
     public static final int EXT_WINDOW_WIDTH = 836;
@@ -25,13 +26,7 @@ public class Constant {
     public static int NUM_LIVES = 13;
     public static int NUM_BOMB = 5;
     public static double AWARD_PROB = 1.0;
-    public static boolean HAS_CLUSTER = false;
     public static JsonReader config;
-//    public Constant(int gameLevel) {
-//        reader = new JsonReader(gameLevel);
-//        NUM_LIVES = reader.getLivesNumber();
-//        NUM_BOMB = reader.getBombsNumber();
-//        AWARD_PROB = reader.getAwardProb();
-//        HAS_CLUSTER = reader.getIsCluster();
-//    }
+
+    public static PlayerShip playerShip;
 }

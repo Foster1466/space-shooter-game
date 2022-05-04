@@ -24,7 +24,7 @@
 				}
 			],
 			"interval": 1,
-			"count": 10,
+			"count": 1,
 			"reward": 100,
 			"spawnTime": 3,
 			"isFinalBoss": false
@@ -92,6 +92,12 @@
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 15
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "StringLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 30
 				}
 			],
 			"interval": 1,

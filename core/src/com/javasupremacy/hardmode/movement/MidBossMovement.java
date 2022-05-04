@@ -1,7 +1,6 @@
 package com.javasupremacy.hardmode.movement;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.javasupremacy.hardmode.tracks.Track;
 import com.javasupremacy.hardmode.utils.Constant;
 
 public class MidBossMovement implements Movement {

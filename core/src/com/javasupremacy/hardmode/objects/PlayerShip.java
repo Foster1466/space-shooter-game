@@ -20,7 +20,7 @@ public class PlayerShip implements Controllable{
     private boolean isSlow, isthrow;
 
     private Texture spaceship, manmode, ghostmode;
-    private Rectangle hitbox, manbox, ghostbox;
+    public Rectangle hitbox, manbox, ghostbox;
 
     private float shootInterval = 0.2f;
     private float bombInterval = 2.5f;
