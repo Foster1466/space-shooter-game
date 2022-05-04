@@ -25,6 +25,7 @@ public class GameSystem extends CheatingObserver {
     private List<PlayerSpecialBomb> specialBombs;
     private List<Enemy> enemyShipList;
     private List<EnemyLaser> enemyLaserList;
+    private List<EnemyLaser> heavyLaserList;
     private List<PowerUp> powerUps;
 
     // Input command
@@ -59,6 +60,7 @@ public class GameSystem extends CheatingObserver {
         playerShip = new PlayerShip(bullets, specialBombs, powerUps, config.getPlayerAttribute().get("award-prob"));
         Constant.playerShip = playerShip; // Hack for tracking lasers
         enemyLaserList = new ArrayList<>();
+        heavyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
 
         command = new PlayerCommand();

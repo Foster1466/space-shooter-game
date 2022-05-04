@@ -16,7 +16,7 @@ public class BossMovement implements Movement {
         timestamp = 0;
         timeToTurn = 5;
         switchTime = 15;
-        ttl = 50;
+        ttl = 60;
         speed = 50;
         ltr = true;
     }
