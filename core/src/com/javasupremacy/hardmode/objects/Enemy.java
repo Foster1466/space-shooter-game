@@ -4,10 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.movement.Movement;
-import com.javasupremacy.hardmode.strategy.LaserStrategy;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.utils.Constant;
-import com.javasupremacy.hardmode.wrapper.LaserWrapper;
+import com.javasupremacy.hardmode.wrap.LaserWrapper;
 
 import java.util.List;
 

@@ -3,11 +3,8 @@ package com.javasupremacy.hardmode.objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.movement.Movement;
-import com.javasupremacy.hardmode.strategy.LaserStrategy;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
-import com.javasupremacy.hardmode.wrapper.LaserWrapper;
-
-import java.util.List;
+import com.javasupremacy.hardmode.wrap.LaserWrapper;
 
 public class EnemyShip extends Enemy {
 

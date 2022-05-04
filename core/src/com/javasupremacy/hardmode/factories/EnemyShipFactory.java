@@ -2,8 +2,7 @@ package com.javasupremacy.hardmode.factories;
 
 import com.javasupremacy.hardmode.objects.Enemy;
 import com.javasupremacy.hardmode.objects.EnemyShip;
-import com.javasupremacy.hardmode.wrapper.LaserWrapper;
-import org.graalvm.compiler.lir.aarch64.AArch64Move;
+import com.javasupremacy.hardmode.wrap.LaserWrapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
