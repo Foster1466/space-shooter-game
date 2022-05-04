@@ -20,13 +20,13 @@ public class LaserWrapper {
         strategyList = new LinkedList<>();
     }
 
-    public void fire(float deltaTime, Rectangle hitbox, List<EnemyLaser> list) {
+    public void fire(float deltaTime, Rectangle hitbox, List<EnemyLaser> list, List<EnemyLaser> heavyList) {
         timestamp += deltaTime;
         if (currentStrategy == null || (!releaseTime.isEmpty() && timestamp >= releaseTime.peek())) {
             releaseTime.poll();
             currentStrategy = strategyList.poll();
         }
-        currentStrategy.fire(deltaTime, hitbox, list);
+        currentStrategy.fire(deltaTime, hitbox, list, heavyList);
     }
 
     public void addLaser(float timestamp, String stratStr, String moveStr, String texture) {

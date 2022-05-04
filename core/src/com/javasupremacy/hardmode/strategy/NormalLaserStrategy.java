@@ -39,7 +39,7 @@ public class NormalLaserStrategy implements LaserStrategy{
     }
 
     @Override
-    public void fire(float deltaTime, Rectangle hitbox, List<EnemyLaser> list) {
+    public void fire(float deltaTime, Rectangle hitbox, List<EnemyLaser> list, List<EnemyLaser> heavyList) {
         timeSinceLastShot += deltaTime;
         try {
             Class cls = Class.forName("com.javasupremacy.hardmode.movement." + movementClass);

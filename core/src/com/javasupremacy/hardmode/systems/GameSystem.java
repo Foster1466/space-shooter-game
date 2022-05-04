@@ -107,6 +107,7 @@ public class GameSystem extends CheatingObserver {
         timestamp += deltaTime;
         spawnEnemy();
         command.run();
+        heavyLaserCollesion();
         detectCollesion();
         powerUpCollsion();
     }
@@ -116,6 +117,16 @@ public class GameSystem extends CheatingObserver {
             releaseTime.poll();
             Enemy enemy = enemyFactory.produce(toBeReleased.poll());
             enemyShipList.add(enemy);
+        }
+    }
+
+    private void heavyLaserCollesion() {
+        for (EnemyLaser heavy : heavyLaserList) {
+            for (EnemyLaser regular : enemyLaserList) {
+                if (heavy.overlaps(regular.hitbox)) {
+                    regular.movement = heavy.movement;
+                }
+            }
         }
     }
 
@@ -185,7 +196,7 @@ public class GameSystem extends CheatingObserver {
         List<Enemy> removeList = new ArrayList<>();
         for (Enemy enemy : enemyShipList) {
             enemy.draw(sbatch, deltaTime);
-            enemy.fire(deltaTime, enemyLaserList);
+            enemy.fire(deltaTime, enemyLaserList, heavyLaserList);
             if (enemy.isOutOfBounds()) {
                 if (enemy.isFinalBoss) {
                     this.end = true;
@@ -211,6 +222,16 @@ public class GameSystem extends CheatingObserver {
             }
         }
         enemyLaserList.removeAll(removeList1);
+
+        List<EnemyLaser> removeList2 = new ArrayList<>();
+        for (EnemyLaser enemyLaser : heavyLaserList) {
+            enemyLaser.move(deltaTime);
+            enemyLaser.draw(sbatch);
+            if (enemyLaser.canRemove()) {
+                removeList2.add(enemyLaser);
+            }
+        }
+        enemyLaserList.removeAll(removeList2);
     }
 
     /**

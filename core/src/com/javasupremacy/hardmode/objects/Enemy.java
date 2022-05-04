@@ -35,8 +35,8 @@ abstract public class Enemy {
         batch.draw(shipTexture, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     }
 
-    public void fire(float deltaTime, List<EnemyLaser> lasers) {
-        laserWrapper.fire(deltaTime, this.hitbox, lasers);
+    public void fire(float deltaTime, List<EnemyLaser> lasers, List<EnemyLaser> heavys) {
+        laserWrapper.fire(deltaTime, this.hitbox, lasers, heavys);
     }
 
     /**

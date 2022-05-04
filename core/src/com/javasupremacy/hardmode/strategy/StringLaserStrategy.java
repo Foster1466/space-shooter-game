@@ -47,7 +47,7 @@ public class StringLaserStrategy implements LaserStrategy{
     }
 
     @Override
-    public void fire(float deltaTime, Rectangle hitbox, List<EnemyLaser> list) {
+    public void fire(float deltaTime, Rectangle hitbox, List<EnemyLaser> list, List<EnemyLaser> heavyList) {
         timeSinceLastShot += deltaTime;
         timeSwitch += deltaTime;
         try {

@@ -43,6 +43,12 @@
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 0
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "HeavyLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 10
 				}
 			],
 			"interval": 1,
@@ -92,6 +98,24 @@
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 15
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "HeavyLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 17
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "CircleLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 20
+				},
+				{
+					"texture": "laserRed03.png",
+					"strategy": "HeavyLaserStrategy",
+					"movement": "StraightLineMovement",
+					"effectiveFrom": 22
 				},
 				{
 					"texture": "laserRed03.png",

@@ -7,7 +7,7 @@ import com.javasupremacy.hardmode.objects.EnemyLaser;
 
 import java.util.List;
 
-public class CircleLaserStrategy implements LaserStrategy{
+public class HeavyLaserStrategy implements LaserStrategy{
     // laser information
     float laserWidth, laserHeight;
     float timeBetweenShots;
@@ -16,12 +16,12 @@ public class CircleLaserStrategy implements LaserStrategy{
     String filename;
     String movementClass;
 
-    public CircleLaserStrategy() {
-        laserWidth = 10f;
-        laserHeight = 10f;
-        timeBetweenShots = 0.3f;
+    public HeavyLaserStrategy() {
+        laserWidth = 30f;
+        laserHeight = 30f;
+        timeBetweenShots = 1f;
         timeSinceLastShot = 0;
-        laserMovementSpeed = 70f;
+        laserMovementSpeed = 200f;
     }
 
     private boolean canFire() {
@@ -43,14 +43,14 @@ public class CircleLaserStrategy implements LaserStrategy{
         timeSinceLastShot += deltaTime;
         try {
             if (canFire()) {
-                for (int angle = 0; angle < 360; angle += 5) {
+                for (int angle = 0; angle < 360; angle += 45) {
                     timeSinceLastShot = 0;
                     Class cls = Class.forName("com.javasupremacy.hardmode.movement." + movementClass);
                     Movement movement = (Movement) cls.getConstructor().newInstance();
                     movement.setDirection((float)Math.cos(Math.toRadians(angle)), (float)Math.sin(Math.toRadians(angle)));
                     movement.setSpeed(laserMovementSpeed);
                     movement.setAcceleration(1);
-                    list.add(new EnemyLaser(filename,
+                    heavyList.add(new EnemyLaser(filename,
                             new Rectangle(hitbox.x + (hitbox.width / 2) + hitbox.width * 0.5f * (float)Math.cos(Math.toRadians(angle)),
                                     hitbox.y + (hitbox.height / 2 ) + hitbox.height * 0.5f * (float)Math.sin(Math.toRadians(angle)),
                                     laserWidth,

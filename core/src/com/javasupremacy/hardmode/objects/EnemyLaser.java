@@ -8,7 +8,7 @@ import com.javasupremacy.hardmode.utils.Constant;
 
 public class EnemyLaser {
     public Rectangle hitbox;
-    private Movement movement;
+    public Movement movement;
     private Texture textureReg;
 
     public EnemyLaser(String filename, Rectangle hitbox, Movement movement) {
@@ -24,6 +24,10 @@ public class EnemyLaser {
 
     public void move(float deltaTime) {
         movement.move(deltaTime, hitbox);
+    }
+
+    public boolean overlaps(Rectangle hitbox) {
+        return this.hitbox.overlaps(hitbox);
     }
 
     public void draw(Batch batch) {
