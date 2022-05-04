@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.utils.Constant;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class PlayerShip implements Controllable{
     private double type1UpperBound, type1LowerBound;
 
 
-    public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist, List<PowerUp> powerUps) {
+    public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist, List<PowerUp> powerUps, Object object) {
         fireSound= Gdx.audio.newSound(Gdx.files.internal("arcade.ogg"));
         bombSound= Gdx.audio.newSound(Gdx.files.internal("bomb.ogg"));
         this.movementSpeed = 4f;
@@ -57,8 +58,9 @@ public class PlayerShip implements Controllable{
         this.isthrow = false;
         this.powerLevel = 0;
         this.powerUps = powerUps;
-        this.type1UpperBound = 0.8*Constant.AWARD_PROB;
-        this.type1LowerBound = 0.5*Constant.AWARD_PROB;
+        this.type1UpperBound = 0.8 * ((double)object);
+        System.out.println(type1UpperBound);
+        this.type1LowerBound = 0.5 * ((double)object);
     }
 
     /**

@@ -1,13 +1,12 @@
 package com.javasupremacy.hardmode.strategy;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.movement.Movement;
 import com.javasupremacy.hardmode.objects.EnemyLaser;
 
 import java.util.List;
 
-public class NormalLaserStrategy implements LaserStrategy{
+public class TripleLaserStrategy implements LaserStrategy{
     // laser information
     float laserWidth, laserHeight;
     float timeBetweenShots;
@@ -16,10 +15,10 @@ public class NormalLaserStrategy implements LaserStrategy{
     String filename;
     String movementClass;
 
-    public NormalLaserStrategy() {
+    public TripleLaserStrategy() {
         laserWidth = 4.0f;
         laserHeight = 20f;
-        timeBetweenShots = 0.6f;
+        timeBetweenShots = 0.5f;
         timeSinceLastShot = 0;
         laserMovementSpeed = 200f;
     }
@@ -52,6 +51,13 @@ public class NormalLaserStrategy implements LaserStrategy{
                 list.add(new EnemyLaser(filename,
                         new Rectangle(hitbox.x + hitbox.width * 0.18f,
                                 hitbox.y - laserHeight,
+                                laserWidth,
+                                laserHeight),
+                        movement));
+
+                list.add(new EnemyLaser(filename,
+                        new Rectangle(hitbox.x + hitbox.width * 0.5f,
+                                hitbox.y - laserHeight-10,
                                 laserWidth,
                                 laserHeight),
                         movement));

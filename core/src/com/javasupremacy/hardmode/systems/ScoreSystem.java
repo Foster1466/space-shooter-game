@@ -2,6 +2,7 @@ package com.javasupremacy.hardmode.systems;
 
 import com.javasupremacy.hardmode.observer.Observer;
 import com.javasupremacy.hardmode.utils.Constant;
+import org.json.simple.JSONObject;
 
 public class ScoreSystem{
 
@@ -11,10 +12,10 @@ public class ScoreSystem{
     private boolean win;
     private Observer backScreen;
 
-    public ScoreSystem() {
+    public ScoreSystem(JSONObject object) {
         score = 0;
-        lives = Constant.NUM_LIVES;
-        bombs = Constant.NUM_BOMB;
+        lives = ((Long) object.get("lives")).intValue();
+        bombs = ((Long) object.get("bombs")).intValue();
         win = false;
     }
 

@@ -24,7 +24,7 @@
 				}
 			],
 			"interval": 1,
-			"count": 1,
+			"count": 5
 			"reward": 100,
 			"spawnTime": 3,
 			"isFinalBoss": false

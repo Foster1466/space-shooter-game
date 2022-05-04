@@ -19,6 +19,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.javasupremacy.hardmode.systems.GameSystem;
 import com.javasupremacy.hardmode.systems.ScoreSystem;
 import com.javasupremacy.hardmode.utils.Constant;
+import com.javasupremacy.hardmode.utils.JsonReader;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 
 public class GameScreen implements Screen {
@@ -40,7 +43,9 @@ public class GameScreen implements Screen {
     private Music bgm;
 
     public GameScreen(MainGame game) {
-        scoreSystem = new ScoreSystem();
+        JsonReader config = Constant.config;
+        JSONObject playerConfigs = config.getPlayerAttribute();
+        scoreSystem = new ScoreSystem(playerConfigs);
         sbatch = new SpriteBatch();
         this.backScreen = new BackgroundScreen(scoreSystem);
         this.cameraForeground = new OrthographicCamera();

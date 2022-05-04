@@ -56,7 +56,7 @@ public class GameSystem extends CheatingObserver {
         bullets = new ArrayList<>();
         specialBombs = new ArrayList<>();
         powerUps= new ArrayList<>();
-        playerShip = new PlayerShip(bullets, specialBombs, powerUps);
+        playerShip = new PlayerShip(bullets, specialBombs, powerUps, config.getPlayerAttribute().get("award-prob"));
         Constant.playerShip = playerShip; // Hack for tracking lasers
         enemyLaserList = new ArrayList<>();
         enemyShipList = new ArrayList<>();
@@ -247,12 +247,21 @@ public class GameSystem extends CheatingObserver {
 
     private void renderShipBomb(SpriteBatch sbatch, float deltaTime) {
         List<PlayerSpecialBomb> removeList = new ArrayList<>();
+        List<Enemy> removeEnemyList = new ArrayList<>();
         for (PlayerSpecialBomb bomb : specialBombs) {
             bomb.move(deltaTime);
             bomb.draw(sbatch);
             if (bomb.canRemove()) {
                 removeList.add(bomb);
                 enemyLaserList.clear();
+                for (Enemy enemy : enemyShipList){
+                    enemy.hp -= 5;
+                    if (enemy.hp <= 0) {
+                        removeEnemyList.add(enemy);
+                        enemy.die(scoreSystem);
+                    }
+                }
+                enemyShipList.removeAll(removeEnemyList);
             }
         }
         specialBombs.removeAll(removeList);

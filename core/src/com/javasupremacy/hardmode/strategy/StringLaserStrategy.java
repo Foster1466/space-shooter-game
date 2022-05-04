@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.javasupremacy.hardmode.movement.Movement;
 import com.javasupremacy.hardmode.objects.EnemyLaser;
 import com.javasupremacy.hardmode.utils.Constant;
-import com.sun.org.apache.bcel.internal.Const;
+//import com.sun.org.apache.bcel.internal.Const;
 
 import java.util.List;
 
@@ -20,9 +20,9 @@ public class StringLaserStrategy implements LaserStrategy{
     String movementClass;
 
     public StringLaserStrategy() {
-        laserWidth = 10f;
-        laserHeight = 10f;
-        timeBetweenShots = 0.1f;
+        laserWidth = 20f;
+        laserHeight = 20f;
+        timeBetweenShots = 0.05f;
         timeSinceLastShot = 0;
         laserMovementSpeed = 200f;
         fireSwitch = true;

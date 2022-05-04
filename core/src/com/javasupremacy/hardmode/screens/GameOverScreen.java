@@ -99,7 +99,7 @@ public class GameOverScreen implements Screen {
         game.batch.begin();
         game.batch.draw(background, 0, 0, Constant.EXT_WINDOW_WIDTH, Constant.EXT_WINDOW_HEIGHT);
         if(showScore)
-            font0.draw(game.batch, "Score: "+String.format("%d", score), 100, 60);
+            font0.draw(game.batch, "Score: "+String.format("%d", score), 250, 60);
         game.batch.end();
         stage.act();
         stage.draw();
