@@ -61,6 +61,7 @@ public class GameScreen implements Screen {
 
         //LOAD BGM AUDIO FILE AND INITIALIZE OBJECT
         bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm.ogg"));
+        bgm.setVolume(0.05f);
         bgm.setLooping(true);
         bgm.play();
 

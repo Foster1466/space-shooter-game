@@ -42,6 +42,7 @@ public class PlayerShip implements Controllable{
     public PlayerShip(List<PlayerBullet> bulletList, List<PlayerSpecialBomb> bomblist, List<PowerUp> powerUps, Object object) {
         fireSound= Gdx.audio.newSound(Gdx.files.internal("arcade.ogg"));
         bombSound= Gdx.audio.newSound(Gdx.files.internal("bomb.ogg"));
+
         this.movementSpeed = 4f;
         float width = 20;
         float height = 40;
@@ -121,7 +122,7 @@ public class PlayerShip implements Controllable{
         if(powerLevel<1) {
             if (shootTimestamp >= shootInterval) {
                 shootTimestamp = 0;
-                fireSound.play();
+                fireSound.play(0.05f);
                 this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
                         .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) - 5, (hitbox.y + hitbox.height) - 5, 12, 26))
                         .speed(400)
@@ -135,7 +136,7 @@ public class PlayerShip implements Controllable{
             if (shootTimestamp >= shootInterval) {
                 levelTimestep += shootTimestamp;
                 shootTimestamp = 0;
-                fireSound.play();
+                fireSound.play(0.05f);
                 this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
                         .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) - 15, (hitbox.y + hitbox.height) - 5, 12, 26))
                         .speed(400)
@@ -157,7 +158,7 @@ public class PlayerShip implements Controllable{
             if (shootTimestamp >= shootInterval) {
                 levelTimestep += shootTimestamp;
                 shootTimestamp = 0;
-                fireSound.play();
+                fireSound.play(0.05f);
                 this.bulletList.add(new PlayerBullet.Builder(new Texture("bulletBeige.png"))
                         .hitbox(new Rectangle((hitbox.x + (hitbox.width / 2)) , (hitbox.y + hitbox.height) , 12, 26))
                         .speed(400)
@@ -208,7 +209,7 @@ public class PlayerShip implements Controllable{
         if (shootTimestamp >= bombInterval) {
             shootTimestamp = 0;
             isthrow = true;
-            bombSound.play();
+            bombSound.play(0.05f);
             this.bomblist.add(new PlayerSpecialBomb.Builder(new Texture("specialBomb.png"))
                     .hitbox(new Rectangle(hitbox.x - (hitbox.width/3), hitbox.y + hitbox.height, 30, 30))
                     .speed(250)

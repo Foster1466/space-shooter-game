@@ -39,13 +39,13 @@
 			"movement": "MidBossMovement",
 			"laser": [
 				{
-					"texture": "laserRed03.png",
+					"texture": "laserRed10.png",
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 0
 				},
 				{
-					"texture": "laserRed03.png",
+					"texture": "meteorGrey_med1.png",
 					"strategy": "HeavyLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 10
@@ -58,7 +58,7 @@
 			"isFinalBoss": false
 		},{
 			"hp": 3,
-			"texture": "enemyRed3.png",
+			"texture": "enemyBlue4.png",
 			"x": 450,
 			"y": 800,
 			"width": 50,
@@ -94,31 +94,31 @@
 					"effectiveFrom": 0
 				},
 				{
-					"texture": "laserRed03.png",
+					"texture": "laserBlue10.png",
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 15
 				},
 				{
-					"texture": "laserRed03.png",
+					"texture": "meteorGrey_med1.png",
 					"strategy": "HeavyLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 17
 				},
 				{
-					"texture": "laserRed03.png",
+					"texture": "laserBlue10.png",
 					"strategy": "CircleLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 20
 				},
 				{
-					"texture": "laserRed03.png",
+					"texture": "meteorGrey_med1.png",
 					"strategy": "HeavyLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 22
 				},
 				{
-					"texture": "laserRed03.png",
+					"texture": "laserGreen15.png",
 					"strategy": "StringLaserStrategy",
 					"movement": "StraightLineMovement",
 					"effectiveFrom": 30
